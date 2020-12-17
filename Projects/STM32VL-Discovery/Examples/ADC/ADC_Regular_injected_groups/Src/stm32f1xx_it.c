@@ -37,7 +37,7 @@
 /* Private variables ---------------------------------------------------------*/
 extern ADC_HandleTypeDef    AdcHandle;
 #if defined(WAVEFORM_VOLTAGE_GENERATION_FOR_TEST)
-extern DAC_HandleTypeDef    DacHandle;
+    extern DAC_HandleTypeDef    DacHandle;
 #endif /* WAVEFORM_VOLTAGE_GENERATION_FOR_TEST */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -52,7 +52,7 @@ extern DAC_HandleTypeDef    DacHandle;
   * @param  None
   * @retval None
   */
-void NMI_Handler(void)
+void NMI_Handler( void )
 {
 }
 
@@ -61,12 +61,12 @@ void NMI_Handler(void)
   * @param  None
   * @retval None
   */
-void HardFault_Handler(void)
+void HardFault_Handler( void )
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while( 1 )
+    {
+    }
 }
 
 /**
@@ -74,12 +74,12 @@ void HardFault_Handler(void)
   * @param  None
   * @retval None
   */
-void MemManage_Handler(void)
+void MemManage_Handler( void )
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while( 1 )
+    {
+    }
 }
 
 /**
@@ -87,12 +87,12 @@ void MemManage_Handler(void)
   * @param  None
   * @retval None
   */
-void BusFault_Handler(void)
+void BusFault_Handler( void )
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while( 1 )
+    {
+    }
 }
 
 /**
@@ -100,12 +100,12 @@ void BusFault_Handler(void)
   * @param  None
   * @retval None
   */
-void UsageFault_Handler(void)
+void UsageFault_Handler( void )
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while( 1 )
+    {
+    }
 }
 
 /**
@@ -113,7 +113,7 @@ void UsageFault_Handler(void)
   * @param  None
   * @retval None
   */
-void SVC_Handler(void)
+void SVC_Handler( void )
 {
 }
 
@@ -122,7 +122,7 @@ void SVC_Handler(void)
   * @param  None
   * @retval None
   */
-void DebugMon_Handler(void)
+void DebugMon_Handler( void )
 {
 }
 
@@ -131,7 +131,7 @@ void DebugMon_Handler(void)
   * @param  None
   * @retval None
   */
-void PendSV_Handler(void)
+void PendSV_Handler( void )
 {
 }
 
@@ -140,9 +140,9 @@ void PendSV_Handler(void)
   * @param  None
   * @retval None
   */
-void SysTick_Handler(void)
+void SysTick_Handler( void )
 {
-  HAL_IncTick();
+    HAL_IncTick();
 }
 
 /******************************************************************************/
@@ -157,9 +157,9 @@ void SysTick_Handler(void)
   * @param  None
   * @retval None
   */
-void EXTI0_IRQHandler(void)
+void EXTI0_IRQHandler( void )
 {
-  HAL_GPIO_EXTI_IRQHandler(USER_BUTTON_PIN);
+    HAL_GPIO_EXTI_IRQHandler( USER_BUTTON_PIN );
 }
 
 
@@ -168,9 +168,9 @@ void EXTI0_IRQHandler(void)
   * @param  None
   * @retval None
   */
-void ADCx_IRQHandler(void)
+void ADCx_IRQHandler( void )
 {
-  HAL_ADC_IRQHandler(&AdcHandle);
+    HAL_ADC_IRQHandler( &AdcHandle );
 }
 
 /**
@@ -178,9 +178,9 @@ void ADCx_IRQHandler(void)
 * @param  None
 * @retval None
 */
-void ADCx_DMA_IRQHandler(void)
+void ADCx_DMA_IRQHandler( void )
 {
-  HAL_DMA_IRQHandler(AdcHandle.DMA_Handle);
+    HAL_DMA_IRQHandler( AdcHandle.DMA_Handle );
 }
 
 
@@ -190,9 +190,9 @@ void ADCx_DMA_IRQHandler(void)
 * @param  None
 * @retval None
 */
-void TIM6_DAC_IRQHandler(void)
+void TIM6_DAC_IRQHandler( void )
 {
-  HAL_DAC_IRQHandler(&DacHandle);
+    HAL_DAC_IRQHandler( &DacHandle );
 }
 #endif /* WAVEFORM_VOLTAGE_GENERATION_FOR_TEST */
 

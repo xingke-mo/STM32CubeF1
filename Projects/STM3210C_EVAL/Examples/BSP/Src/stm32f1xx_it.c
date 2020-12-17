@@ -48,7 +48,7 @@ extern I2S_HandleTypeDef hAudioOutI2s;
   * @param  None
   * @retval None
   */
-void NMI_Handler(void)
+void NMI_Handler( void )
 {
 }
 
@@ -57,12 +57,12 @@ void NMI_Handler(void)
   * @param  None
   * @retval None
   */
-void HardFault_Handler(void)
+void HardFault_Handler( void )
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while( 1 )
+    {
+    }
 }
 
 /**
@@ -70,12 +70,12 @@ void HardFault_Handler(void)
   * @param  None
   * @retval None
   */
-void MemManage_Handler(void)
+void MemManage_Handler( void )
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while( 1 )
+    {
+    }
 }
 
 /**
@@ -83,12 +83,12 @@ void MemManage_Handler(void)
   * @param  None
   * @retval None
   */
-void BusFault_Handler(void)
+void BusFault_Handler( void )
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while( 1 )
+    {
+    }
 }
 
 /**
@@ -96,12 +96,12 @@ void BusFault_Handler(void)
   * @param  None
   * @retval None
   */
-void UsageFault_Handler(void)
+void UsageFault_Handler( void )
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while( 1 )
+    {
+    }
 }
 
 /**
@@ -109,7 +109,7 @@ void UsageFault_Handler(void)
   * @param  None
   * @retval None
   */
-void SVC_Handler(void)
+void SVC_Handler( void )
 {
 }
 
@@ -118,7 +118,7 @@ void SVC_Handler(void)
   * @param  None
   * @retval None
   */
-void DebugMon_Handler(void)
+void DebugMon_Handler( void )
 {
 }
 
@@ -127,7 +127,7 @@ void DebugMon_Handler(void)
   * @param  None
   * @retval None
   */
-void PendSV_Handler(void)
+void PendSV_Handler( void )
 {
 }
 
@@ -136,10 +136,10 @@ void PendSV_Handler(void)
   * @param  None
   * @retval None
   */
-void SysTick_Handler(void)
+void SysTick_Handler( void )
 {
-  HAL_IncTick();
-  Toggle_Leds();
+    HAL_IncTick();
+    Toggle_Leds();
 }
 
 /******************************************************************************/
@@ -154,18 +154,18 @@ void SysTick_Handler(void)
   * @param  None
   * @retval None
   */
-void EXTI0_IRQHandler(void)
+void EXTI0_IRQHandler( void )
 {
-  HAL_GPIO_EXTI_IRQHandler(SD_DETECT_PIN);
+    HAL_GPIO_EXTI_IRQHandler( SD_DETECT_PIN );
 }
 /**
   * @brief  This function handles External line 9 to 5 interrupt request.
   * @param  None
   * @retval None
   */
-void EXTI9_5_IRQHandler(void)
+void EXTI9_5_IRQHandler( void )
 {
-  HAL_GPIO_EXTI_IRQHandler(KEY_BUTTON_PIN);
+    HAL_GPIO_EXTI_IRQHandler( KEY_BUTTON_PIN );
 }
 
 /**
@@ -173,9 +173,9 @@ void EXTI9_5_IRQHandler(void)
   * @param  None
   * @retval None
   */
-void EXTI15_10_IRQHandler(void)
+void EXTI15_10_IRQHandler( void )
 {
-  HAL_GPIO_EXTI_IRQHandler(IOE_IT_PIN);
+    HAL_GPIO_EXTI_IRQHandler( IOE_IT_PIN );
 }
 
 
@@ -184,9 +184,9 @@ void EXTI15_10_IRQHandler(void)
   * @param  None
   * @retval None
   */
-void I2SOUT_IRQHandler(void)
-{ 
-  HAL_DMA_IRQHandler(hAudioOutI2s.hdmatx);
+void I2SOUT_IRQHandler( void )
+{
+    HAL_DMA_IRQHandler( hAudioOutI2s.hdmatx );
 }
 
 /**

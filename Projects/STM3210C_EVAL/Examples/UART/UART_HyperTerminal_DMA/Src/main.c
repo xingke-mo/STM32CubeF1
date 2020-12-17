@@ -45,8 +45,8 @@ uint8_t aTxBuffer[] = "\n\r ****UART-Hyperterminal communication based on DMA***
 uint8_t aRxBuffer[RXBUFFERSIZE];
 
 /* Private function prototypes -----------------------------------------------*/
-void SystemClock_Config(void);
-static void Error_Handler(void);
+void SystemClock_Config( void );
+static void Error_Handler( void );
 
 /* Private functions ---------------------------------------------------------*/
 
@@ -55,105 +55,106 @@ static void Error_Handler(void);
   * @param  None
   * @retval None
   */
-int main(void)
+int main( void )
 {
-  /* STM32F107xC HAL library initialization:
-       - Configure the Flash prefetch
-       - Systick timer is configured by default as source of time base, but user 
-         can eventually implement his proper time base source (a general purpose 
-         timer for example or other time source), keeping in mind that Time base 
-         duration should be kept 1ms since PPP_TIMEOUT_VALUEs are defined and 
-         handled in milliseconds basis.
-       - Set NVIC Group Priority to 4
-       - Low Level Initialization
-     */
-  HAL_Init();
-  
-  /* Configure the system clock to 72 MHz */
-  SystemClock_Config();
+    /* STM32F107xC HAL library initialization:
+         - Configure the Flash prefetch
+         - Systick timer is configured by default as source of time base, but user
+           can eventually implement his proper time base source (a general purpose
+           timer for example or other time source), keeping in mind that Time base
+           duration should be kept 1ms since PPP_TIMEOUT_VALUEs are defined and
+           handled in milliseconds basis.
+         - Set NVIC Group Priority to 4
+         - Low Level Initialization
+       */
+    HAL_Init();
 
-  /* Configure LED1, LED2 and LED3 */
-  BSP_LED_Init(LED1);
-  BSP_LED_Init(LED2);
-  BSP_LED_Init(LED3);
-  
-  /*##-1- Configure the UART peripheral ######################################*/
-  /* Put the USART peripheral in the Asynchronous mode (UART Mode) */
-  /* UART configured as follows:
-      - Word Length = 8 Bits
-      - Stop Bit    = One Stop bit
-      - Parity      = ODD parity
-      - BaudRate    = 9600 baud
-      - Hardware flow control disabled (RTS and CTS signals) */
-  UartHandle.Instance        = USARTx;
+    /* Configure the system clock to 72 MHz */
+    SystemClock_Config();
 
-  UartHandle.Init.BaudRate   = 9600;
-  UartHandle.Init.WordLength = UART_WORDLENGTH_8B;
-  UartHandle.Init.StopBits   = UART_STOPBITS_1;
-  UartHandle.Init.Parity     = UART_PARITY_ODD;
-  UartHandle.Init.HwFlowCtl  = UART_HWCONTROL_NONE;
-  UartHandle.Init.Mode       = UART_MODE_TX_RX;
+    /* Configure LED1, LED2 and LED3 */
+    BSP_LED_Init( LED1 );
+    BSP_LED_Init( LED2 );
+    BSP_LED_Init( LED3 );
 
-  if (HAL_UART_Init(&UartHandle) != HAL_OK)
-  {
-    /* Initialization Error */
-    Error_Handler();
-  }
-  /*##-2- Start the transmission process #####################################*/
-  /* User start transmission data through "TxBuffer" buffer */
-  if (HAL_UART_Transmit_DMA(&UartHandle, (uint8_t *)aTxBuffer, TXBUFFERSIZE) != HAL_OK)
-  {
-    /* Transfer error in transmission process */
-    Error_Handler();
-  }
+    /*##-1- Configure the UART peripheral ######################################*/
+    /* Put the USART peripheral in the Asynchronous mode (UART Mode) */
+    /* UART configured as follows:
+        - Word Length = 8 Bits
+        - Stop Bit    = One Stop bit
+        - Parity      = ODD parity
+        - BaudRate    = 9600 baud
+        - Hardware flow control disabled (RTS and CTS signals) */
+    UartHandle.Instance        = USARTx;
 
-  /*##-3- Put UART peripheral in reception process ###########################*/
-  /* Any data received will be stored in "RxBuffer" buffer : the number max of
-     data received is 10 */
-  if (HAL_UART_Receive_DMA(&UartHandle, (uint8_t *)aRxBuffer, RXBUFFERSIZE) != HAL_OK)
-  {
-    /* Transfer error in reception process */
-    Error_Handler();
-  }
+    UartHandle.Init.BaudRate   = 9600;
+    UartHandle.Init.WordLength = UART_WORDLENGTH_8B;
+    UartHandle.Init.StopBits   = UART_STOPBITS_1;
+    UartHandle.Init.Parity     = UART_PARITY_ODD;
+    UartHandle.Init.HwFlowCtl  = UART_HWCONTROL_NONE;
+    UartHandle.Init.Mode       = UART_MODE_TX_RX;
 
-  /*##-4- Wait for the end of the transfer ###################################*/
-  /*  Before starting a new communication transfer, you need to check the current
-      state of the peripheral; if it’s busy you need to wait for the end of current
-      transfer before starting a new one.
-      For simplicity reasons, this example is just waiting till the end of the
-      transfer, but application may perform other tasks while transfer operation
-      is ongoing. */
-  while (HAL_UART_GetState(&UartHandle) != HAL_UART_STATE_READY)
-  {
-  }
+    if( HAL_UART_Init( &UartHandle ) != HAL_OK )
+    {
+        /* Initialization Error */
+        Error_Handler();
+    }
 
-  /*##-5- Send the received Buffer ###########################################*/
-  if (HAL_UART_Transmit_DMA(&UartHandle, (uint8_t *)aRxBuffer, RXBUFFERSIZE) != HAL_OK)
-  {
-    /* Transfer error in transmission process */
-    Error_Handler();
-  }
+    /*##-2- Start the transmission process #####################################*/
+    /* User start transmission data through "TxBuffer" buffer */
+    if( HAL_UART_Transmit_DMA( &UartHandle, ( uint8_t * )aTxBuffer, TXBUFFERSIZE ) != HAL_OK )
+    {
+        /* Transfer error in transmission process */
+        Error_Handler();
+    }
 
-  /*##-6- Wait for the end of the transfer ###################################*/
-  /*  Before starting a new communication transfer, you need to check the current
-      state of the peripheral; if it’s busy you need to wait for the end of current
-      transfer before starting a new one.
-      For simplicity reasons, this example is just waiting till the end of the
-      transfer, but application may perform other tasks while transfer operation
-      is ongoing. */
-  while (HAL_UART_GetState(&UartHandle) != HAL_UART_STATE_READY)
-  {
-  }
+    /*##-3- Put UART peripheral in reception process ###########################*/
+    /* Any data received will be stored in "RxBuffer" buffer : the number max of
+       data received is 10 */
+    if( HAL_UART_Receive_DMA( &UartHandle, ( uint8_t * )aRxBuffer, RXBUFFERSIZE ) != HAL_OK )
+    {
+        /* Transfer error in reception process */
+        Error_Handler();
+    }
 
-  /* Infinite loop */
-  while (1)
-  {
-  }
+    /*##-4- Wait for the end of the transfer ###################################*/
+    /*  Before starting a new communication transfer, you need to check the current
+        state of the peripheral; if it’s busy you need to wait for the end of current
+        transfer before starting a new one.
+        For simplicity reasons, this example is just waiting till the end of the
+        transfer, but application may perform other tasks while transfer operation
+        is ongoing. */
+    while( HAL_UART_GetState( &UartHandle ) != HAL_UART_STATE_READY )
+    {
+    }
+
+    /*##-5- Send the received Buffer ###########################################*/
+    if( HAL_UART_Transmit_DMA( &UartHandle, ( uint8_t * )aRxBuffer, RXBUFFERSIZE ) != HAL_OK )
+    {
+        /* Transfer error in transmission process */
+        Error_Handler();
+    }
+
+    /*##-6- Wait for the end of the transfer ###################################*/
+    /*  Before starting a new communication transfer, you need to check the current
+        state of the peripheral; if it’s busy you need to wait for the end of current
+        transfer before starting a new one.
+        For simplicity reasons, this example is just waiting till the end of the
+        transfer, but application may perform other tasks while transfer operation
+        is ongoing. */
+    while( HAL_UART_GetState( &UartHandle ) != HAL_UART_STATE_READY )
+    {
+    }
+
+    /* Infinite loop */
+    while( 1 )
+    {
+    }
 }
 
 /**
   * @brief  System Clock Configuration
-  *         The system Clock is configured as follow : 
+  *         The system Clock is configured as follow :
   *            System Clock source            = PLL (HSE)
   *            SYSCLK(Hz)                     = 72000000
   *            HCLK(Hz)                       = 72000000
@@ -168,45 +169,47 @@ int main(void)
   * @param  None
   * @retval None
   */
-void SystemClock_Config(void)
+void SystemClock_Config( void )
 {
-  RCC_ClkInitTypeDef clkinitstruct = {0};
-  RCC_OscInitTypeDef oscinitstruct = {0};
-  
-  /* Configure PLLs ------------------------------------------------------*/
-  /* PLL2 configuration: PLL2CLK = (HSE / HSEPrediv2Value) * PLL2MUL = (25 / 5) * 8 = 40 MHz */
-  /* PREDIV1 configuration: PREDIV1CLK = PLL2CLK / HSEPredivValue = 40 / 5 = 8 MHz */
-  /* PLL configuration: PLLCLK = PREDIV1CLK * PLLMUL = 8 * 9 = 72 MHz */ 
+    RCC_ClkInitTypeDef clkinitstruct = {0};
+    RCC_OscInitTypeDef oscinitstruct = {0};
 
-  /* Enable HSE Oscillator and activate PLL with HSE as source */
-  oscinitstruct.OscillatorType        = RCC_OSCILLATORTYPE_HSE;
-  oscinitstruct.HSEState              = RCC_HSE_ON;
-  oscinitstruct.HSEPredivValue        = RCC_HSE_PREDIV_DIV5;
-  oscinitstruct.Prediv1Source         = RCC_PREDIV1_SOURCE_PLL2;
-  oscinitstruct.PLL.PLLState          = RCC_PLL_ON;
-  oscinitstruct.PLL.PLLSource         = RCC_PLLSOURCE_HSE;
-  oscinitstruct.PLL.PLLMUL            = RCC_PLL_MUL9;
-  oscinitstruct.PLL2.PLL2State        = RCC_PLL2_ON;
-  oscinitstruct.PLL2.PLL2MUL          = RCC_PLL2_MUL8;
-  oscinitstruct.PLL2.HSEPrediv2Value  = RCC_HSE_PREDIV2_DIV5;
-  if (HAL_RCC_OscConfig(&oscinitstruct)!= HAL_OK)
-  {
-    /* Initialization Error */
-    while(1);
-  }
+    /* Configure PLLs ------------------------------------------------------*/
+    /* PLL2 configuration: PLL2CLK = (HSE / HSEPrediv2Value) * PLL2MUL = (25 / 5) * 8 = 40 MHz */
+    /* PREDIV1 configuration: PREDIV1CLK = PLL2CLK / HSEPredivValue = 40 / 5 = 8 MHz */
+    /* PLL configuration: PLLCLK = PREDIV1CLK * PLLMUL = 8 * 9 = 72 MHz */
 
-  /* Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2 
-     clocks dividers */
-  clkinitstruct.ClockType = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2);
-  clkinitstruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-  clkinitstruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  clkinitstruct.APB2CLKDivider = RCC_HCLK_DIV1;
-  clkinitstruct.APB1CLKDivider = RCC_HCLK_DIV2;  
-  if (HAL_RCC_ClockConfig(&clkinitstruct, FLASH_LATENCY_2)!= HAL_OK)
-  {
-    /* Initialization Error */
-    while(1); 
-  }
+    /* Enable HSE Oscillator and activate PLL with HSE as source */
+    oscinitstruct.OscillatorType        = RCC_OSCILLATORTYPE_HSE;
+    oscinitstruct.HSEState              = RCC_HSE_ON;
+    oscinitstruct.HSEPredivValue        = RCC_HSE_PREDIV_DIV5;
+    oscinitstruct.Prediv1Source         = RCC_PREDIV1_SOURCE_PLL2;
+    oscinitstruct.PLL.PLLState          = RCC_PLL_ON;
+    oscinitstruct.PLL.PLLSource         = RCC_PLLSOURCE_HSE;
+    oscinitstruct.PLL.PLLMUL            = RCC_PLL_MUL9;
+    oscinitstruct.PLL2.PLL2State        = RCC_PLL2_ON;
+    oscinitstruct.PLL2.PLL2MUL          = RCC_PLL2_MUL8;
+    oscinitstruct.PLL2.HSEPrediv2Value  = RCC_HSE_PREDIV2_DIV5;
+
+    if( HAL_RCC_OscConfig( &oscinitstruct ) != HAL_OK )
+    {
+        /* Initialization Error */
+        while( 1 );
+    }
+
+    /* Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2
+       clocks dividers */
+    clkinitstruct.ClockType = ( RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2 );
+    clkinitstruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+    clkinitstruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+    clkinitstruct.APB2CLKDivider = RCC_HCLK_DIV1;
+    clkinitstruct.APB1CLKDivider = RCC_HCLK_DIV2;
+
+    if( HAL_RCC_ClockConfig( &clkinitstruct, FLASH_LATENCY_2 ) != HAL_OK )
+    {
+        /* Initialization Error */
+        while( 1 );
+    }
 }
 
 
@@ -215,13 +218,14 @@ void SystemClock_Config(void)
   * @param  None
   * @retval None
   */
-static void Error_Handler(void)
+static void Error_Handler( void )
 {
-  /* Turn LED3 on */
-  BSP_LED_On(LED3);
-  while(1)
-  {
-  }
+    /* Turn LED3 on */
+    BSP_LED_On( LED3 );
+
+    while( 1 )
+    {
+    }
 }
 
 /**
@@ -231,10 +235,10 @@ static void Error_Handler(void)
   *         you can add your own implementation.
   * @retval None
   */
-void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
+void HAL_UART_TxCpltCallback( UART_HandleTypeDef *huart )
 {
-  /* Turn LED1 on: Transfer in transmission process is correct */
-  BSP_LED_On(LED1);
+    /* Turn LED1 on: Transfer in transmission process is correct */
+    BSP_LED_On( LED1 );
 }
 
 /**
@@ -244,10 +248,10 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
   *         you can add your own implementation.
   * @retval None
   */
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+void HAL_UART_RxCpltCallback( UART_HandleTypeDef *huart )
 {
-  /* Turn LED2 on: Transfer in reception process is correct */
-  BSP_LED_On(LED2);
+    /* Turn LED2 on: Transfer in reception process is correct */
+    BSP_LED_On( LED2 );
 }
 
 /**
@@ -257,10 +261,10 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
   *         add your own implementation.
   * @retval None
   */
-void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
+void HAL_UART_ErrorCallback( UART_HandleTypeDef *huart )
 {
-  /* Turn LED3 on: Transfer error in reception/transmission process */
-  BSP_LED_On(LED3);
+    /* Turn LED3 on: Transfer error in reception/transmission process */
+    BSP_LED_On( LED3 );
 }
 
 #ifdef  USE_FULL_ASSERT
@@ -271,15 +275,15 @@ void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
   * @param  line: assert_param error line source number
   * @retval None
   */
-void assert_failed(uint8_t *file, uint32_t line)
+void assert_failed( uint8_t *file, uint32_t line )
 {
-  /* User can add his own implementation to report the file name and line number,
-     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+    /* User can add his own implementation to report the file name and line number,
+       ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
-  /* Infinite loop */
-  while (1)
-  {
-  }
+    /* Infinite loop */
+    while( 1 )
+    {
+    }
 }
 #endif
 

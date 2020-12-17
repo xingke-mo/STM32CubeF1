@@ -1,6 +1,6 @@
 /**
   ******************************************************************************
-  * @file    LwIP/LwIP_TCP_Echo_Server/Inc/app_ethernet.c 
+  * @file    LwIP/LwIP_TCP_Echo_Server/Inc/app_ethernet.c
   * @author  MCD Application Team
   * @brief   Header for app_ethernet.c module
   ******************************************************************************
@@ -22,7 +22,7 @@
 #define __APP_ETHERNET_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -37,14 +37,14 @@
 #define DHCP_ADDRESS_ASSIGNED      (uint8_t) 3
 #define DHCP_TIMEOUT               (uint8_t) 4
 #define DHCP_LINK_DOWN             (uint8_t) 5
- 
+
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
-void User_notification(struct netif *netif);
+void User_notification( struct netif *netif );
 #ifdef USE_DHCP
-void DHCP_Process(struct netif *netif);
-void DHCP_Periodic_Handle(struct netif *netif);
-#endif  
+void DHCP_Process( struct netif *netif );
+void DHCP_Periodic_Handle( struct netif *netif );
+#endif
 
 #ifdef __cplusplus
 }

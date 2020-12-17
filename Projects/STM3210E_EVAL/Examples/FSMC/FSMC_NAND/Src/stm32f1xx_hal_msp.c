@@ -45,46 +45,46 @@
   *                the configuration information for NAND module.
   * @retval None
   */
-void HAL_NAND_MspInit(NAND_HandleTypeDef *hnand)
+void HAL_NAND_MspInit( NAND_HandleTypeDef *hnand )
 {
-  GPIO_InitTypeDef gpioinitstruct = {0};
-  
-  /* Enable FSMC clock */
-  __HAL_RCC_FSMC_CLK_ENABLE();
-  
-  /* Enable GPIOs clock */
-  __HAL_RCC_GPIOD_CLK_ENABLE();
-  __HAL_RCC_GPIOE_CLK_ENABLE();
-  __HAL_RCC_GPIOF_CLK_ENABLE();
-  __HAL_RCC_GPIOG_CLK_ENABLE();
-  
-  /* Common GPIO configuration */
-  gpioinitstruct.Mode      = GPIO_MODE_AF_PP;
-  gpioinitstruct.Pull      = GPIO_PULLUP;
-  gpioinitstruct.Speed     = GPIO_SPEED_FREQ_HIGH;
-  
-/*-- GPIO Configuration ------------------------------------------------------*/
-/*!< CLE, ALE, D0->D3, NOE, NWE and NCE2  NAND pin configuration  */
-  gpioinitstruct.Pin =  GPIO_PIN_11 | GPIO_PIN_12 | GPIO_PIN_14 | GPIO_PIN_15 |  
-                        GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_4 | GPIO_PIN_5 | 
-                        GPIO_PIN_7;
-  HAL_GPIO_Init(GPIOD, &gpioinitstruct); 
+    GPIO_InitTypeDef gpioinitstruct = {0};
 
-/*!< D4->D7 NAND pin configuration  */  
-  gpioinitstruct.Pin = GPIO_PIN_7 | GPIO_PIN_8 | GPIO_PIN_9 | GPIO_PIN_10;
+    /* Enable FSMC clock */
+    __HAL_RCC_FSMC_CLK_ENABLE();
 
-  HAL_GPIO_Init(GPIOE, &gpioinitstruct);
+    /* Enable GPIOs clock */
+    __HAL_RCC_GPIOD_CLK_ENABLE();
+    __HAL_RCC_GPIOE_CLK_ENABLE();
+    __HAL_RCC_GPIOF_CLK_ENABLE();
+    __HAL_RCC_GPIOG_CLK_ENABLE();
+
+    /* Common GPIO configuration */
+    gpioinitstruct.Mode      = GPIO_MODE_AF_PP;
+    gpioinitstruct.Pull      = GPIO_PULLUP;
+    gpioinitstruct.Speed     = GPIO_SPEED_FREQ_HIGH;
+
+    /*-- GPIO Configuration ------------------------------------------------------*/
+    /*!< CLE, ALE, D0->D3, NOE, NWE and NCE2  NAND pin configuration  */
+    gpioinitstruct.Pin =  GPIO_PIN_11 | GPIO_PIN_12 | GPIO_PIN_14 | GPIO_PIN_15 |
+                          GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_4 | GPIO_PIN_5 |
+                          GPIO_PIN_7;
+    HAL_GPIO_Init( GPIOD, &gpioinitstruct );
+
+    /*!< D4->D7 NAND pin configuration  */
+    gpioinitstruct.Pin = GPIO_PIN_7 | GPIO_PIN_8 | GPIO_PIN_9 | GPIO_PIN_10;
+
+    HAL_GPIO_Init( GPIOE, &gpioinitstruct );
 
 
-/*!< NWAIT NAND pin configuration */
-  gpioinitstruct.Pin = GPIO_PIN_6;
-  gpioinitstruct.Mode      = GPIO_MODE_INPUT;
+    /*!< NWAIT NAND pin configuration */
+    gpioinitstruct.Pin = GPIO_PIN_6;
+    gpioinitstruct.Mode      = GPIO_MODE_INPUT;
 
-  HAL_GPIO_Init(GPIOD, &gpioinitstruct); 
+    HAL_GPIO_Init( GPIOD, &gpioinitstruct );
 
-/*!< INT2 NAND pin configuration */  
-  gpioinitstruct.Pin = GPIO_PIN_6;
-  HAL_GPIO_Init(GPIOG, &gpioinitstruct);
+    /*!< INT2 NAND pin configuration */
+    gpioinitstruct.Pin = GPIO_PIN_6;
+    HAL_GPIO_Init( GPIOG, &gpioinitstruct );
 }
 /**
   * @}

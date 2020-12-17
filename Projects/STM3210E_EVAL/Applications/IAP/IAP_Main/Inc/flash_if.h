@@ -1,6 +1,6 @@
 /**
   ******************************************************************************
-  * @file    IAP_Main/Inc/flash_if.h 
+  * @file    IAP_Main/Inc/flash_if.h
   * @author  MCD Application Team
   * @brief   This file provides all the headers of the flash_if functions.
   ******************************************************************************
@@ -158,27 +158,29 @@
 #define ADDR_FLASH_PAGE_127   ((uint32_t)0x0803F800) /* Base @ of Page 127, 2 Kbytes */
 
 /* Error code */
-enum 
+enum
 {
-  FLASHIF_OK = 0,
-  FLASHIF_ERASEKO,
-  FLASHIF_WRITINGCTRL_ERROR,
-  FLASHIF_WRITING_ERROR,
-  FLASHIF_PROTECTION_ERRROR
+    FLASHIF_OK = 0,
+    FLASHIF_ERASEKO,
+    FLASHIF_WRITINGCTRL_ERROR,
+    FLASHIF_WRITING_ERROR,
+    FLASHIF_PROTECTION_ERRROR
 };
 
-/* protection type */  
-enum{
-  FLASHIF_PROTECTION_NONE         = 0,
-  FLASHIF_PROTECTION_PCROPENABLED = 0x1,
-  FLASHIF_PROTECTION_WRPENABLED   = 0x2,
-  FLASHIF_PROTECTION_RDPENABLED   = 0x4,
+/* protection type */
+enum
+{
+    FLASHIF_PROTECTION_NONE         = 0,
+    FLASHIF_PROTECTION_PCROPENABLED = 0x1,
+    FLASHIF_PROTECTION_WRPENABLED   = 0x2,
+    FLASHIF_PROTECTION_RDPENABLED   = 0x4,
 };
 
 /* protection update */
-enum {
-	FLASHIF_WRP_ENABLE,
-	FLASHIF_WRP_DISABLE
+enum
+{
+    FLASHIF_WRP_ENABLE,
+    FLASHIF_WRP_DISABLE
 };
 
 /* Define the address from where user application will be loaded.
@@ -199,7 +201,7 @@ enum {
 #define FLASH_PAGE_TO_BE_PROTECTED (OB_WRP_PAGES8TO9 | OB_WRP_PAGES10TO11 | OB_WRP_PAGES12TO13 | OB_WRP_PAGES14TO15 | \
                                     OB_WRP_PAGES16TO17 | OB_WRP_PAGES18TO19 | OB_WRP_PAGES20TO21 | OB_WRP_PAGES22TO23 | \
                                     OB_WRP_PAGES24TO25 | OB_WRP_PAGES26TO27 | OB_WRP_PAGES28TO29 | OB_WRP_PAGES30TO31 | \
-                                    OB_WRP_PAGES32TO33 | OB_WRP_PAGES34TO35 | OB_WRP_PAGES36TO37 | OB_WRP_PAGES38TO39  )  
+                                    OB_WRP_PAGES32TO33 | OB_WRP_PAGES34TO35 | OB_WRP_PAGES36TO37 | OB_WRP_PAGES38TO39  )
 
 
 /* Exported macro ------------------------------------------------------------*/
@@ -213,11 +215,11 @@ enum {
   loaded, is write protected */
 #define FLASH_PROTECTED_SECTORS       (~(uint32_t)((1 << FLASH_SECTOR_NUMBER) - 1))
 /* Exported functions ------------------------------------------------------- */
-void FLASH_If_Init(void);
-uint32_t FLASH_If_Erase(uint32_t StartSector);
-uint32_t FLASH_If_GetWriteProtectionStatus(void);
-uint32_t FLASH_If_Write(uint32_t destination, uint32_t *p_source, uint32_t length);
-uint32_t FLASH_If_WriteProtectionConfig(uint32_t protectionstate);
+void FLASH_If_Init( void );
+uint32_t FLASH_If_Erase( uint32_t StartSector );
+uint32_t FLASH_If_GetWriteProtectionStatus( void );
+uint32_t FLASH_If_Write( uint32_t destination, uint32_t *p_source, uint32_t length );
+uint32_t FLASH_If_WriteProtectionConfig( uint32_t protectionstate );
 
 #endif  /* __FLASH_IF_H */
 

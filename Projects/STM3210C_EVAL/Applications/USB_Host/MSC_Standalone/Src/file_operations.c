@@ -1,6 +1,6 @@
 /**
   ******************************************************************************
-  * @file    USB_Host/MSC_Standalone/Src/file_operations.c 
+  * @file    USB_Host/MSC_Standalone/Src/file_operations.c
   * @author  MCD Application Team
   * @brief   Write/read file on the disk.
   ******************************************************************************
@@ -39,63 +39,65 @@ uint8_t wtext[] = "USB Host Library : Mass Storage Example";
   * @param  None
   * @retval None
   */
-void MSC_File_Operations(void)
+void MSC_File_Operations( void )
 {
-  uint16_t bytesread;
+    uint16_t bytesread;
 
-  LCD_UsrLog("INFO : FatFs Initialized \n");
+    LCD_UsrLog( "INFO : FatFs Initialized \n" );
 
-  if (f_open(&MyFile, "0:USBHost.txt", FA_CREATE_ALWAYS | FA_WRITE) != FR_OK)
-  {
-    LCD_ErrLog("Cannot Open 'USBHost.txt' file \n");
-  }
-  else
-  {
-    LCD_UsrLog("INFO : 'USBHost.txt' opened for write  \n");
-    res = f_write(&MyFile, wtext, sizeof(wtext), (void *)&bytesWritten);
-    f_close(&MyFile);
-
-    if ((bytesWritten == 0) || (res != FR_OK))  /* EOF or Error */
+    if( f_open( &MyFile, "0:USBHost.txt", FA_CREATE_ALWAYS | FA_WRITE ) != FR_OK )
     {
-      LCD_ErrLog("Cannot Write on the  'USBHost.txt' file \n");
+        LCD_ErrLog( "Cannot Open 'USBHost.txt' file \n" );
     }
     else
     {
-      if (f_open(&MyFile, "0:USBHost.txt", FA_READ) != FR_OK)
-      {
-        LCD_ErrLog("Cannot Open 'USBHost.txt' file for read.\n");
-      }
-      else
-      {
-        LCD_UsrLog("INFO : Text written on the 'USBHost.txt' file \n");
+        LCD_UsrLog( "INFO : 'USBHost.txt' opened for write  \n" );
+        res = f_write( &MyFile, wtext, sizeof( wtext ), ( void * )&bytesWritten );
+        f_close( &MyFile );
 
-        res = f_read(&MyFile, rtext, sizeof(rtext), (void *)&bytesread);
-
-        if ((bytesread == 0) || (res != FR_OK)) /* EOF or Error */
+        if( ( bytesWritten == 0 ) || ( res != FR_OK ) ) /* EOF or Error */
         {
-          LCD_ErrLog("Cannot Read from the  'USBHost.txt' file \n");
+            LCD_ErrLog( "Cannot Write on the  'USBHost.txt' file \n" );
         }
         else
         {
-          LCD_UsrLog("Read Text : \n");
-          LCD_DbgLog((char *)rtext);
-          LCD_DbgLog("\n");
+            if( f_open( &MyFile, "0:USBHost.txt", FA_READ ) != FR_OK )
+            {
+                LCD_ErrLog( "Cannot Open 'USBHost.txt' file for read.\n" );
+            }
+            else
+            {
+                LCD_UsrLog( "INFO : Text written on the 'USBHost.txt' file \n" );
+
+                res = f_read( &MyFile, rtext, sizeof( rtext ), ( void * )&bytesread );
+
+                if( ( bytesread == 0 ) || ( res != FR_OK ) ) /* EOF or Error */
+                {
+                    LCD_ErrLog( "Cannot Read from the  'USBHost.txt' file \n" );
+                }
+                else
+                {
+                    LCD_UsrLog( "Read Text : \n" );
+                    LCD_DbgLog( ( char * )rtext );
+                    LCD_DbgLog( "\n" );
+                }
+
+                f_close( &MyFile );
+            }
+
+            /* Compare read data with the expected data */
+            if( ( bytesread == bytesWritten ) )
+            {
+                LCD_UsrLog( "INFO : FatFs data compare SUCCES" );
+                LCD_UsrLog( "\n" );
+            }
+            else
+            {
+                LCD_ErrLog( "FatFs data compare ERROR" );
+                LCD_ErrLog( "\n" );
+            }
         }
-        f_close(&MyFile);
-      }
-      /* Compare read data with the expected data */
-      if ((bytesread == bytesWritten))
-      {
-        LCD_UsrLog("INFO : FatFs data compare SUCCES");
-        LCD_UsrLog("\n");
-      }
-      else
-      {
-        LCD_ErrLog("FatFs data compare ERROR");
-        LCD_ErrLog("\n");
-      }
     }
-  }
 }
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

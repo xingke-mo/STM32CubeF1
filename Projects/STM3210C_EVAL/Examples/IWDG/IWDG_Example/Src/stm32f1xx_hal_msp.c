@@ -47,16 +47,16 @@
   * @param htim: TIM handle pointer
   * @retval None
   */
-void HAL_TIM_IC_MspInit(TIM_HandleTypeDef *htim)
+void HAL_TIM_IC_MspInit( TIM_HandleTypeDef *htim )
 {
-  /* TIMx Peripheral clock enable */
-  TIMx_CLK_ENABLE();
+    /* TIMx Peripheral clock enable */
+    TIMx_CLK_ENABLE();
 
-  /* Configure the NVIC for TIMx */
-  HAL_NVIC_SetPriority(TIMx_IRQn, 0, 0);
+    /* Configure the NVIC for TIMx */
+    HAL_NVIC_SetPriority( TIMx_IRQn, 0, 0 );
 
-  /* Enable the TIMx global Interrupt */
-  HAL_NVIC_EnableIRQ(TIMx_IRQn);
+    /* Enable the TIMx global Interrupt */
+    HAL_NVIC_EnableIRQ( TIMx_IRQn );
 }
 
 /**

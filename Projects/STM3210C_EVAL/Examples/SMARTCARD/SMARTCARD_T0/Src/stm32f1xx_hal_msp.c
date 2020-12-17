@@ -48,35 +48,35 @@
   * @param hsmartcard: SmartCard handle pointer
   * @retval None
   */
-void HAL_SMARTCARD_MspInit(SMARTCARD_HandleTypeDef *hsc)
+void HAL_SMARTCARD_MspInit( SMARTCARD_HandleTypeDef *hsc )
 {
-  GPIO_InitTypeDef  GPIO_InitStruct;
+    GPIO_InitTypeDef  GPIO_InitStruct;
 
-  /* Enable Smartcard GPIO clocks */
-  SC_USART_TX_CLK_ENABLE();
-  SC_USART_CK_CLK_ENABLE();
+    /* Enable Smartcard GPIO clocks */
+    SC_USART_TX_CLK_ENABLE();
+    SC_USART_CK_CLK_ENABLE();
 
-  /* Enable SmartCard clock */
-  SC_USART_CLK_ENABLE();
+    /* Enable SmartCard clock */
+    SC_USART_CLK_ENABLE();
 
-  __HAL_RCC_AFIO_CLK_ENABLE();
-  __HAL_AFIO_REMAP_USART3_ENABLE();
+    __HAL_RCC_AFIO_CLK_ENABLE();
+    __HAL_AFIO_REMAP_USART3_ENABLE();
 
-  /* Configure USART Clock pin as alternate function push-pull */
-  GPIO_InitStruct.Pin = SC_USART_CK_PIN;
-  GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  HAL_GPIO_Init(SC_USART_CK_GPIO_PORT, &GPIO_InitStruct);
+    /* Configure USART Clock pin as alternate function push-pull */
+    GPIO_InitStruct.Pin = SC_USART_CK_PIN;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    HAL_GPIO_Init( SC_USART_CK_GPIO_PORT, &GPIO_InitStruct );
 
-  /* Configure USART Tx pin as alternate function open-drain */
-  GPIO_InitStruct.Pin = SC_USART_TX_PIN;
-  GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
-  HAL_GPIO_Init(SC_USART_TX_GPIO_PORT, &GPIO_InitStruct);
+    /* Configure USART Tx pin as alternate function open-drain */
+    GPIO_InitStruct.Pin = SC_USART_TX_PIN;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
+    HAL_GPIO_Init( SC_USART_TX_GPIO_PORT, &GPIO_InitStruct );
 
-  /* Enable SC_USART IRQ */
-  HAL_NVIC_SetPriority(SC_USART_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(SC_USART_IRQn);
+    /* Enable SC_USART IRQ */
+    HAL_NVIC_SetPriority( SC_USART_IRQn, 0, 0 );
+    HAL_NVIC_EnableIRQ( SC_USART_IRQn );
 }
 
 /**
@@ -87,14 +87,14 @@ void HAL_SMARTCARD_MspInit(SMARTCARD_HandleTypeDef *hsc)
   * @param huart: UART handle pointer
   * @retval None
   */
-void HAL_SMARTCARD_MspDeInit(SMARTCARD_HandleTypeDef *hsmartcard)
+void HAL_SMARTCARD_MspDeInit( SMARTCARD_HandleTypeDef *hsmartcard )
 {
-  /*##-1- Reset peripherals ##################################################*/
-  SC_USART_FORCE_RESET();
-  SC_USART_RELEASE_RESET();
+    /*##-1- Reset peripherals ##################################################*/
+    SC_USART_FORCE_RESET();
+    SC_USART_RELEASE_RESET();
 
-  /* Disable SmartCard clock */
-  SC_USART_CLK_DISABLE();
+    /* Disable SmartCard clock */
+    SC_USART_CLK_DISABLE();
 }
 
 /**

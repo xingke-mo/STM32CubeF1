@@ -1,6 +1,6 @@
 /**
   ******************************************************************************
-  * @file    USB_Device/CDC_Standalone/Inc/main.h 
+  * @file    USB_Device/CDC_Standalone/Inc/main.h
   * @author  MCD Application Team
   * @brief   Header for main.c module
   ******************************************************************************
@@ -33,7 +33,7 @@
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
-void Toggle_Leds(void);
+void Toggle_Leds( void );
 
 #endif /* __MAIN_H */
 

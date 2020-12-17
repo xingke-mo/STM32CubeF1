@@ -8,13 +8,13 @@
 * The authors hereby grant permission to use, copy, modify, distribute,
 * and license this software and its documentation for any purpose, provided
 * that existing copyright notices are retained in all copies and that this
-* notice and the following disclaimer are included verbatim in any 
+* notice and the following disclaimer are included verbatim in any
 * distributions. No written agreement, license, or royalty fee is required
 * for any of the authorized uses.
 *
 * THIS SOFTWARE IS PROVIDED BY THE CONTRIBUTORS *AS IS* AND ANY EXPRESS OR
 * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-* OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+* OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
 * IN NO EVENT SHALL THE CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
 * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
 * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
@@ -37,44 +37,44 @@
 #include "netif/ppp/ppp_opts.h"
 #if PPP_SUPPORT /* don't build if not configured for use in lwipopts.h */
 
-#ifndef PPPDEBUG_H
-#define PPPDEBUG_H
+    #ifndef PPPDEBUG_H
+        #define PPPDEBUG_H
 
-/* Trace levels. */
-#define LOG_CRITICAL  (PPP_DEBUG | LWIP_DBG_LEVEL_SEVERE)
-#define LOG_ERR       (PPP_DEBUG | LWIP_DBG_LEVEL_SEVERE)
-#define LOG_NOTICE    (PPP_DEBUG | LWIP_DBG_LEVEL_WARNING)
-#define LOG_WARNING   (PPP_DEBUG | LWIP_DBG_LEVEL_WARNING)
-#define LOG_INFO      (PPP_DEBUG)
-#define LOG_DETAIL    (PPP_DEBUG)
-#define LOG_DEBUG     (PPP_DEBUG)
+        /* Trace levels. */
+        #define LOG_CRITICAL  (PPP_DEBUG | LWIP_DBG_LEVEL_SEVERE)
+        #define LOG_ERR       (PPP_DEBUG | LWIP_DBG_LEVEL_SEVERE)
+        #define LOG_NOTICE    (PPP_DEBUG | LWIP_DBG_LEVEL_WARNING)
+        #define LOG_WARNING   (PPP_DEBUG | LWIP_DBG_LEVEL_WARNING)
+        #define LOG_INFO      (PPP_DEBUG)
+        #define LOG_DETAIL    (PPP_DEBUG)
+        #define LOG_DEBUG     (PPP_DEBUG)
 
-#if PPP_DEBUG
+        #if PPP_DEBUG
 
-#define MAINDEBUG(a)    LWIP_DEBUGF(LWIP_DBG_LEVEL_WARNING, a)
-#define SYSDEBUG(a)     LWIP_DEBUGF(LWIP_DBG_LEVEL_WARNING, a)
-#define FSMDEBUG(a)     LWIP_DEBUGF(LWIP_DBG_LEVEL_WARNING, a)
-#define LCPDEBUG(a)     LWIP_DEBUGF(LWIP_DBG_LEVEL_WARNING, a)
-#define IPCPDEBUG(a)    LWIP_DEBUGF(LWIP_DBG_LEVEL_WARNING, a)
-#define IPV6CPDEBUG(a)  LWIP_DEBUGF(LWIP_DBG_LEVEL_WARNING, a)
-#define UPAPDEBUG(a)    LWIP_DEBUGF(LWIP_DBG_LEVEL_WARNING, a)
-#define CHAPDEBUG(a)    LWIP_DEBUGF(LWIP_DBG_LEVEL_WARNING, a)
-#define PPPDEBUG(a, b)  LWIP_DEBUGF(a, b)
+            #define MAINDEBUG(a)    LWIP_DEBUGF(LWIP_DBG_LEVEL_WARNING, a)
+            #define SYSDEBUG(a)     LWIP_DEBUGF(LWIP_DBG_LEVEL_WARNING, a)
+            #define FSMDEBUG(a)     LWIP_DEBUGF(LWIP_DBG_LEVEL_WARNING, a)
+            #define LCPDEBUG(a)     LWIP_DEBUGF(LWIP_DBG_LEVEL_WARNING, a)
+            #define IPCPDEBUG(a)    LWIP_DEBUGF(LWIP_DBG_LEVEL_WARNING, a)
+            #define IPV6CPDEBUG(a)  LWIP_DEBUGF(LWIP_DBG_LEVEL_WARNING, a)
+            #define UPAPDEBUG(a)    LWIP_DEBUGF(LWIP_DBG_LEVEL_WARNING, a)
+            #define CHAPDEBUG(a)    LWIP_DEBUGF(LWIP_DBG_LEVEL_WARNING, a)
+            #define PPPDEBUG(a, b)  LWIP_DEBUGF(a, b)
 
-#else /* PPP_DEBUG */
+        #else /* PPP_DEBUG */
 
-#define MAINDEBUG(a)
-#define SYSDEBUG(a)
-#define FSMDEBUG(a)
-#define LCPDEBUG(a)
-#define IPCPDEBUG(a)
-#define IPV6CPDEBUG(a)
-#define UPAPDEBUG(a)
-#define CHAPDEBUG(a)
-#define PPPDEBUG(a, b)
+            #define MAINDEBUG(a)
+            #define SYSDEBUG(a)
+            #define FSMDEBUG(a)
+            #define LCPDEBUG(a)
+            #define IPCPDEBUG(a)
+            #define IPV6CPDEBUG(a)
+            #define UPAPDEBUG(a)
+            #define CHAPDEBUG(a)
+            #define PPPDEBUG(a, b)
 
-#endif /* PPP_DEBUG */
+        #endif /* PPP_DEBUG */
 
-#endif /* PPPDEBUG_H */
+    #endif /* PPPDEBUG_H */
 
 #endif /* PPP_SUPPORT */

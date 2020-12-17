@@ -5,7 +5,7 @@
   * @brief   This sample code shows how to use STM32F1xx I2C HAL API to transmit
   *          and receive a data buffer with a communication process based on
   *          IT transfer and with a repeated start condition between the transmit
-  *          and receive process.. 
+  *          and receive process..
   *          The communication is done using 2 Boards.
   ******************************************************************************
   * @attention
@@ -24,8 +24,8 @@
 /* Includes ------------------------------------------------------------------*/
 
 #if defined(__GNUC__)
-#include <stdio.h>/*rtt*/
-#include <stdlib.h>/*rtt*/
+    #include <stdio.h>/*rtt*/
+    #include <stdlib.h>/*rtt*/
 #endif
 
 #include "main.h"
@@ -75,16 +75,18 @@ I2C_HandleTypeDef I2cHandle;
 /* aCommandCode declaration array    */
 /* [CommandCode][RequestSlaveAnswer] */
 /* {CODE, YES/NO}                    */
-const char* aCommandCode[4][4] = {
-  {"CHIP_NAME", "YES"},
-  {"CHIP_REVISION", "YES"},
-  {"LOW_POWER", "NO"},
-  {"WAKE_UP", "NO"}};
-                  
-uint8_t*     pMasterTransmitBuffer     = (uint8_t*)(&aCommandCode[0]);
-uint8_t      ubMasterNbCommandCode     = sizeof(aCommandCode[0][0]);
+const char *aCommandCode[4][4] =
+{
+    {"CHIP_NAME", "YES"},
+    {"CHIP_REVISION", "YES"},
+    {"LOW_POWER", "NO"},
+    {"WAKE_UP", "NO"}
+};
+
+uint8_t     *pMasterTransmitBuffer     = ( uint8_t * )( &aCommandCode[0] );
+uint8_t      ubMasterNbCommandCode     = sizeof( aCommandCode[0][0] );
 uint8_t      aMasterReceiveBuffer[0xF] = {0};
-__IO uint8_t ubMasterNbDataToReceive   = sizeof(aMasterReceiveBuffer);
+__IO uint8_t ubMasterNbDataToReceive   = sizeof( aMasterReceiveBuffer );
 __IO uint8_t ubMasterNbDataToTransmit  = 0;
 uint8_t      ubMasterCommandIndex      = 0;
 __IO uint8_t ubMasterReceiveIndex      = 0;
@@ -92,12 +94,14 @@ __IO uint8_t ubMasterReceiveIndex      = 0;
 /**
   * @brief Variables related to Slave process
   */
-const char* aSlaveInfo[]      = {
-                  "STM32F103xx",
-                  "1.2.3"};
+const char *aSlaveInfo[]      =
+{
+    "STM32F103xx",
+    "1.2.3"
+};
 
 uint8_t       aSlaveReceiveBuffer[0xF]  = {0};
-uint8_t*      pSlaveTransmitBuffer      = 0;
+uint8_t      *pSlaveTransmitBuffer      = 0;
 __IO uint8_t  ubSlaveNbDataToTransmit   = 0;
 uint8_t       ubSlaveInfoIndex          = 0xFF;
 __IO uint8_t  ubSlaveReceiveIndex       = 0;
@@ -106,12 +110,12 @@ __IO uint32_t uwTransferInitiated       = 0;
 __IO uint32_t uwTransferEnded           = 0;
 
 /* Private function prototypes -----------------------------------------------*/
-static void SystemClock_Config(void);
-static void FlushBuffer8(uint8_t* pBuffer1, uint16_t BufferLength);
-static void Error_Handler(void);
+static void SystemClock_Config( void );
+static void FlushBuffer8( uint8_t *pBuffer1, uint16_t BufferLength );
+static void Error_Handler( void );
 
 #if defined(__GNUC__) && defined(MASTER_BOARD) && defined(SW4STM32)
-extern void initialise_monitor_handles(void);	/*rtt*/
+    extern void initialise_monitor_handles( void ); /*rtt*/
 #endif
 
 /* Private functions ---------------------------------------------------------*/
@@ -121,239 +125,240 @@ extern void initialise_monitor_handles(void);	/*rtt*/
   * @param  None
   * @retval None
   */
-int main(void)
+int main( void )
 {
 #if defined(__GNUC__) && defined(MASTER_BOARD) && defined(SW4STM32)
-  initialise_monitor_handles();	/*rtt*/
+    initialise_monitor_handles(); /*rtt*/
 #endif
 
-  /* STM32F1xx HAL library initialization:
-       - Configure the Flash prefetch
-       - Systick timer is configured by default as source of time base, but user 
-         can eventually implement his proper time base source (a general purpose 
-         timer for example or other time source), keeping in mind that Time base 
-         duration should be kept 1ms since PPP_TIMEOUT_VALUEs are defined and 
-         handled in milliseconds basis.
-       - Set NVIC Group Priority to 4
-       - Low Level Initialization
-     */
-  HAL_Init();
-  
-  /* Configure the system clock to 72 MHz */
-  SystemClock_Config();
+    /* STM32F1xx HAL library initialization:
+         - Configure the Flash prefetch
+         - Systick timer is configured by default as source of time base, but user
+           can eventually implement his proper time base source (a general purpose
+           timer for example or other time source), keeping in mind that Time base
+           duration should be kept 1ms since PPP_TIMEOUT_VALUEs are defined and
+           handled in milliseconds basis.
+         - Set NVIC Group Priority to 4
+         - Low Level Initialization
+       */
+    HAL_Init();
 
-  /* Configure LED1, LED2, LED3 and LED4 */
-  BSP_LED_Init(LED1);
-  BSP_LED_Init(LED2);
-  BSP_LED_Init(LED3);
-  BSP_LED_Init(LED4);
+    /* Configure the system clock to 72 MHz */
+    SystemClock_Config();
 
-  /*##-1- Configure the I2C peripheral ######################################*/
-  I2cHandle.Instance             = I2Cx;
-  I2cHandle.Init.ClockSpeed      = I2C_SPEEDCLOCK;
-  I2cHandle.Init.DutyCycle       = I2C_DUTYCYCLE;
-  I2cHandle.Init.OwnAddress1     = I2C_ADDRESS;
-  I2cHandle.Init.AddressingMode  = I2C_ADDRESSINGMODE_7BIT;
-  I2cHandle.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
-  I2cHandle.Init.OwnAddress2     = 0xFE;
-  I2cHandle.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
-  I2cHandle.Init.NoStretchMode   = I2C_NOSTRETCH_DISABLE;  
-  
-  if(HAL_I2C_Init(&I2cHandle) != HAL_OK)
-  {
-    /* Initialization Error */
-    Error_Handler();
-  }
-  
+    /* Configure LED1, LED2, LED3 and LED4 */
+    BSP_LED_Init( LED1 );
+    BSP_LED_Init( LED2 );
+    BSP_LED_Init( LED3 );
+    BSP_LED_Init( LED4 );
+
+    /*##-1- Configure the I2C peripheral ######################################*/
+    I2cHandle.Instance             = I2Cx;
+    I2cHandle.Init.ClockSpeed      = I2C_SPEEDCLOCK;
+    I2cHandle.Init.DutyCycle       = I2C_DUTYCYCLE;
+    I2cHandle.Init.OwnAddress1     = I2C_ADDRESS;
+    I2cHandle.Init.AddressingMode  = I2C_ADDRESSINGMODE_7BIT;
+    I2cHandle.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+    I2cHandle.Init.OwnAddress2     = 0xFE;
+    I2cHandle.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+    I2cHandle.Init.NoStretchMode   = I2C_NOSTRETCH_DISABLE;
+
+    if( HAL_I2C_Init( &I2cHandle ) != HAL_OK )
+    {
+        /* Initialization Error */
+        Error_Handler();
+    }
+
 
 #ifdef MASTER_BOARD
-  
-  /* Configure User push-button button */
-  BSP_PB_Init(BUTTON_KEY,BUTTON_MODE_GPIO);
 
-  /* Infinite loop */
-  while (1)
-  {
-    /* Wait for User push-button press before starting the Communication */
-    while (BSP_PB_GetState(BUTTON_KEY) != GPIO_PIN_SET)
+    /* Configure User push-button button */
+    BSP_PB_Init( BUTTON_KEY, BUTTON_MODE_GPIO );
+
+    /* Infinite loop */
+    while( 1 )
     {
-    }
-  
-    /* Wait for User push-button release before starting the Communication */
-    while (BSP_PB_GetState(BUTTON_KEY) != GPIO_PIN_RESET)
-    {
-    }
-
-    /* The board sends the message and expects to receive it back if necessary. */
-
-    /* If Master no request a Slave answer, Run master in transmitter mode only. */
-    if(strncmp(aCommandCode[ubMasterCommandIndex][1], "NO", 2) == 0)
-    {
-      /*##-2- Start the transmission process #####################################*/  
-      /* Master prepare and send the transmission buffer ("pMasterTransmitBuffer") 
-         through a "New" communication frame. The communication will be stopped at
-         the end of transmission process thanks to "I2C_FIRST_AND_LAST_FRAME" option usage. */
-      pMasterTransmitBuffer    = (uint8_t*)(aCommandCode[ubMasterCommandIndex][0]);
-      ubMasterNbDataToTransmit = strlen((char *)(aCommandCode[ubMasterCommandIndex][0]));
-
-      /* Handle I2C events (Master Transmit only) */
-      while(HAL_I2C_Master_Seq_Transmit_IT(&I2cHandle, (uint16_t)I2C_ADDRESS, pMasterTransmitBuffer, ubMasterNbDataToTransmit, I2C_FIRST_AND_LAST_FRAME)!= HAL_OK)
-      {
-        /* Error_Handler() function is called when Timeout error occurs.
-           When Acknowledge failure occurs (Slave don't acknowledge it's address)
-           Master restarts communication */
-        if (HAL_I2C_GetError(&I2cHandle) != HAL_I2C_ERROR_AF)
+        /* Wait for User push-button press before starting the Communication */
+        while( BSP_PB_GetState( BUTTON_KEY ) != GPIO_PIN_SET )
         {
-          Error_Handler();
         }
-      }
-  
 
-      /*##-3- Wait for the end of the transmission transfer ##################*/  
-      /* For simplicity reasons, this example is just waiting till the end of the 
-      transfer, but application may perform other tasks while transfer operation
-      is ongoing. */  
-      while (HAL_I2C_GetState(&I2cHandle) != HAL_I2C_STATE_READY)
-      {
-      }
-
-      /*##-4- Monitor Status through Terminal I/O ##############################*/  
-      /* Display through external Terminal IO the Command Code acknowledge by Slave device */
-      printf("Slave goes to %s.\n", (char*)(aCommandCode[ubMasterCommandIndex][0]));
-    }
-    /* Else Master request a Slave answer, Run master in transmitter mode then receiver mode. */
-    else
-    {
-      /*##-2- Start the transmission process #####################################*/  
-      /* Master prepare and send the transmission buffer ("pMasterTransmitBuffer") 
-         through a "New" communication frame. The communication will not stopped thanks
-         to "I2C_FIRST_FRAME" option usage. This will allow to generate a restart condition
-         after change the I2C peripheral from transmission process to reception process */
-      pMasterTransmitBuffer    = (uint8_t*)(aCommandCode[ubMasterCommandIndex][0]);
-      ubMasterNbDataToTransmit = strlen((char *)(aCommandCode[ubMasterCommandIndex][0]));
-
-      /* Handle I2C events (Master Transmit only) */
-      while(HAL_I2C_Master_Seq_Transmit_IT(&I2cHandle, (uint16_t)I2C_ADDRESS, pMasterTransmitBuffer, ubMasterNbDataToTransmit, I2C_FIRST_FRAME)!= HAL_OK)
-      {
-        /* Error_Handler() function is called when Timeout error occurs.
-           When Acknowledge failure occurs (Slave don't acknowledge it's address)
-           Master restarts communication */
-        if (HAL_I2C_GetError(&I2cHandle) != HAL_I2C_ERROR_AF)
+        /* Wait for User push-button release before starting the Communication */
+        while( BSP_PB_GetState( BUTTON_KEY ) != GPIO_PIN_RESET )
         {
-          Error_Handler();
         }
-      }
 
-      /*##-3- Wait for the end of the transfer ###################################*/  
-      /*  Before starting a new communication transfer, you need to check the current   
-          state of the peripheral; if it’s busy you need to wait for the end of current
-          transfer before starting a new one.
-          For simplicity reasons, this example is just waiting till the end of the 
-          transfer, but application may perform other tasks while transfer operation
-          is ongoing. */  
-      while (HAL_I2C_GetState(&I2cHandle) != HAL_I2C_STATE_READY)
-      {
-      } 
+        /* The board sends the message and expects to receive it back if necessary. */
 
-      /*##-4- Put I2C peripheral in reception process ###########################*/  
-      /* Master generate a restart condition and then change the I2C peripheral 
-         from transmission process to reception process, to retrieve information
-         data from Slave device. */
-      while(HAL_I2C_Master_Seq_Receive_IT(&I2cHandle, (uint16_t)I2C_ADDRESS, aMasterReceiveBuffer, strlen((char *)(aSlaveInfo[ubMasterCommandIndex])), I2C_LAST_FRAME)!= HAL_OK)
-      {
-        /* Error_Handler() function is called when Timeout error occurs.
-           When Acknowledge failure occurs (Slave don't acknowledge it's address)
-           Master restarts communication */
-        if (HAL_I2C_GetError(&I2cHandle) != HAL_I2C_ERROR_AF)
+        /* If Master no request a Slave answer, Run master in transmitter mode only. */
+        if( strncmp( aCommandCode[ubMasterCommandIndex][1], "NO", 2 ) == 0 )
         {
-          Error_Handler();
+            /*##-2- Start the transmission process #####################################*/
+            /* Master prepare and send the transmission buffer ("pMasterTransmitBuffer")
+               through a "New" communication frame. The communication will be stopped at
+               the end of transmission process thanks to "I2C_FIRST_AND_LAST_FRAME" option usage. */
+            pMasterTransmitBuffer    = ( uint8_t * )( aCommandCode[ubMasterCommandIndex][0] );
+            ubMasterNbDataToTransmit = strlen( ( char * )( aCommandCode[ubMasterCommandIndex][0] ) );
+
+            /* Handle I2C events (Master Transmit only) */
+            while( HAL_I2C_Master_Seq_Transmit_IT( &I2cHandle, ( uint16_t )I2C_ADDRESS, pMasterTransmitBuffer, ubMasterNbDataToTransmit, I2C_FIRST_AND_LAST_FRAME ) != HAL_OK )
+            {
+                /* Error_Handler() function is called when Timeout error occurs.
+                   When Acknowledge failure occurs (Slave don't acknowledge it's address)
+                   Master restarts communication */
+                if( HAL_I2C_GetError( &I2cHandle ) != HAL_I2C_ERROR_AF )
+                {
+                    Error_Handler();
+                }
+            }
+
+
+            /*##-3- Wait for the end of the transmission transfer ##################*/
+            /* For simplicity reasons, this example is just waiting till the end of the
+            transfer, but application may perform other tasks while transfer operation
+            is ongoing. */
+            while( HAL_I2C_GetState( &I2cHandle ) != HAL_I2C_STATE_READY )
+            {
+            }
+
+            /*##-4- Monitor Status through Terminal I/O ##############################*/
+            /* Display through external Terminal IO the Command Code acknowledge by Slave device */
+            printf( "Slave goes to %s.\n", ( char * )( aCommandCode[ubMasterCommandIndex][0] ) );
         }
-      }
+        /* Else Master request a Slave answer, Run master in transmitter mode then receiver mode. */
+        else
+        {
+            /*##-2- Start the transmission process #####################################*/
+            /* Master prepare and send the transmission buffer ("pMasterTransmitBuffer")
+               through a "New" communication frame. The communication will not stopped thanks
+               to "I2C_FIRST_FRAME" option usage. This will allow to generate a restart condition
+               after change the I2C peripheral from transmission process to reception process */
+            pMasterTransmitBuffer    = ( uint8_t * )( aCommandCode[ubMasterCommandIndex][0] );
+            ubMasterNbDataToTransmit = strlen( ( char * )( aCommandCode[ubMasterCommandIndex][0] ) );
 
-      /*##-5- Wait for the end of the transfer ###################################*/  
-      /*  Before starting a new communication transfer, you need to check the current   
-          state of the peripheral; if it’s busy you need to wait for the end of current
-          transfer before starting a new one.
-          For simplicity reasons, this example is just waiting till the end of the 
-          transfer, but application may perform other tasks while transfer operation
-          is ongoing. */  
-      while (HAL_I2C_GetState(&I2cHandle) != HAL_I2C_STATE_READY)
-      {
-      } 
+            /* Handle I2C events (Master Transmit only) */
+            while( HAL_I2C_Master_Seq_Transmit_IT( &I2cHandle, ( uint16_t )I2C_ADDRESS, pMasterTransmitBuffer, ubMasterNbDataToTransmit, I2C_FIRST_FRAME ) != HAL_OK )
+            {
+                /* Error_Handler() function is called when Timeout error occurs.
+                   When Acknowledge failure occurs (Slave don't acknowledge it's address)
+                   Master restarts communication */
+                if( HAL_I2C_GetError( &I2cHandle ) != HAL_I2C_ERROR_AF )
+                {
+                    Error_Handler();
+                }
+            }
 
-      /*##-6- Monitor Status through Terminal I/O ##############################*/  
-      /* Display through external Terminal IO the Slave Answer received */
-      printf("%s : %s\n", (char*)(aCommandCode[ubMasterCommandIndex][0]), (char*)aMasterReceiveBuffer);
-    }
+            /*##-3- Wait for the end of the transfer ###################################*/
+            /*  Before starting a new communication transfer, you need to check the current
+                state of the peripheral; if it’s busy you need to wait for the end of current
+                transfer before starting a new one.
+                For simplicity reasons, this example is just waiting till the end of the
+                transfer, but application may perform other tasks while transfer operation
+                is ongoing. */
+            while( HAL_I2C_GetState( &I2cHandle ) != HAL_I2C_STATE_READY )
+            {
+            }
 
-  
-    /* Prepare Index to send next command code */
-    ubMasterCommandIndex++;
-    if(ubMasterCommandIndex >= ubMasterNbCommandCode)
-    {
-      ubMasterCommandIndex = 0;
-    }
-    
-    /* For User help, keep Leds status until timeout */
-    HAL_Delay(LED_STATUS_TIMEOUT);
+            /*##-4- Put I2C peripheral in reception process ###########################*/
+            /* Master generate a restart condition and then change the I2C peripheral
+               from transmission process to reception process, to retrieve information
+               data from Slave device. */
+            while( HAL_I2C_Master_Seq_Receive_IT( &I2cHandle, ( uint16_t )I2C_ADDRESS, aMasterReceiveBuffer, strlen( ( char * )( aSlaveInfo[ubMasterCommandIndex] ) ), I2C_LAST_FRAME ) != HAL_OK )
+            {
+                /* Error_Handler() function is called when Timeout error occurs.
+                   When Acknowledge failure occurs (Slave don't acknowledge it's address)
+                   Master restarts communication */
+                if( HAL_I2C_GetError( &I2cHandle ) != HAL_I2C_ERROR_AF )
+                {
+                    Error_Handler();
+                }
+            }
 
-    /* Then Clear and Reset process variables, arrays and Leds status, for next transfer */
-    FlushBuffer8(aMasterReceiveBuffer, COUNTOF(aMasterReceiveBuffer));
-    ubMasterNbDataToTransmit = 0;
-    ubMasterReceiveIndex     = 0;
-    BSP_LED_Off(LED1);
-    BSP_LED_Off(LED2);
-    BSP_LED_Off(LED4);
-    
+            /*##-5- Wait for the end of the transfer ###################################*/
+            /*  Before starting a new communication transfer, you need to check the current
+                state of the peripheral; if it’s busy you need to wait for the end of current
+                transfer before starting a new one.
+                For simplicity reasons, this example is just waiting till the end of the
+                transfer, but application may perform other tasks while transfer operation
+                is ongoing. */
+            while( HAL_I2C_GetState( &I2cHandle ) != HAL_I2C_STATE_READY )
+            {
+            }
+
+            /*##-6- Monitor Status through Terminal I/O ##############################*/
+            /* Display through external Terminal IO the Slave Answer received */
+            printf( "%s : %s\n", ( char * )( aCommandCode[ubMasterCommandIndex][0] ), ( char * )aMasterReceiveBuffer );
+        }
+
+
+        /* Prepare Index to send next command code */
+        ubMasterCommandIndex++;
+
+        if( ubMasterCommandIndex >= ubMasterNbCommandCode )
+        {
+            ubMasterCommandIndex = 0;
+        }
+
+        /* For User help, keep Leds status until timeout */
+        HAL_Delay( LED_STATUS_TIMEOUT );
+
+        /* Then Clear and Reset process variables, arrays and Leds status, for next transfer */
+        FlushBuffer8( aMasterReceiveBuffer, COUNTOF( aMasterReceiveBuffer ) );
+        ubMasterNbDataToTransmit = 0;
+        ubMasterReceiveIndex     = 0;
+        BSP_LED_Off( LED1 );
+        BSP_LED_Off( LED2 );
+        BSP_LED_Off( LED4 );
+
 #else /* SLAVE_BOARD */
-    
-  /* Infinite loop */
-  while (1)
-  {
-    /*##-2- Put I2C peripheral in Listen address match code process ##########*/  
-    /* This action will allow I2C periphal to able to treat Master request when
-       necessary depending of transfer direction requested by Master */
-    if(HAL_I2C_EnableListen_IT(&I2cHandle) != HAL_OK)
-    {
-      /* Transfer error in reception process */
-      Error_Handler();
-    }
-    
-    /*##-3- Wait for a new frame communication with a Master #################*/  
-    /*  Before starting a transfer, you need to wait a Master request event.
-        For simplicity reasons, this example is just waiting till an Address callback event,
-       but application may perform other tasks while transfer operation is ongoing. */  
-    while(uwTransferInitiated != 1)
-    {
-    }
 
-    /*##-4- Wait for the end of the frame communication ######################*/  
-    /*  Before ending a transfer, you need to wait a Master end event.
-        For simplicity reasons, this example is just waiting till an Stop condition event,
-        but application may perform other tasks while transfer operation is ongoing. */  
-    while(uwTransferEnded != 1)
+    /* Infinite loop */
+    while( 1 )
     {
-    }
-    
-    /* For User help, keep Leds status until timeout */
-    HAL_Delay(LED_STATUS_TIMEOUT);
+        /*##-2- Put I2C peripheral in Listen address match code process ##########*/
+        /* This action will allow I2C periphal to able to treat Master request when
+           necessary depending of transfer direction requested by Master */
+        if( HAL_I2C_EnableListen_IT( &I2cHandle ) != HAL_OK )
+        {
+            /* Transfer error in reception process */
+            Error_Handler();
+        }
 
-    /*##-5- Clear, reset process variables, arrays and Leds status ###########*/  
-    FlushBuffer8(aSlaveReceiveBuffer, COUNTOF(aSlaveReceiveBuffer));
-    uwTransferInitiated = 0;
-    uwTransferEnded = 0;
-    ubSlaveReceiveIndex = 0;
-    ubSlaveInfoIndex = 0xFF;
-    BSP_LED_Off(LED1);
-    BSP_LED_Off(LED2);
-    BSP_LED_Off(LED4);
+        /*##-3- Wait for a new frame communication with a Master #################*/
+        /*  Before starting a transfer, you need to wait a Master request event.
+            For simplicity reasons, this example is just waiting till an Address callback event,
+           but application may perform other tasks while transfer operation is ongoing. */
+        while( uwTransferInitiated != 1 )
+        {
+        }
+
+        /*##-4- Wait for the end of the frame communication ######################*/
+        /*  Before ending a transfer, you need to wait a Master end event.
+            For simplicity reasons, this example is just waiting till an Stop condition event,
+            but application may perform other tasks while transfer operation is ongoing. */
+        while( uwTransferEnded != 1 )
+        {
+        }
+
+        /* For User help, keep Leds status until timeout */
+        HAL_Delay( LED_STATUS_TIMEOUT );
+
+        /*##-5- Clear, reset process variables, arrays and Leds status ###########*/
+        FlushBuffer8( aSlaveReceiveBuffer, COUNTOF( aSlaveReceiveBuffer ) );
+        uwTransferInitiated = 0;
+        uwTransferEnded = 0;
+        ubSlaveReceiveIndex = 0;
+        ubSlaveInfoIndex = 0xFF;
+        BSP_LED_Off( LED1 );
+        BSP_LED_Off( LED2 );
+        BSP_LED_Off( LED4 );
 #endif /* MASTER_BOARD */
-  }
+    }
 }
 
 /**
   * @brief  System Clock Configuration
-  *         The system Clock is configured as follow : 
+  *         The system Clock is configured as follow :
   *            System Clock source            = PLL (HSE)
   *            SYSCLK(Hz)                     = 72000000
   *            HCLK(Hz)                       = 72000000
@@ -367,97 +372,100 @@ int main(void)
   * @param  None
   * @retval None
   */
-void SystemClock_Config(void)
+void SystemClock_Config( void )
 {
-  RCC_ClkInitTypeDef clkinitstruct = {0};
-  RCC_OscInitTypeDef oscinitstruct = {0};
-  
-  /* Enable HSE Oscillator and activate PLL with HSE as source */
-  oscinitstruct.OscillatorType  = RCC_OSCILLATORTYPE_HSE;
-  oscinitstruct.HSEState        = RCC_HSE_ON;
-  oscinitstruct.HSEPredivValue  = RCC_HSE_PREDIV_DIV1;
-  oscinitstruct.PLL.PLLState    = RCC_PLL_ON;
-  oscinitstruct.PLL.PLLSource   = RCC_PLLSOURCE_HSE;
-  oscinitstruct.PLL.PLLMUL      = RCC_PLL_MUL9;
-  if (HAL_RCC_OscConfig(&oscinitstruct)!= HAL_OK)
-  {
-    /* Initialization Error */
-    while(1);
-  }
+    RCC_ClkInitTypeDef clkinitstruct = {0};
+    RCC_OscInitTypeDef oscinitstruct = {0};
 
-  /* Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2 
-     clocks dividers */
-  clkinitstruct.ClockType = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2);
-  clkinitstruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-  clkinitstruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  clkinitstruct.APB2CLKDivider = RCC_HCLK_DIV1;
-  clkinitstruct.APB1CLKDivider = RCC_HCLK_DIV2;  
-  if (HAL_RCC_ClockConfig(&clkinitstruct, FLASH_LATENCY_2)!= HAL_OK)
-  {
-    /* Initialization Error */
-    while(1);
-  }
+    /* Enable HSE Oscillator and activate PLL with HSE as source */
+    oscinitstruct.OscillatorType  = RCC_OSCILLATORTYPE_HSE;
+    oscinitstruct.HSEState        = RCC_HSE_ON;
+    oscinitstruct.HSEPredivValue  = RCC_HSE_PREDIV_DIV1;
+    oscinitstruct.PLL.PLLState    = RCC_PLL_ON;
+    oscinitstruct.PLL.PLLSource   = RCC_PLLSOURCE_HSE;
+    oscinitstruct.PLL.PLLMUL      = RCC_PLL_MUL9;
+
+    if( HAL_RCC_OscConfig( &oscinitstruct ) != HAL_OK )
+    {
+        /* Initialization Error */
+        while( 1 );
+    }
+
+    /* Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2
+       clocks dividers */
+    clkinitstruct.ClockType = ( RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2 );
+    clkinitstruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+    clkinitstruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+    clkinitstruct.APB2CLKDivider = RCC_HCLK_DIV1;
+    clkinitstruct.APB1CLKDivider = RCC_HCLK_DIV2;
+
+    if( HAL_RCC_ClockConfig( &clkinitstruct, FLASH_LATENCY_2 ) != HAL_OK )
+    {
+        /* Initialization Error */
+        while( 1 );
+    }
 }
 
 /**
   * @brief  Tx Transfer completed callback.
-  * @param  I2cHandle: I2C handle 
-  * @note   This example shows a simple way to report end of IT Tx transfer, and 
-  *         you can add your own implementation. 
+  * @param  I2cHandle: I2C handle
+  * @note   This example shows a simple way to report end of IT Tx transfer, and
+  *         you can add your own implementation.
   * @retval None
   */
 #ifdef MASTER_BOARD
-void HAL_I2C_MasterTxCpltCallback(I2C_HandleTypeDef *I2cHandle)
+void HAL_I2C_MasterTxCpltCallback( I2C_HandleTypeDef *I2cHandle )
 {
-  /* Turn LED1 on: Transfer in transmission process is correct */
-  BSP_LED_On(LED1);
+    /* Turn LED1 on: Transfer in transmission process is correct */
+    BSP_LED_On( LED1 );
 }
 #else
-void HAL_I2C_SlaveTxCpltCallback(I2C_HandleTypeDef *I2cHandle)
+void HAL_I2C_SlaveTxCpltCallback( I2C_HandleTypeDef *I2cHandle )
 {
-  /* Turn LED1 on: Transfer in transmission process is correct */
-  BSP_LED_On(LED1);
+    /* Turn LED1 on: Transfer in transmission process is correct */
+    BSP_LED_On( LED1 );
 }
 #endif /* MASTER_BOARD */
 
 /**
   * @brief  Rx Transfer completed callback.
   * @param  I2cHandle: I2C handle
-  * @note   This example shows a simple way to report end of IT Rx transfer, and 
+  * @note   This example shows a simple way to report end of IT Rx transfer, and
   *         you can add your own implementation.
   * @retval None
   */
 #ifdef MASTER_BOARD
-void HAL_I2C_MasterRxCpltCallback(I2C_HandleTypeDef *I2cHandle)
+void HAL_I2C_MasterRxCpltCallback( I2C_HandleTypeDef *I2cHandle )
 {
-  /* Turn LED2 on: Transfer in reception process is correct */
-  BSP_LED_On(LED2);
+    /* Turn LED2 on: Transfer in reception process is correct */
+    BSP_LED_On( LED2 );
 }
 #else
-void HAL_I2C_SlaveRxCpltCallback(I2C_HandleTypeDef *I2cHandle)
+void HAL_I2C_SlaveRxCpltCallback( I2C_HandleTypeDef *I2cHandle )
 {
-  /* Turn LED2 on: Transfer in reception process is correct */
-  BSP_LED_On(LED2);
+    /* Turn LED2 on: Transfer in reception process is correct */
+    BSP_LED_On( LED2 );
 
-  /* Check Command code receive previously */
-  /* If data received match with a Internal Command Code, set the associated index */
-  /* Which will use for Tranmission process if requested by Master */
-  if(strcmp((char *)(aSlaveReceiveBuffer), (char *)(aCommandCode[0][0])) == 0)
-  {
-    ubSlaveInfoIndex = SLAVE_CHIP_NAME;
-  }
-  else if(strcmp((char *)(aSlaveReceiveBuffer), (char *)(aCommandCode[1][0])) == 0)
-  {
-    ubSlaveInfoIndex = SLAVE_CHIP_REVISION;
-  }
-  else
-  {
-    if(HAL_I2C_Slave_Seq_Receive_IT(I2cHandle, &aSlaveReceiveBuffer[ubSlaveReceiveIndex], 1, I2C_FIRST_FRAME) != HAL_OK)
+    /* Check Command code receive previously */
+    /* If data received match with a Internal Command Code, set the associated index */
+    /* Which will use for Tranmission process if requested by Master */
+    if( strcmp( ( char * )( aSlaveReceiveBuffer ), ( char * )( aCommandCode[0][0] ) ) == 0 )
     {
-      Error_Handler();
+        ubSlaveInfoIndex = SLAVE_CHIP_NAME;
     }
-    ubSlaveReceiveIndex++;
-  }
+    else if( strcmp( ( char * )( aSlaveReceiveBuffer ), ( char * )( aCommandCode[1][0] ) ) == 0 )
+    {
+        ubSlaveInfoIndex = SLAVE_CHIP_REVISION;
+    }
+    else
+    {
+        if( HAL_I2C_Slave_Seq_Receive_IT( I2cHandle, &aSlaveReceiveBuffer[ubSlaveReceiveIndex], 1, I2C_FIRST_FRAME ) != HAL_OK )
+        {
+            Error_Handler();
+        }
+
+        ubSlaveReceiveIndex++;
+    }
 }
 #endif /* MASTER_BOARD */
 
@@ -470,42 +478,43 @@ void HAL_I2C_SlaveRxCpltCallback(I2C_HandleTypeDef *I2cHandle)
   * @param  AddrMatchCode: Address Match Code
   * @retval None
   */
-void HAL_I2C_AddrCallback(I2C_HandleTypeDef *hi2c, uint8_t TransferDirection, uint16_t AddrMatchCode)
+void HAL_I2C_AddrCallback( I2C_HandleTypeDef *hi2c, uint8_t TransferDirection, uint16_t AddrMatchCode )
 {
-  if(AddrMatchCode == I2C_ADDRESS)
-  {
-    uwTransferInitiated = 1;
-    uwTransferDirection = TransferDirection;
-    
-    /* A new communication with a Master is initiated */
-    /* Turn LED4 On: A Communication is initiated */
-    BSP_LED_On(LED4);
-    
-    /* First of all, check the transfer direction to call the correct Slave Interface */
-    if(uwTransferDirection == I2C_DIRECTION_TRANSMIT)
+    if( AddrMatchCode == I2C_ADDRESS )
     {
-      if(HAL_I2C_Slave_Seq_Receive_IT(&I2cHandle, &aSlaveReceiveBuffer[ubSlaveReceiveIndex], 1, I2C_FIRST_FRAME) != HAL_OK)
-      {
-        Error_Handler();
-      }
-      ubSlaveReceiveIndex++;
+        uwTransferInitiated = 1;
+        uwTransferDirection = TransferDirection;
+
+        /* A new communication with a Master is initiated */
+        /* Turn LED4 On: A Communication is initiated */
+        BSP_LED_On( LED4 );
+
+        /* First of all, check the transfer direction to call the correct Slave Interface */
+        if( uwTransferDirection == I2C_DIRECTION_TRANSMIT )
+        {
+            if( HAL_I2C_Slave_Seq_Receive_IT( &I2cHandle, &aSlaveReceiveBuffer[ubSlaveReceiveIndex], 1, I2C_FIRST_FRAME ) != HAL_OK )
+            {
+                Error_Handler();
+            }
+
+            ubSlaveReceiveIndex++;
+        }
+        else
+        {
+            pSlaveTransmitBuffer = ( uint8_t * )( aSlaveInfo[ubSlaveInfoIndex] );
+            ubSlaveNbDataToTransmit = strlen( ( char * )( aSlaveInfo[ubSlaveInfoIndex] ) );
+
+            if( HAL_I2C_Slave_Seq_Transmit_IT( &I2cHandle, pSlaveTransmitBuffer, ubSlaveNbDataToTransmit, I2C_LAST_FRAME ) != HAL_OK )
+            {
+                Error_Handler();
+            }
+        }
     }
     else
     {
-      pSlaveTransmitBuffer = (uint8_t*)(aSlaveInfo[ubSlaveInfoIndex]);
-      ubSlaveNbDataToTransmit = strlen((char *)(aSlaveInfo[ubSlaveInfoIndex]));
-
-      if(HAL_I2C_Slave_Seq_Transmit_IT(&I2cHandle, pSlaveTransmitBuffer, ubSlaveNbDataToTransmit, I2C_LAST_FRAME) != HAL_OK)
-      {
+        /* Call Error Handler, Wrong Address Match Code */
         Error_Handler();
-      }
     }
-  }
-  else
-  {
-    /* Call Error Handler, Wrong Address Match Code */
-    Error_Handler();
-  }
 }
 
 /**
@@ -514,9 +523,9 @@ void HAL_I2C_AddrCallback(I2C_HandleTypeDef *hi2c, uint8_t TransferDirection, ui
   *                the configuration information for the specified I2C.
   * @retval None
   */
-void HAL_I2C_ListenCpltCallback(I2C_HandleTypeDef *hi2c)
+void HAL_I2C_ListenCpltCallback( I2C_HandleTypeDef *hi2c )
 {
-  uwTransferEnded = 1;
+    uwTransferEnded = 1;
 }
 #endif
 
@@ -527,16 +536,16 @@ void HAL_I2C_ListenCpltCallback(I2C_HandleTypeDef *hi2c)
   *         add your own implementation.
   * @retval None
   */
-void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *I2cHandle)
+void HAL_I2C_ErrorCallback( I2C_HandleTypeDef *I2cHandle )
 {
-  /** Error_Handler() function is called when error occurs.
-  * 1- When Slave don't acknowledge it's address, Master restarts communication.
-  * 2- When Master don't acknowledge the last data transferred, Slave don't care in this example.
-  */
-  if (HAL_I2C_GetError(I2cHandle) != HAL_I2C_ERROR_AF)
-  {
-    Error_Handler();
-  }
+    /** Error_Handler() function is called when error occurs.
+    * 1- When Slave don't acknowledge it's address, Master restarts communication.
+    * 2- When Master don't acknowledge the last data transferred, Slave don't care in this example.
+    */
+    if( HAL_I2C_GetError( I2cHandle ) != HAL_I2C_ERROR_AF )
+    {
+        Error_Handler();
+    }
 }
 
 /**
@@ -544,19 +553,20 @@ void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *I2cHandle)
   * @param  None
   * @retval None
   */
-static void Error_Handler(void)
+static void Error_Handler( void )
 {
-  /* Turn Off LED1 */
-  BSP_LED_Off(LED1);
-  /* Turn Off LED2 */
-  BSP_LED_Off(LED2);
-  /* Turn Off LED4 */
-  BSP_LED_Off(LED4);
-  /* Turn On LED3 */
-  BSP_LED_On(LED3);
-  while(1)
-  {
-  }
+    /* Turn Off LED1 */
+    BSP_LED_Off( LED1 );
+    /* Turn Off LED2 */
+    BSP_LED_Off( LED2 );
+    /* Turn Off LED4 */
+    BSP_LED_Off( LED4 );
+    /* Turn On LED3 */
+    BSP_LED_On( LED3 );
+
+    while( 1 )
+    {
+    }
 }
 
 /**
@@ -565,14 +575,14 @@ static void Error_Handler(void)
   * @param  BufferLength: buffer's length
   * @retval None
   */
-static void FlushBuffer8(uint8_t* pBuffer1, uint16_t BufferLength)
+static void FlushBuffer8( uint8_t *pBuffer1, uint16_t BufferLength )
 {
-  uint8_t Index = 0;
-  
-  for (Index = 0; Index < BufferLength; Index++)
-  {
-    pBuffer1[Index] = 0;
-  }
+    uint8_t Index = 0;
+
+    for( Index = 0; Index < BufferLength; Index++ )
+    {
+        pBuffer1[Index] = 0;
+    }
 }
 
 #ifdef  USE_FULL_ASSERT
@@ -584,15 +594,15 @@ static void FlushBuffer8(uint8_t* pBuffer1, uint16_t BufferLength)
   * @param  line: assert_param error line source number
   * @retval None
   */
-void assert_failed(uint8_t* file, uint32_t line)
+void assert_failed( uint8_t *file, uint32_t line )
 {
-  /* User can add his own implementation to report the file name and line number,
-     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+    /* User can add his own implementation to report the file name and line number,
+       ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
-  /* Infinite loop */
-  while (1)
-  {
-  }
+    /* Infinite loop */
+    while( 1 )
+    {
+    }
 }
 #endif
 

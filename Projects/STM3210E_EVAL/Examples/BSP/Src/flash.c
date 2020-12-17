@@ -1,6 +1,6 @@
 /**
   ******************************************************************************
-  * @file    BSP/Src/flash.c 
+  * @file    BSP/Src/flash.c
   * @author  MCD Application Team
   * @brief   This example code shows how to use Flash SPI features.
   ******************************************************************************
@@ -178,111 +178,112 @@ volatile TestStatus TransferStatus1 = PASSED, TransferStatus2 = PASSED, Transfer
 
 
 /* Private functions ---------------------------------------------------------*/
-static TestStatus Buffercmp(uint8_t* pBuffer1, uint8_t* pBuffer2, uint16_t BufferLength);
-static void Flush_Rx_Buffers(uint8_t* pBuffer, uint16_t BufferLength);
-static void Flash_SetHint(void);
+static TestStatus Buffercmp( uint8_t *pBuffer1, uint8_t *pBuffer2, uint16_t BufferLength );
+static void Flush_Rx_Buffers( uint8_t *pBuffer, uint16_t BufferLength );
+static void Flash_SetHint( void );
 
 /**
   * @brief  Main program
   * @param  None
   * @retval None
   */
-void FLASH_demo(void)
+void FLASH_demo( void )
 {
-  /* Set Display for Demo Flash SPI */
-  Flash_SetHint();
-  
-  /* Initialize the SPI FLASH driver */
-  BSP_SERIAL_FLASH_Init();
+    /* Set Display for Demo Flash SPI */
+    Flash_SetHint();
 
-  /* Get SPI Flash ID */
-  FlashID = BSP_SERIAL_FLASH_ReadID();
-  
-  /* Check the SPI Flash ID */
-  if (FlashID == FLASH_SPI_M25P64_ID)
-  {
-    /* Initialization OK as BSP_SERIAL_FLASH_ReadID return the righ value */
-    BSP_LCD_DisplayStringAt(20, 100, (uint8_t*)"FLASH Initialization : OK.", LEFT_MODE);
-    
-    /* Perform a write in the Flash followed by an erase of the written data */
-    /* Write Tx_Buffer data to SPI FLASH memory at begining of Sector12*/
-    BSP_SERIAL_FLASH_WritePage(FLASH_WriteSector12, Tx_Buffer, BufferSize);
-    
-    /* Erase SPI FLASH Sector12 by giving an Addr inside range of Sector12 Addr */
-    BSP_SERIAL_FLASH_EraseSector(FLASH_AddrSector12);
-    
-    /* Read Erase data from SPI FLASH memory, shal be 0xFF */
-    BSP_SERIAL_FLASH_ReadData(FLASH_WriteSector12, Rx_Buffer, BufferSize);
+    /* Initialize the SPI FLASH driver */
+    BSP_SERIAL_FLASH_Init();
 
-    /* Check the correctness of erasing operation data */
-    for (Index = 0; Index < BufferSize; Index++)
+    /* Get SPI Flash ID */
+    FlashID = BSP_SERIAL_FLASH_ReadID();
+
+    /* Check the SPI Flash ID */
+    if( FlashID == FLASH_SPI_M25P64_ID )
     {
-      if (Rx_Buffer[Index] != 0xFF)
-      {
-        TransferStatus1 = FAILED;
-      }
-    }
-    /* Flush Data inside Rx_Buffer */
-    Flush_Rx_Buffers(Rx_Buffer, BufferSize);
-    
-    if(TransferStatus1 == PASSED)
-    {
-      BSP_LCD_DisplayStringAt(20, 115, (uint8_t*)"FLASH ERASE : OK.", LEFT_MODE);
+        /* Initialization OK as BSP_SERIAL_FLASH_ReadID return the righ value */
+        BSP_LCD_DisplayStringAt( 20, 100, ( uint8_t * )"FLASH Initialization : OK.", LEFT_MODE );
+
+        /* Perform a write in the Flash followed by an erase of the written data */
+        /* Write Tx_Buffer data to SPI FLASH memory at begining of Sector12*/
+        BSP_SERIAL_FLASH_WritePage( FLASH_WriteSector12, Tx_Buffer, BufferSize );
+
+        /* Erase SPI FLASH Sector12 by giving an Addr inside range of Sector12 Addr */
+        BSP_SERIAL_FLASH_EraseSector( FLASH_AddrSector12 );
+
+        /* Read Erase data from SPI FLASH memory, shal be 0xFF */
+        BSP_SERIAL_FLASH_ReadData( FLASH_WriteSector12, Rx_Buffer, BufferSize );
+
+        /* Check the correctness of erasing operation data */
+        for( Index = 0; Index < BufferSize; Index++ )
+        {
+            if( Rx_Buffer[Index] != 0xFF )
+            {
+                TransferStatus1 = FAILED;
+            }
+        }
+
+        /* Flush Data inside Rx_Buffer */
+        Flush_Rx_Buffers( Rx_Buffer, BufferSize );
+
+        if( TransferStatus1 == PASSED )
+        {
+            BSP_LCD_DisplayStringAt( 20, 115, ( uint8_t * )"FLASH ERASE : OK.", LEFT_MODE );
+        }
+        else
+        {
+            BSP_LCD_DisplayStringAt( 20, 115, ( uint8_t * )"FLASH ERASE : FAILED.", LEFT_MODE );
+            Test = FAILED;
+        }
+
+        /* Perform a write in the Flash followed by a read of the written data */
+        /* Write Tx_Buffer data to SPI FLASH memory at Sector0 Addr*/
+        BSP_SERIAL_FLASH_WritePage( FLASH_WriteSector0, Tx_Buffer, BufferSize );
+
+        /* Read data from SPI FLASH memory at Sector0 Addr*/
+        BSP_SERIAL_FLASH_ReadData( FLASH_WriteSector0, Rx_Buffer, BufferSize );
+
+        /* Check the correctness of written data */
+        TransferStatus2 = Buffercmp( Tx_Buffer, Rx_Buffer, BufferSize );
+
+        /* Flush Data inside Rx_Buffer */
+        Flush_Rx_Buffers( Rx_Buffer, BufferSize );
+
+        if( TransferStatus2 == PASSED )
+        {
+            BSP_LCD_DisplayStringAt( 20, 130, ( uint8_t * )"FLASH WRITE : OK.", LEFT_MODE );
+            BSP_LCD_DisplayStringAt( 20, 145, ( uint8_t * )"FLASH READ  : OK.", LEFT_MODE );
+        }
+        else
+        {
+            BSP_LCD_DisplayStringAt( 20, 130, ( uint8_t * )"FLASH WRITE : FAILED.", LEFT_MODE );
+            BSP_LCD_DisplayStringAt( 20, 145, ( uint8_t * )"FLASH READ  : FAILED.", LEFT_MODE );
+            Test = FAILED;
+        }
+
+        if( Test == PASSED )
+        {
+            BSP_LCD_DisplayStringAt( 20, 160, ( uint8_t * )"FLASH Test : OK.", LEFT_MODE );
+        }
+        else
+        {
+            BSP_LCD_DisplayStringAt( 20, 160, ( uint8_t * )"FLASH Test : FAILED.", LEFT_MODE );
+        }
     }
     else
     {
-      BSP_LCD_DisplayStringAt(20, 115, (uint8_t*)"FLASH ERASE : FAILED.", LEFT_MODE);
-      Test = FAILED;
-    } 
+        /* Error Init: Test FAILED */
+        BSP_LCD_DisplayStringAt( 20, 100, ( uint8_t * )"FLASH Initialization : FAILED.", LEFT_MODE );
+        BSP_LCD_DisplayStringAt( 20, 115, ( uint8_t * )"FLASH Test : FAILED.", LEFT_MODE );
+    }
 
-    /* Perform a write in the Flash followed by a read of the written data */
-    /* Write Tx_Buffer data to SPI FLASH memory at Sector0 Addr*/
-    BSP_SERIAL_FLASH_WritePage(FLASH_WriteSector0, Tx_Buffer, BufferSize);
-    
-    /* Read data from SPI FLASH memory at Sector0 Addr*/
-    BSP_SERIAL_FLASH_ReadData(FLASH_WriteSector0, Rx_Buffer, BufferSize);
-    
-    /* Check the correctness of written data */
-    TransferStatus2 = Buffercmp(Tx_Buffer, Rx_Buffer, BufferSize);
-    
-    /* Flush Data inside Rx_Buffer */
-    Flush_Rx_Buffers(Rx_Buffer, BufferSize);
-
-    if(TransferStatus2 == PASSED)
+    while( 1 )
     {
-      BSP_LCD_DisplayStringAt(20, 130, (uint8_t*)"FLASH WRITE : OK.", LEFT_MODE);
-      BSP_LCD_DisplayStringAt(20, 145, (uint8_t*)"FLASH READ  : OK.", LEFT_MODE);
+        if( CheckForUserInput() > 0 )
+        {
+            return;
+        }
     }
-    else
-    {
-      BSP_LCD_DisplayStringAt(20, 130, (uint8_t*)"FLASH WRITE : FAILED.", LEFT_MODE);
-      BSP_LCD_DisplayStringAt(20, 145, (uint8_t*)"FLASH READ  : FAILED.", LEFT_MODE);
-      Test = FAILED;
-    }
-    
-    if(Test == PASSED)
-    {
-      BSP_LCD_DisplayStringAt(20, 160, (uint8_t*)"FLASH Test : OK.", LEFT_MODE);
-    }
-    else
-    {    
-      BSP_LCD_DisplayStringAt(20, 160, (uint8_t*)"FLASH Test : FAILED.", LEFT_MODE);
-    } 
-  }
-  else
-  {
-    /* Error Init: Test FAILED */
-    BSP_LCD_DisplayStringAt(20, 100, (uint8_t*)"FLASH Initialization : FAILED.", LEFT_MODE);
-    BSP_LCD_DisplayStringAt(20, 115, (uint8_t*)"FLASH Test : FAILED.", LEFT_MODE);
-  }
-
-  while (1)
-  {    
-    if(CheckForUserInput() > 0)
-    {
-      return;
-    }
-  }
 }
 
 /**
@@ -290,29 +291,29 @@ void FLASH_demo(void)
   * @param  None
   * @retval None
   */
-static void Flash_SetHint(void)
+static void Flash_SetHint( void )
 {
-  /* Clear the LCD */ 
-  BSP_LCD_Clear(LCD_COLOR_WHITE);
-  
-  /* Set LCD Demo description */
-  BSP_LCD_SetTextColor(LCD_COLOR_BLUE);
-  BSP_LCD_FillRect(0, 0, BSP_LCD_GetXSize(), 80);
-  BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
-  BSP_LCD_SetBackColor(LCD_COLOR_BLUE); 
-  BSP_LCD_SetFont(&Font24);
-  BSP_LCD_DisplayStringAt(0, 0, (uint8_t*)"FLASH", CENTER_MODE);
-  BSP_LCD_SetFont(&Font12);
-  BSP_LCD_DisplayStringAt(0, 30, (uint8_t*)"This example shows how to write", CENTER_MODE);
-  BSP_LCD_DisplayStringAt(0, 45, (uint8_t*)"and read data on FLASH SPI", CENTER_MODE); 
+    /* Clear the LCD */
+    BSP_LCD_Clear( LCD_COLOR_WHITE );
 
-   /* Set the LCD Text Color */
-  BSP_LCD_SetTextColor(LCD_COLOR_BLUE);  
-  BSP_LCD_DrawRect(10, 90, BSP_LCD_GetXSize() - 20, BSP_LCD_GetYSize()- 100);
-  BSP_LCD_DrawRect(11, 91, BSP_LCD_GetXSize() - 22, BSP_LCD_GetYSize()- 102);
-  
-  BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
-  BSP_LCD_SetBackColor(LCD_COLOR_WHITE); 
+    /* Set LCD Demo description */
+    BSP_LCD_SetTextColor( LCD_COLOR_BLUE );
+    BSP_LCD_FillRect( 0, 0, BSP_LCD_GetXSize(), 80 );
+    BSP_LCD_SetTextColor( LCD_COLOR_WHITE );
+    BSP_LCD_SetBackColor( LCD_COLOR_BLUE );
+    BSP_LCD_SetFont( &Font24 );
+    BSP_LCD_DisplayStringAt( 0, 0, ( uint8_t * )"FLASH", CENTER_MODE );
+    BSP_LCD_SetFont( &Font12 );
+    BSP_LCD_DisplayStringAt( 0, 30, ( uint8_t * )"This example shows how to write", CENTER_MODE );
+    BSP_LCD_DisplayStringAt( 0, 45, ( uint8_t * )"and read data on FLASH SPI", CENTER_MODE );
+
+    /* Set the LCD Text Color */
+    BSP_LCD_SetTextColor( LCD_COLOR_BLUE );
+    BSP_LCD_DrawRect( 10, 90, BSP_LCD_GetXSize() - 20, BSP_LCD_GetYSize() - 100 );
+    BSP_LCD_DrawRect( 11, 91, BSP_LCD_GetXSize() - 22, BSP_LCD_GetYSize() - 102 );
+
+    BSP_LCD_SetTextColor( LCD_COLOR_BLACK );
+    BSP_LCD_SetBackColor( LCD_COLOR_WHITE );
 }
 
 /**
@@ -322,20 +323,20 @@ static void Flash_SetHint(void)
   * @retval PASSED: pBuffer1 identical to pBuffer2
   *         FAILED: pBuffer1 differs from pBuffer2
   */
-static TestStatus Buffercmp(uint8_t* pBuffer1, uint8_t* pBuffer2, uint16_t BufferLength)
+static TestStatus Buffercmp( uint8_t *pBuffer1, uint8_t *pBuffer2, uint16_t BufferLength )
 {
-  while(BufferLength--)
-  {
-    if(*pBuffer1 != *pBuffer2)
+    while( BufferLength-- )
     {
-      return FAILED;
-    }
-    
-    pBuffer1++;
-    pBuffer2++;
-  }
+        if( *pBuffer1 != *pBuffer2 )
+        {
+            return FAILED;
+        }
 
-  return PASSED;  
+        pBuffer1++;
+        pBuffer2++;
+    }
+
+    return PASSED;
 }
 
 /**
@@ -343,18 +344,18 @@ static TestStatus Buffercmp(uint8_t* pBuffer1, uint8_t* pBuffer2, uint16_t Buffe
   * @param  None
   * @retval None
   */
-static void Flush_Rx_Buffers(uint8_t* pBuffer, uint16_t BufferLength)
+static void Flush_Rx_Buffers( uint8_t *pBuffer, uint16_t BufferLength )
 {
-  while(BufferLength--)
-  {
-    *pBuffer = 0;
-    pBuffer++;
-  }
+    while( BufferLength-- )
+    {
+        *pBuffer = 0;
+        pBuffer++;
+    }
 }
 /**
   * @}
-  */ 
+  */
 /**
   * @}
-  */ 
+  */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

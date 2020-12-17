@@ -34,14 +34,14 @@
 #include "stm32f1xx_ll_pwr.h"
 
 #if defined(USE_FULL_ASSERT)
-#include "stm32_assert.h"
+    #include "stm32_assert.h"
 #endif /* USE_FULL_ASSERT */
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 
 /**
-  * @brief LED1 
+  * @brief LED1
   */
 #define LED1_PIN                           LL_GPIO_PIN_6
 #define LED1_GPIO_PORT                     GPIOF
@@ -62,8 +62,8 @@
 #define USER_BUTTON_GPIO_CLK_ENABLE()           LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOG)
 #define USER_BUTTON_EXTI_LINE                   LL_EXTI_LINE_8
 #define USER_BUTTON_EXTI_IRQn                   EXTI9_5_IRQn
-#define USER_BUTTON_EXTI_LINE_ENABLE()          LL_EXTI_EnableIT_0_31(USER_BUTTON_EXTI_LINE)   
-#define USER_BUTTON_EXTI_FALLING_TRIG_ENABLE()  LL_EXTI_EnableFallingTrig_0_31(USER_BUTTON_EXTI_LINE) 
+#define USER_BUTTON_EXTI_LINE_ENABLE()          LL_EXTI_EnableIT_0_31(USER_BUTTON_EXTI_LINE)
+#define USER_BUTTON_EXTI_FALLING_TRIG_ENABLE()  LL_EXTI_EnableFallingTrig_0_31(USER_BUTTON_EXTI_LINE)
 #define USER_BUTTON_SYSCFG_SET_EXTI()           do {                                                                     \
                                                   LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_AFIO);                  \
                                                   LL_GPIO_AF_SetEXTISource(LL_GPIO_AF_EXTI_PORTG, LL_GPIO_AF_EXTI_LINE8);  \
@@ -74,8 +74,8 @@
 
 /* Exported functions ------------------------------------------------------- */
 /* IRQ Handler treatment */
-void UserButton_Callback(void);
-void DacDmaTransferError_Callback(void);
+void UserButton_Callback( void );
+void DacDmaTransferError_Callback( void );
 #endif /* __MAIN_H */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

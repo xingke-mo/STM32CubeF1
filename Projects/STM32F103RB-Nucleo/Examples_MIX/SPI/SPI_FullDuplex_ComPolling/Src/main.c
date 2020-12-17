@@ -42,7 +42,7 @@
 SPI_HandleTypeDef SpiHandle;
 
 /* Buffer used for transmission */
-uint16_t aTxBuffer[] = {0x1234,0x5678,0x9ABC,0xDEF0,0x1234,0x5678,0x9ABC,0xDEF0,0x1234,0x5678,0x9ABC,0xDEF0,0x1234,0x5678,0x9ABC,0xDEF0,0x1234,0x5678,0x9ABC,0xDEF0,0x1234,0x5678,0x9ABC,0xDEF0,0x1234,0x5678,0x9ABC,0xDEF0,0x1234,0x5678,0x9ABC,0xDEF0,0x1234,0x5678,0x9ABC,0xDEF0,0x1234,0x5678,0x9ABC,0xDEF0};
+uint16_t aTxBuffer[] = {0x1234, 0x5678, 0x9ABC, 0xDEF0, 0x1234, 0x5678, 0x9ABC, 0xDEF0, 0x1234, 0x5678, 0x9ABC, 0xDEF0, 0x1234, 0x5678, 0x9ABC, 0xDEF0, 0x1234, 0x5678, 0x9ABC, 0xDEF0, 0x1234, 0x5678, 0x9ABC, 0xDEF0, 0x1234, 0x5678, 0x9ABC, 0xDEF0, 0x1234, 0x5678, 0x9ABC, 0xDEF0, 0x1234, 0x5678, 0x9ABC, 0xDEF0, 0x1234, 0x5678, 0x9ABC, 0xDEF0};
 __IO uint16_t ubNbDataToTransmit = BUFFERSIZE;
 __IO uint8_t ubTransmitIndex = 0;
 
@@ -52,9 +52,9 @@ __IO uint16_t ubNbDataToReceive = BUFFERSIZE;
 __IO uint8_t ubReceiveIndex = 0;
 
 /* Private function prototypes -----------------------------------------------*/
-void SystemClock_Config(void);
-static void Error_Handler(void);
-static uint16_t Buffercmp(uint8_t *pBuffer1, uint8_t *pBuffer2, uint16_t BufferLength);
+void SystemClock_Config( void );
+static void Error_Handler( void );
+static uint16_t Buffercmp( uint8_t *pBuffer1, uint8_t *pBuffer2, uint16_t BufferLength );
 
 /* Private functions ---------------------------------------------------------*/
 
@@ -63,114 +63,116 @@ static uint16_t Buffercmp(uint8_t *pBuffer1, uint8_t *pBuffer2, uint16_t BufferL
   * @param  None
   * @retval None
   */
-int main(void)
+int main( void )
 {
 
-  /* STM32F103xB HAL library initialization:
-       - Configure the Flash prefetch
-       - Systick timer is configured by default as source of time base, but user 
-         can eventually implement his proper time base source (a general purpose 
-         timer for example or other time source), keeping in mind that Time base 
-         duration should be kept 1ms since PPP_TIMEOUT_VALUEs are defined and 
-         handled in milliseconds basis.
-       - Set NVIC Group Priority to 4
-       - Low Level Initialization
-     */
-  HAL_Init();
-  
-  /* Configure the system clock to 72 MHz */
-  SystemClock_Config();
+    /* STM32F103xB HAL library initialization:
+         - Configure the Flash prefetch
+         - Systick timer is configured by default as source of time base, but user
+           can eventually implement his proper time base source (a general purpose
+           timer for example or other time source), keeping in mind that Time base
+           duration should be kept 1ms since PPP_TIMEOUT_VALUEs are defined and
+           handled in milliseconds basis.
+         - Set NVIC Group Priority to 4
+         - Low Level Initialization
+       */
+    HAL_Init();
 
-  /* Configure LED2 */
-  BSP_LED_Init(LED2);
+    /* Configure the system clock to 72 MHz */
+    SystemClock_Config();
 
-  /*##-1- Configure the SPI peripheral #######################################*/
-  /* Set the SPI parameters */
-  SpiHandle.Instance               = SPIx;
-  SpiHandle.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_256;
-  SpiHandle.Init.Direction         = SPI_DIRECTION_2LINES;
-  SpiHandle.Init.CLKPhase          = SPI_PHASE_1EDGE;
-  SpiHandle.Init.CLKPolarity       = SPI_POLARITY_LOW;
-  SpiHandle.Init.DataSize          = SPI_DATASIZE_16BIT;
-  SpiHandle.Init.FirstBit          = SPI_FIRSTBIT_MSB;
-  SpiHandle.Init.TIMode            = SPI_TIMODE_DISABLE;
-  SpiHandle.Init.CRCCalculation    = SPI_CRCCALCULATION_DISABLE;
-  SpiHandle.Init.CRCPolynomial     = 7;
-  SpiHandle.Init.NSS               = SPI_NSS_SOFT;
+    /* Configure LED2 */
+    BSP_LED_Init( LED2 );
+
+    /*##-1- Configure the SPI peripheral #######################################*/
+    /* Set the SPI parameters */
+    SpiHandle.Instance               = SPIx;
+    SpiHandle.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_256;
+    SpiHandle.Init.Direction         = SPI_DIRECTION_2LINES;
+    SpiHandle.Init.CLKPhase          = SPI_PHASE_1EDGE;
+    SpiHandle.Init.CLKPolarity       = SPI_POLARITY_LOW;
+    SpiHandle.Init.DataSize          = SPI_DATASIZE_16BIT;
+    SpiHandle.Init.FirstBit          = SPI_FIRSTBIT_MSB;
+    SpiHandle.Init.TIMode            = SPI_TIMODE_DISABLE;
+    SpiHandle.Init.CRCCalculation    = SPI_CRCCALCULATION_DISABLE;
+    SpiHandle.Init.CRCPolynomial     = 7;
+    SpiHandle.Init.NSS               = SPI_NSS_SOFT;
 
 #ifdef MASTER_BOARD
-  SpiHandle.Init.Mode = SPI_MODE_MASTER;
+    SpiHandle.Init.Mode = SPI_MODE_MASTER;
 #else
-  SpiHandle.Init.Mode = SPI_MODE_SLAVE;
+    SpiHandle.Init.Mode = SPI_MODE_SLAVE;
 #endif /* MASTER_BOARD */
 
-  if(HAL_SPI_Init(&SpiHandle) != HAL_OK)
-  {
-    /* Initialization Error */
-    Error_Handler();
-  }
+    if( HAL_SPI_Init( &SpiHandle ) != HAL_OK )
+    {
+        /* Initialization Error */
+        Error_Handler();
+    }
 
 #ifdef MASTER_BOARD
-  /* SPI block is enabled prior calling SPI transmit/receive functions, in order to get CLK signal properly pulled down.
-     Otherwise, SPI CLK signal is not clean on this board and leads to errors during transfer */
-  __HAL_SPI_ENABLE(&SpiHandle);
+    /* SPI block is enabled prior calling SPI transmit/receive functions, in order to get CLK signal properly pulled down.
+       Otherwise, SPI CLK signal is not clean on this board and leads to errors during transfer */
+    __HAL_SPI_ENABLE( &SpiHandle );
 
-  /* Configure User push-button button */
-  BSP_PB_Init(BUTTON_USER, BUTTON_MODE_GPIO);
+    /* Configure User push-button button */
+    BSP_PB_Init( BUTTON_USER, BUTTON_MODE_GPIO );
 
-  /* Wait for User push-button press before starting the Communication */
-  while (BSP_PB_GetState(BUTTON_USER) != GPIO_PIN_RESET)
-  {
-    BSP_LED_Toggle(LED2);
-    HAL_Delay(100);
-  }
-  BSP_LED_Off(LED2);
+    /* Wait for User push-button press before starting the Communication */
+    while( BSP_PB_GetState( BUTTON_USER ) != GPIO_PIN_RESET )
+    {
+        BSP_LED_Toggle( LED2 );
+        HAL_Delay( 100 );
+    }
+
+    BSP_LED_Off( LED2 );
 #endif /* MASTER_BOARD */
 
-  /*##-2- Start the Full Duplex Communication process ########################*/  
-  /* Enable SPI before start transmission */
-  LL_SPI_Enable(SpiHandle.Instance);
+    /*##-2- Start the Full Duplex Communication process ########################*/
+    /* Enable SPI before start transmission */
+    LL_SPI_Enable( SpiHandle.Instance );
 
-  while(ubNbDataToReceive > 0)
-  {
-    /* Check TXE flag to transmit data */
-    if(( LL_SPI_IsActiveFlag_TXE(SpiHandle.Instance)) && (ubNbDataToTransmit > 0))
+    while( ubNbDataToReceive > 0 )
     {
-      /* Transmit 16bit Data */
-      LL_SPI_TransmitData16(SpiHandle.Instance, aTxBuffer[ubTransmitIndex++]);
-      ubNbDataToTransmit--;
+        /* Check TXE flag to transmit data */
+        if( ( LL_SPI_IsActiveFlag_TXE( SpiHandle.Instance ) ) && ( ubNbDataToTransmit > 0 ) )
+        {
+            /* Transmit 16bit Data */
+            LL_SPI_TransmitData16( SpiHandle.Instance, aTxBuffer[ubTransmitIndex++] );
+            ubNbDataToTransmit--;
+        }
+
+        /* Check RXE flag */
+        if( LL_SPI_IsActiveFlag_RXNE( SpiHandle.Instance ) )
+        {
+            /* Receive 16bit Data */
+            aRxBuffer[ubReceiveIndex++] = LL_SPI_ReceiveData16( SpiHandle.Instance );
+            ubNbDataToReceive--;
+        }
     }
-    /* Check RXE flag */
-    if(LL_SPI_IsActiveFlag_RXNE(SpiHandle.Instance))
+
+    /*##-3- Compare the sent and received buffers ##############################*/
+    /* Compare the sent and received buffers */
+    if( Buffercmp( ( uint8_t * )aTxBuffer, ( uint8_t * )aRxBuffer, COUNTOF( aTxBuffer ) ) )
     {
-      /* Receive 16bit Data */
-      aRxBuffer[ubReceiveIndex++] = LL_SPI_ReceiveData16(SpiHandle.Instance);
-      ubNbDataToReceive--;
+        /* Transfer error in transmission process */
+        Error_Handler();
     }
-  }
+    else
+    {
+        /* Turn LED2 on: Transfer in transmission/Reception process is correct */
+        BSP_LED_On( LED2 );
+    }
 
-  /*##-3- Compare the sent and received buffers ##############################*/
-  /* Compare the sent and received buffers */
-  if (Buffercmp((uint8_t *)aTxBuffer, (uint8_t *)aRxBuffer, COUNTOF(aTxBuffer)))
-  {
-    /* Transfer error in transmission process */
-    Error_Handler();
-  }
-  else
-  {
-    /* Turn LED2 on: Transfer in transmission/Reception process is correct */
-    BSP_LED_On(LED2);
-  }
-
-  /* Infinite loop */
-  while (1)
-  {
-  }
+    /* Infinite loop */
+    while( 1 )
+    {
+    }
 }
 
 /**
   * @brief  System Clock Configuration
-  *         The system Clock is configured as follow : 
+  *         The system Clock is configured as follow :
   *            System Clock source            = PLL (HSE)
   *            SYSCLK(Hz)                     = 72000000
   *            HCLK(Hz)                       = 72000000
@@ -182,40 +184,42 @@ int main(void)
   * @param  None
   * @retval None
   */
-void SystemClock_Config(void)
+void SystemClock_Config( void )
 {
-  RCC_ClkInitTypeDef RCC_ClkInitStruct;
-  RCC_OscInitTypeDef RCC_OscInitStruct;
-  
-  /* Configure PLL ------------------------------------------------------*/
-  /* PLL configuration: PLLCLK = HSE * PLLMUL = 8 * 9 = 72 MHz */
-  /* PREDIV1 configuration: PREDIV1CLK = PLLCLK / HSEPredivValue = 72 / 1 = 72 MHz */
-  /* Enable HSE and activate PLL with HSE as source */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
-  RCC_OscInitStruct.HSEState       = RCC_HSE_BYPASS;
-  RCC_OscInitStruct.HSIState       = RCC_HSI_OFF;
-  RCC_OscInitStruct.PLL.PLLState   = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource  = RCC_PLLSOURCE_HSE;
-  RCC_OscInitStruct.HSEPredivValue     = RCC_HSE_PREDIV_DIV1;
-  RCC_OscInitStruct.PLL.PLLMUL         = RCC_PLL_MUL9;
-  if (HAL_RCC_OscConfig(&RCC_OscInitStruct)!= HAL_OK)
-  {
-    /* Initialization Error */
-    while(1); 
-  }
+    RCC_ClkInitTypeDef RCC_ClkInitStruct;
+    RCC_OscInitTypeDef RCC_OscInitStruct;
 
-  /* Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2 
-     clocks dividers */
-  RCC_ClkInitStruct.ClockType      = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2);
-  RCC_ClkInitStruct.SYSCLKSource   = RCC_SYSCLKSOURCE_PLLCLK;
-  RCC_ClkInitStruct.AHBCLKDivider  = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;  
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2)!= HAL_OK)
-  {
-    /* Initialization Error */
-    while(1); 
-  }
+    /* Configure PLL ------------------------------------------------------*/
+    /* PLL configuration: PLLCLK = HSE * PLLMUL = 8 * 9 = 72 MHz */
+    /* PREDIV1 configuration: PREDIV1CLK = PLLCLK / HSEPredivValue = 72 / 1 = 72 MHz */
+    /* Enable HSE and activate PLL with HSE as source */
+    RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+    RCC_OscInitStruct.HSEState       = RCC_HSE_BYPASS;
+    RCC_OscInitStruct.HSIState       = RCC_HSI_OFF;
+    RCC_OscInitStruct.PLL.PLLState   = RCC_PLL_ON;
+    RCC_OscInitStruct.PLL.PLLSource  = RCC_PLLSOURCE_HSE;
+    RCC_OscInitStruct.HSEPredivValue     = RCC_HSE_PREDIV_DIV1;
+    RCC_OscInitStruct.PLL.PLLMUL         = RCC_PLL_MUL9;
+
+    if( HAL_RCC_OscConfig( &RCC_OscInitStruct ) != HAL_OK )
+    {
+        /* Initialization Error */
+        while( 1 );
+    }
+
+    /* Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2
+       clocks dividers */
+    RCC_ClkInitStruct.ClockType      = ( RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2 );
+    RCC_ClkInitStruct.SYSCLKSource   = RCC_SYSCLKSOURCE_PLLCLK;
+    RCC_ClkInitStruct.AHBCLKDivider  = RCC_SYSCLK_DIV1;
+    RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+    RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
+
+    if( HAL_RCC_ClockConfig( &RCC_ClkInitStruct, FLASH_LATENCY_2 ) != HAL_OK )
+    {
+        /* Initialization Error */
+        while( 1 );
+    }
 }
 
 /**
@@ -223,14 +227,14 @@ void SystemClock_Config(void)
   * @param  None
   * @retval None
   */
-static void Error_Handler(void)
+static void Error_Handler( void )
 {
-  while(1)
-  {
-    /* Toggle LED2 for error */
-    BSP_LED_Toggle(LED2);
-    HAL_Delay(1000);
-  }
+    while( 1 )
+    {
+        /* Toggle LED2 for error */
+        BSP_LED_Toggle( LED2 );
+        HAL_Delay( 1000 );
+    }
 }
 
 
@@ -241,19 +245,20 @@ static void Error_Handler(void)
   * @retval 0  : pBuffer1 identical to pBuffer2
   *         >0 : pBuffer1 differs from pBuffer2
   */
-static uint16_t Buffercmp(uint8_t *pBuffer1, uint8_t *pBuffer2, uint16_t BufferLength)
+static uint16_t Buffercmp( uint8_t *pBuffer1, uint8_t *pBuffer2, uint16_t BufferLength )
 {
-  while (BufferLength--)
-  {
-    if((*pBuffer1) != *pBuffer2)
+    while( BufferLength-- )
     {
-      return BufferLength;
-    }
-    pBuffer1++;
-    pBuffer2++;
-  }
+        if( ( *pBuffer1 ) != *pBuffer2 )
+        {
+            return BufferLength;
+        }
 
-  return 0;
+        pBuffer1++;
+        pBuffer2++;
+    }
+
+    return 0;
 }
 
 #ifdef  USE_FULL_ASSERT
@@ -264,15 +269,15 @@ static uint16_t Buffercmp(uint8_t *pBuffer1, uint8_t *pBuffer2, uint16_t BufferL
   * @param  line: assert_param error line source number
   * @retval None
   */
-void assert_failed(uint8_t *file, uint32_t line)
+void assert_failed( uint8_t *file, uint32_t line )
 {
-  /* User can add his own implementation to report the file name and line number,
-     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+    /* User can add his own implementation to report the file name and line number,
+       ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
-  /* Infinite loop */
-  while (1)
-  {
-  }
+    /* Infinite loop */
+    while( 1 )
+    {
+    }
 }
 #endif
 

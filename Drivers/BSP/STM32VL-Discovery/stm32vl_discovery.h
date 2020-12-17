@@ -34,64 +34,64 @@
   *
   ******************************************************************************
   */
-  
+
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32VL_DISCOVERY_H
 #define __STM32VL_DISCOVERY_H
 
 #ifdef __cplusplus
- extern "C" {
-#endif 
+extern "C" {
+#endif
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f1xx_hal.h"
 
 /** @addtogroup BSP
   * @{
-  */ 
+  */
 
 /** @addtogroup STM32VL_DISCOVERY
   * @{
-  */ 
-  
+  */
+
 /** @defgroup STM32VL_DISCOVERY_Exported_Types STM32VL DISCOVERY Exported Types
   * @{
   */
-typedef enum 
+typedef enum
 {
-  LED3 = 0,
-  LED4 = 1,
-  
-  LED_GREEN = LED3,
-  LED_BLUE  = LED4
-    
+    LED3 = 0,
+    LED4 = 1,
+
+    LED_GREEN = LED3,
+    LED_BLUE  = LED4
+
 } Led_TypeDef;
 
-typedef enum 
+typedef enum
 {
-  BUTTON_USER = 0,
+    BUTTON_USER = 0,
 } Button_TypeDef;
 
-typedef enum 
-{  
-  BUTTON_MODE_GPIO = 0,
-  BUTTON_MODE_EXTI = 1
+typedef enum
+{
+    BUTTON_MODE_GPIO = 0,
+    BUTTON_MODE_EXTI = 1
 } ButtonMode_TypeDef;
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup STM32VL_DISCOVERY_Exported_Constants STM32VL DISCOVERY Exported Constants
   * @{
-  */ 
+  */
 
-/** 
-  * @brief  Define for STM32VL-Discovery board  
-  */ 
+/**
+  * @brief  Define for STM32VL-Discovery board
+  */
 #if !defined (USE_STM32VL_DISCO)
- #define USE_STM32VL_DISCO
+#define USE_STM32VL_DISCO
 #endif
-  
+
 /** @defgroup STM32VL_DISCOVERY_LED STM32VL DISCOVERY LED
   * @{
   */
@@ -99,13 +99,13 @@ typedef enum
 
 #define LED3_PIN                         GPIO_PIN_9           /* PC.09 */
 #define LED3_GPIO_PORT                   GPIOC
-#define LED3_GPIO_CLK_ENABLE()           __HAL_RCC_GPIOC_CLK_ENABLE()  
-#define LED3_GPIO_CLK_DISABLE()          __HAL_RCC_GPIOC_CLK_DISABLE()  
+#define LED3_GPIO_CLK_ENABLE()           __HAL_RCC_GPIOC_CLK_ENABLE()
+#define LED3_GPIO_CLK_DISABLE()          __HAL_RCC_GPIOC_CLK_DISABLE()
 
 #define LED4_PIN                         GPIO_PIN_8           /* PC.08 */
 #define LED4_GPIO_PORT                   GPIOC
-#define LED4_GPIO_CLK_ENABLE()           __HAL_RCC_GPIOC_CLK_ENABLE()  
-#define LED4_GPIO_CLK_DISABLE()          __HAL_RCC_GPIOC_CLK_DISABLE()  
+#define LED4_GPIO_CLK_ENABLE()           __HAL_RCC_GPIOC_CLK_ENABLE()
+#define LED4_GPIO_CLK_DISABLE()          __HAL_RCC_GPIOC_CLK_DISABLE()
 
 #define LEDx_GPIO_CLK_ENABLE(__INDEX__)   do { if((__INDEX__) == 0) LED3_GPIO_CLK_ENABLE(); \
                                                else LED4_GPIO_CLK_ENABLE(); } while(0)
@@ -114,10 +114,10 @@ typedef enum
 /**
   * @}
   */
-  
+
 /** @defgroup STM32VL_DISCOVERY_BUTTON STM32VL DISCOVERY BUTTON
   * @{
-  */  
+  */
 #define BUTTONn                          1
 /**
  * @brief Key push-button
@@ -134,36 +134,36 @@ typedef enum
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
-  
+  */
+
 /** @addtogroup STM32VL_DISCOVERY_Exported_Functions
   * @{
-  */ 
-uint32_t  BSP_GetVersion(void);
-void      BSP_LED_Init(Led_TypeDef Led);
-void      BSP_LED_On(Led_TypeDef Led);
-void      BSP_LED_Off(Led_TypeDef Led);
-void      BSP_LED_Toggle(Led_TypeDef Led);
-void      BSP_PB_Init(Button_TypeDef Button, ButtonMode_TypeDef Mode);
-uint32_t  BSP_PB_GetState(Button_TypeDef Button);
+  */
+uint32_t  BSP_GetVersion( void );
+void      BSP_LED_Init( Led_TypeDef Led );
+void      BSP_LED_On( Led_TypeDef Led );
+void      BSP_LED_Off( Led_TypeDef Led );
+void      BSP_LED_Toggle( Led_TypeDef Led );
+void      BSP_PB_Init( Button_TypeDef Button, ButtonMode_TypeDef Mode );
+uint32_t  BSP_PB_GetState( Button_TypeDef Button );
 /**
   * @}
   */
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
-  
+  */
+
 #ifdef __cplusplus
 }
 #endif
-  
+
 #endif /* __STM32VL_DISCOVERY_H */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

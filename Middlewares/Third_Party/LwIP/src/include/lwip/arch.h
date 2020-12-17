@@ -38,11 +38,11 @@
 #define LWIP_HDR_ARCH_H
 
 #ifndef LITTLE_ENDIAN
-#define LITTLE_ENDIAN 1234
+    #define LITTLE_ENDIAN 1234
 #endif
 
 #ifndef BIG_ENDIAN
-#define BIG_ENDIAN 4321
+    #define BIG_ENDIAN 4321
 #endif
 
 #include "arch/cc.h"
@@ -62,28 +62,28 @@
  * Allowed values: LITTLE_ENDIAN and BIG_ENDIAN
  */
 #ifndef BYTE_ORDER
-#define BYTE_ORDER LITTLE_ENDIAN
+    #define BYTE_ORDER LITTLE_ENDIAN
 #endif
 
 /** Define random number generator function of your system */
 #ifdef __DOXYGEN__
-#define LWIP_RAND() ((u32_t)rand())
+    #define LWIP_RAND() ((u32_t)rand())
 #endif
 
 /** Platform specific diagnostic output.\n
  * Note the default implementation pulls in printf, which may
- * in turn pull in a lot of standard libary code. In resource-constrained 
+ * in turn pull in a lot of standard libary code. In resource-constrained
  * systems, this should be defined to something less resource-consuming.
  */
 #ifndef LWIP_PLATFORM_DIAG
-#define LWIP_PLATFORM_DIAG(x) do {printf x;} while(0)
-#include <stdio.h>
-#include <stdlib.h>
+    #define LWIP_PLATFORM_DIAG(x) do {printf x;} while(0)
+    #include <stdio.h>
+    #include <stdlib.h>
 #endif
 
 /** Platform specific assertion handling.\n
  * Note the default implementation pulls in printf, fflush and abort, which may
- * in turn pull in a lot of standard libary code. In resource-constrained 
+ * in turn pull in a lot of standard libary code. In resource-constrained
  * systems, this should be defined to something less resource-consuming.
  */
 #ifndef LWIP_PLATFORM_ASSERT
@@ -98,11 +98,11 @@
  * by yourself in this case.
  */
 #ifndef LWIP_NO_STDDEF_H
-#define LWIP_NO_STDDEF_H 0
+    #define LWIP_NO_STDDEF_H 0
 #endif
 
 #if !LWIP_NO_STDDEF_H
-#include <stddef.h> /* for size_t */
+    #include <stddef.h> /* for size_t */
 #endif
 
 /** Define this to 1 in arch/cc.h of your port if your compiler does not provide
@@ -110,19 +110,19 @@
  * lwip/arch.h yourself in this case (u8_t, u16_t...).
  */
 #ifndef LWIP_NO_STDINT_H
-#define LWIP_NO_STDINT_H 0
+    #define LWIP_NO_STDINT_H 0
 #endif
 
 /* Define generic types used in lwIP */
 #if !LWIP_NO_STDINT_H
-#include <stdint.h>
-typedef uint8_t   u8_t;
-typedef int8_t    s8_t;
-typedef uint16_t  u16_t;
-typedef int16_t   s16_t;
-typedef uint32_t  u32_t;
-typedef int32_t   s32_t;
-typedef uintptr_t mem_ptr_t;
+    #include <stdint.h>
+    typedef uint8_t   u8_t;
+    typedef int8_t    s8_t;
+    typedef uint16_t  u16_t;
+    typedef int16_t   s16_t;
+    typedef uint32_t  u32_t;
+    typedef int32_t   s32_t;
+    typedef uintptr_t mem_ptr_t;
 #endif
 
 /** Define this to 1 in arch/cc.h of your port if your compiler does not provide
@@ -130,36 +130,36 @@ typedef uintptr_t mem_ptr_t;
  * lwip/arch.h yourself in this case (X8_F, U16_F...).
  */
 #ifndef LWIP_NO_INTTYPES_H
-#define LWIP_NO_INTTYPES_H 0
+    #define LWIP_NO_INTTYPES_H 0
 #endif
 
 /* Define (sn)printf formatters for these lwIP types */
 #if !LWIP_NO_INTTYPES_H
-#include <inttypes.h>
-#ifndef X8_F
-#define X8_F  "02" PRIx8
-#endif
-#ifndef U16_F
-#define U16_F PRIu16
-#endif
-#ifndef S16_F
-#define S16_F PRId16
-#endif
-#ifndef X16_F
-#define X16_F PRIx16
-#endif
-#ifndef U32_F
-#define U32_F PRIu32
-#endif
-#ifndef S32_F
-#define S32_F PRId32
-#endif
-#ifndef X32_F
-#define X32_F PRIx32
-#endif
-#ifndef SZT_F
-#define SZT_F PRIuPTR
-#endif
+    #include <inttypes.h>
+    #ifndef X8_F
+        #define X8_F  "02" PRIx8
+    #endif
+    #ifndef U16_F
+        #define U16_F PRIu16
+    #endif
+    #ifndef S16_F
+        #define S16_F PRId16
+    #endif
+    #ifndef X16_F
+        #define X16_F PRIx16
+    #endif
+    #ifndef U32_F
+        #define U32_F PRIu32
+    #endif
+    #ifndef S32_F
+        #define S32_F PRId32
+    #endif
+    #ifndef X32_F
+        #define X32_F PRIx32
+    #endif
+    #ifndef SZT_F
+        #define SZT_F PRIuPTR
+    #endif
 #endif
 
 /** Define this to 1 in arch/cc.h of your port if your compiler does not provide
@@ -167,29 +167,29 @@ typedef uintptr_t mem_ptr_t;
  * (e.g. INT_MAX).
  */
 #ifndef LWIP_NO_LIMITS_H
-#define LWIP_NO_LIMITS_H 0
+    #define LWIP_NO_LIMITS_H 0
 #endif
 
 /* Include limits.h? */
 #if !LWIP_NO_LIMITS_H
-#include <limits.h>
+    #include <limits.h>
 #endif
 
 /** C++ const_cast<target_type>(val) equivalent to remove constness from a value (GCC -Wcast-qual) */
 #ifndef LWIP_CONST_CAST
-#define LWIP_CONST_CAST(target_type, val) ((target_type)((ptrdiff_t)val))
+    #define LWIP_CONST_CAST(target_type, val) ((target_type)((ptrdiff_t)val))
 #endif
 
 /** Get rid of alignment cast warnings (GCC -Wcast-align) */
 #ifndef LWIP_ALIGNMENT_CAST
-#define LWIP_ALIGNMENT_CAST(target_type, val) LWIP_CONST_CAST(target_type, val)
+    #define LWIP_ALIGNMENT_CAST(target_type, val) LWIP_CONST_CAST(target_type, val)
 #endif
 
 /** Get rid of warnings related to pointer-to-numeric and vice-versa casts,
  * e.g. "conversion from 'u8_t' to 'void *' of greater size"
  */
 #ifndef LWIP_PTR_NUMERIC_CAST
-#define LWIP_PTR_NUMERIC_CAST(target_type, val) LWIP_CONST_CAST(target_type, val)
+    #define LWIP_PTR_NUMERIC_CAST(target_type, val) LWIP_CONST_CAST(target_type, val)
 #endif
 
 /** Allocates a memory buffer of specified size that is of sufficient size to align
@@ -203,7 +203,7 @@ typedef uintptr_t mem_ptr_t;
  * \#define LWIP_DECLARE_MEMORY_ALIGNED(variable_name, size) u32_t variable_name[(size + sizeof(u32_t) - 1) / sizeof(u32_t)]
  */
 #ifndef LWIP_DECLARE_MEMORY_ALIGNED
-#define LWIP_DECLARE_MEMORY_ALIGNED(variable_name, size) u8_t variable_name[LWIP_MEM_ALIGN_BUFFER(size)]
+    #define LWIP_DECLARE_MEMORY_ALIGNED(variable_name, size) u8_t variable_name[LWIP_MEM_ALIGN_BUFFER(size)]
 #endif
 
 /** Calculate memory size for an aligned buffer - returns the next highest
@@ -211,7 +211,7 @@ typedef uintptr_t mem_ptr_t;
  * LWIP_MEM_ALIGN_SIZE(4) will both yield 4 for MEM_ALIGNMENT == 4).
  */
 #ifndef LWIP_MEM_ALIGN_SIZE
-#define LWIP_MEM_ALIGN_SIZE(size) (((size) + MEM_ALIGNMENT - 1U) & ~(MEM_ALIGNMENT-1U))
+    #define LWIP_MEM_ALIGN_SIZE(size) (((size) + MEM_ALIGNMENT - 1U) & ~(MEM_ALIGNMENT-1U))
 #endif
 
 /** Calculate safe memory size for an aligned buffer when using an unaligned
@@ -219,14 +219,14 @@ typedef uintptr_t mem_ptr_t;
  * start (e.g. if buffer is u8_t[] and actual data will be u32_t*)
  */
 #ifndef LWIP_MEM_ALIGN_BUFFER
-#define LWIP_MEM_ALIGN_BUFFER(size) (((size) + MEM_ALIGNMENT - 1U))
+    #define LWIP_MEM_ALIGN_BUFFER(size) (((size) + MEM_ALIGNMENT - 1U))
 #endif
 
 /** Align a memory pointer to the alignment defined by MEM_ALIGNMENT
  * so that ADDR % MEM_ALIGNMENT == 0
  */
 #ifndef LWIP_MEM_ALIGN
-#define LWIP_MEM_ALIGN(addr) ((void *)(((mem_ptr_t)(addr) + MEM_ALIGNMENT - 1) & ~(mem_ptr_t)(MEM_ALIGNMENT-1)))
+    #define LWIP_MEM_ALIGN(addr) ((void *)(((mem_ptr_t)(addr) + MEM_ALIGNMENT - 1) & ~(mem_ptr_t)(MEM_ALIGNMENT-1)))
 #endif
 
 #ifdef __cplusplus

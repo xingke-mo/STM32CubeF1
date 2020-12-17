@@ -49,7 +49,7 @@
  * If this is not defined, netbiosns_set_name() can be called at runtime to change the name.
  */
 #ifdef __DOXYGEN__
-#define NETBIOS_LWIP_NAME "NETBIOSLWIPDEV"
+    #define NETBIOS_LWIP_NAME "NETBIOSLWIPDEV"
 #endif
 
 /**

@@ -26,14 +26,14 @@
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
-/* User can use this section to tailor USARTx/UARTx instance used and associated 
+/* User can use this section to tailor USARTx/UARTx instance used and associated
    resources */
 /* Definition for USARTx clock resources */
 #define USARTx                           USART2
 #define USARTx_CLK_ENABLE()              __HAL_RCC_USART2_CLK_ENABLE();
 #define DMAx_CLK_ENABLE()                __HAL_RCC_DMA1_CLK_ENABLE()
 #define USARTx_RX_GPIO_CLK_ENABLE()      __HAL_RCC_GPIOD_CLK_ENABLE()
-#define USARTx_TX_GPIO_CLK_ENABLE()      __HAL_RCC_GPIOD_CLK_ENABLE() 
+#define USARTx_TX_GPIO_CLK_ENABLE()      __HAL_RCC_GPIOD_CLK_ENABLE()
 
 #define USARTx_FORCE_RESET()             __HAL_RCC_USART2_FORCE_RESET()
 #define USARTx_RELEASE_RESET()           __HAL_RCC_USART2_RELEASE_RESET()
@@ -42,14 +42,14 @@
 #define USARTx_TX_PIN                    GPIO_PIN_5
 #define USARTx_TX_GPIO_PORT              GPIOD
 #define USARTx_RX_PIN                    GPIO_PIN_6
-#define USARTx_RX_GPIO_PORT              GPIOD 
+#define USARTx_RX_GPIO_PORT              GPIOD
 
 /* Definition for USARTx's NVIC: used for receiving data over Rx pin */
 #define USARTx_IRQn                      USART2_IRQn
 #define USARTx_IRQHandler                USART2_IRQHandler
 
 /* Definition for USARTx's DMA: used for transmitting data over Tx pin */
-#define USARTx_TX_DMA_STREAM             DMA1_Channel7  
+#define USARTx_TX_DMA_STREAM             DMA1_Channel7
 #define USARTx_DMA_TX_IRQHandler         DMA1_Channel7_IRQHandler
 #define USARTx_DMA_TX_IRQn               DMA1_Channel7_IRQn
 

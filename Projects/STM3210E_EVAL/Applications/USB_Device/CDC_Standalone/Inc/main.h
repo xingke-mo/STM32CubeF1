@@ -1,6 +1,6 @@
 /**
   ******************************************************************************
-  * @file    USB_Device/CDC_Standalone/Inc/main.h 
+  * @file    USB_Device/CDC_Standalone/Inc/main.h
   * @author  MCD Application Team
   * @brief   Header for main.c module
   ******************************************************************************
@@ -27,15 +27,15 @@
 #include "usbd_core.h"
 #include "stm32f1xx_hal_pcd.h"
 #include "usbd_desc.h"
-#include "usbd_cdc.h" 
+#include "usbd_cdc.h"
 #include "usbd_cdc_interface.h"
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
-void Toggle_Leds(void);
-void Error_Handler(void);
+void Toggle_Leds( void );
+void Error_Handler( void );
 
 #endif /* __MAIN_H */
 

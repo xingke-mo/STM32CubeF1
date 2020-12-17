@@ -48,8 +48,9 @@ extern "C" {
 
 /** This is the aligned version of ip4_addr_t,
    used as local variable, on the stack, etc. */
-struct ip4_addr {
-  u32_t addr;
+struct ip4_addr
+{
+    u32_t addr;
 };
 
 /** ip4_addr_t uses a struct for convenience only, so that the same defines can
@@ -64,8 +65,9 @@ typedef struct ip4_addr ip4_addr_t;
 #  include "arch/bpstruct.h"
 #endif
 PACK_STRUCT_BEGIN
-struct ip4_addr2 {
-  PACK_STRUCT_FIELD(u16_t addrw[2]);
+struct ip4_addr2
+{
+    PACK_STRUCT_FIELD( u16_t addrw[2] );
 } PACK_STRUCT_STRUCT;
 PACK_STRUCT_END
 #ifdef PACK_STRUCT_USE_INCLUDES
@@ -171,10 +173,10 @@ struct netif;
 #define ip4_addr_isany(addr1) ((addr1) == NULL || ip4_addr_isany_val(*(addr1)))
 
 #define ip4_addr_isbroadcast(addr1, netif) ip4_addr_isbroadcast_u32((addr1)->addr, netif)
-u8_t ip4_addr_isbroadcast_u32(u32_t addr, const struct netif *netif);
+u8_t ip4_addr_isbroadcast_u32( u32_t addr, const struct netif *netif );
 
 #define ip_addr_netmask_valid(netmask) ip4_addr_netmask_valid((netmask)->addr)
-u8_t ip4_addr_netmask_valid(u32_t netmask);
+u8_t ip4_addr_netmask_valid( u32_t netmask );
 
 #define ip4_addr_ismulticast(addr1) (((addr1)->addr & PP_HTONL(0xf0000000UL)) == PP_HTONL(0xe0000000UL))
 
@@ -212,11 +214,11 @@ u8_t ip4_addr_netmask_valid(u32_t netmask);
 /** For backwards compatibility */
 #define ip_ntoa(ipaddr)  ipaddr_ntoa(ipaddr)
 
-u32_t ipaddr_addr(const char *cp);
-int ip4addr_aton(const char *cp, ip4_addr_t *addr);
+u32_t ipaddr_addr( const char *cp );
+int ip4addr_aton( const char *cp, ip4_addr_t *addr );
 /** returns ptr to static buffer; not reentrant! */
-char *ip4addr_ntoa(const ip4_addr_t *addr);
-char *ip4addr_ntoa_r(const ip4_addr_t *addr, char *buf, int buflen);
+char *ip4addr_ntoa( const ip4_addr_t *addr );
+char *ip4addr_ntoa_r( const ip4_addr_t *addr, char *buf, int buflen );
 
 #ifdef __cplusplus
 }

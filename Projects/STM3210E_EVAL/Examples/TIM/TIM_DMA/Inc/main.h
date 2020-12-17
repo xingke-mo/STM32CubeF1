@@ -42,7 +42,7 @@
 #define GPIO_PIN_CHANNEL3                GPIO_PIN_10
 
 
-#define GPIO_AF_TIMx                     
+#define GPIO_AF_TIMx
 
 /* Definition for TIMx's DMA */
 #define TIMx_CC3_DMA_INST                DMA1_Channel6

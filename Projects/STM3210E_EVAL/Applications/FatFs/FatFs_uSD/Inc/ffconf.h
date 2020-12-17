@@ -3,10 +3,10 @@
 /---------------------------------------------------------------------------*/
 
 #ifndef _FFCONF
-#define _FFCONF 32020	/* Revision ID */
+#define _FFCONF 32020   /* Revision ID */
 
 /*-----------------------------------------------------------------------------/
-/ Additional user header to be used  
+/ Additional user header to be used
 /-----------------------------------------------------------------------------*/
 #include "stm32f1xx_hal.h"
 #include "stm3210e_eval_sd.h"
@@ -53,11 +53,11 @@
 /  f_findfirst() and f_findnext(). (0:Disable or 1:Enable) */
 
 
-#define	_USE_MKFS               1
+#define _USE_MKFS               1
 /* This option switches f_mkfs() function. (0:Disable or 1:Enable) */
 
 
-#define	_USE_FASTSEEK           1
+#define _USE_FASTSEEK           1
 /* This option switches fast seek feature. (0:Disable or 1:Enable) */
 
 
@@ -66,7 +66,7 @@
 /  (0:Disable or 1:Enable) */
 
 
-#define	_USE_FORWARD            0
+#define _USE_FORWARD            0
 /* This option switches f_forward() function. (0:Disable or 1:Enable)
 /  To enable it, also _FS_TINY need to be set to 1. */
 
@@ -78,7 +78,7 @@
 /  before being processed by the DMA . Otherwise (DMA not used), this define must
 /  be set to 1 to avoid Data alignment and improve the performance.
 /  Please note that if _USE_BUFF_WO_ALIGNMENT is set to 1 and an unaligned 32bits
-/  buffer is forwarded to the FatFs Write/Read functions, an error will be returned. 
+/  buffer is forwarded to the FatFs Write/Read functions, an error will be returned.
 /  (0: default value or 1: unaligned buffer return an error). */
 
 
@@ -118,7 +118,7 @@
 /   1    - ASCII (No extended character. Valid for only non-LFN configuration.) */
 
 
-#define	_USE_LFN                0
+#define _USE_LFN                0
 #define _MAX_LFN     255  /* Maximum LFN length to handle (12 to 255) */
 /* The _USE_LFN option switches the LFN feature.
 /
@@ -179,7 +179,7 @@
 /  the drive ID strings are: A-Z and 0-9. */
 
 
-#define	_MULTI_PARTITION        0
+#define _MULTI_PARTITION        0
 /* This option switches multi-partition feature. By default (0), each logical drive
 /  number is bound to the same physical drive number and only an FAT volume found on
 /  the physical drive will be mounted. When multi-partition feature is enabled (1),
@@ -187,8 +187,8 @@
 /  listed in the VolToPart[]. Also f_fdisk() funciton will be available. */
 
 
-#define	_MIN_SS                 512
-#define	_MAX_SS                 512
+#define _MIN_SS                 512
+#define _MAX_SS                 512
 /* These options configure the range of sector size to be supported. (512, 1024,
 /  2048 or 4096) Always set both 512 for most systems, all type of memory cards and
 /  harddisk. But a larger value may be required for on-board flash memory and some
@@ -197,7 +197,7 @@
 /  disk_ioctl() function. */
 
 
-#define	_USE_TRIM                0
+#define _USE_TRIM                0
 /* This option switches ATA-TRIM feature. (0:Disable or 1:Enable)
 /  To enable Trim feature, also CTRL_TRIM command should be implemented to the
 /  disk_ioctl() function. */
@@ -220,21 +220,21 @@
 / System Configurations
 /---------------------------------------------------------------------------*/
 
-#define _FS_NORTC	1
-#define _NORTC_MON	5
-#define _NORTC_MDAY	1
-#define _NORTC_YEAR	2015
+#define _FS_NORTC   1
+#define _NORTC_MON  5
+#define _NORTC_MDAY 1
+#define _NORTC_YEAR 2015
 /* The _FS_NORTC option switches timestamp feature. If the system does not have
 /  an RTC function or valid timestamp is not needed, set _FS_NORTC to 1 to disable
 /  the timestamp feature. All objects modified by FatFs will have a fixed timestamp
 /  defined by _NORTC_MON, _NORTC_MDAY and _NORTC_YEAR.
-/  When timestamp feature is enabled (_FS_NORTC	== 0), get_fattime() function need
+/  When timestamp feature is enabled (_FS_NORTC == 0), get_fattime() function need
 /  to be added to the project to read current time form RTC. _NORTC_MON,
-/  _NORTC_MDAY and _NORTC_YEAR have no effect. 
+/  _NORTC_MDAY and _NORTC_YEAR have no effect.
 /  These options have no effect at read-only configuration (_FS_READONLY == 1). */
 
 
-#define	_FS_LOCK                2
+#define _FS_LOCK                2
 /* The _FS_LOCK option switches file lock feature to control duplicated file open
 /  and illegal operation to open objects. This option must be 0 when _FS_READONLY
 /  is 1.
@@ -248,7 +248,7 @@
 
 #define _FS_REENTRANT           0
 #define _FS_TIMEOUT             1000
-#define	_SYNC_t                 0
+#define _SYNC_t                 0
 /* The _FS_REENTRANT option switches the re-entrancy (thread safe) of the FatFs
 /  module itself. Note that regardless of this option, file access to different
 /  volume is always re-entrant and volume control functions, f_mount(), f_mkfs()

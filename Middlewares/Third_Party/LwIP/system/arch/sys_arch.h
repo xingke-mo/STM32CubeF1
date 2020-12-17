@@ -35,7 +35,7 @@
 #include "lwip/opt.h"
 
 #if (NO_SYS != 0)
-#error "NO_SYS need to be set to 0 to use threaded API"
+    #error "NO_SYS need to be set to 0 to use threaded API"
 #endif
 
 #include "cmsis_os.h"

@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
-  * @file    EEPROM_Emulation/inc/eeprom.h 
+  * @file    EEPROM_Emulation/inc/eeprom.h
   * @author  MCD Application Team
-  * @brief   This file contains all the functions prototypes for the EEPROM 
+  * @brief   This file contains all the functions prototypes for the EEPROM
   *          emulation firmware library.
   ******************************************************************************
   * @attention
@@ -196,9 +196,9 @@
 /* Exported types ------------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
-uint16_t EE_Init(void);
-uint16_t EE_ReadVariable(uint16_t VirtAddress, uint16_t* Data);
-uint16_t EE_WriteVariable(uint16_t VirtAddress, uint16_t Data);
+uint16_t EE_Init( void );
+uint16_t EE_ReadVariable( uint16_t VirtAddress, uint16_t *Data );
+uint16_t EE_WriteVariable( uint16_t VirtAddress, uint16_t Data );
 
 #endif /* __EEPROM_H */
 

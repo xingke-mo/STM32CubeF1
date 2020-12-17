@@ -69,15 +69,15 @@
 
 
 #if defined(ADC_TRIGGER_FROM_TIMER)
-/* ## Definition of TIM related resources ################################### */
-/* Definition of TIMx clock resources */
-#define TIMx                            TIM3    /* Caution: Timer instance must be on APB1 (clocked by PCLK1) due to frequency computation in function "TIM_Config()" */
-#define TIMx_CLK_ENABLE()               __HAL_RCC_TIM3_CLK_ENABLE()
+    /* ## Definition of TIM related resources ################################### */
+    /* Definition of TIMx clock resources */
+    #define TIMx                            TIM3    /* Caution: Timer instance must be on APB1 (clocked by PCLK1) due to frequency computation in function "TIM_Config()" */
+    #define TIMx_CLK_ENABLE()               __HAL_RCC_TIM3_CLK_ENABLE()
 
-#define TIMx_FORCE_RESET()              __HAL_RCC_TIM3_FORCE_RESET()
-#define TIMx_RELEASE_RESET()            __HAL_RCC_TIM3_RELEASE_RESET()
+    #define TIMx_FORCE_RESET()              __HAL_RCC_TIM3_FORCE_RESET()
+    #define TIMx_RELEASE_RESET()            __HAL_RCC_TIM3_RELEASE_RESET()
 
-#define ADC_EXTERNALTRIGCONV_Tx_TRGO    ADC_EXTERNALTRIGCONV_T3_TRGO
+    #define ADC_EXTERNALTRIGCONV_Tx_TRGO    ADC_EXTERNALTRIGCONV_T3_TRGO
 
 #endif /* ADC_TRIGGER_FROM_TIMER */
 

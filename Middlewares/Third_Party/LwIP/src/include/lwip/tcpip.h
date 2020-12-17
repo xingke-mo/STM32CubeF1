@@ -65,36 +65,36 @@ struct pbuf;
 struct netif;
 
 /** Function prototype for the init_done function passed to tcpip_init */
-typedef void (*tcpip_init_done_fn)(void *arg);
+typedef void ( *tcpip_init_done_fn )( void *arg );
 /** Function prototype for functions passed to tcpip_callback() */
-typedef void (*tcpip_callback_fn)(void *ctx);
+typedef void ( *tcpip_callback_fn )( void *ctx );
 
 /* Forward declarations */
 struct tcpip_callback_msg;
 
-void   tcpip_init(tcpip_init_done_fn tcpip_init_done, void *arg);
+void   tcpip_init( tcpip_init_done_fn tcpip_init_done, void *arg );
 
-err_t  tcpip_inpkt(struct pbuf *p, struct netif *inp, netif_input_fn input_fn);
-err_t  tcpip_input(struct pbuf *p, struct netif *inp);
+err_t  tcpip_inpkt( struct pbuf *p, struct netif *inp, netif_input_fn input_fn );
+err_t  tcpip_input( struct pbuf *p, struct netif *inp );
 
-err_t  tcpip_callback_with_block(tcpip_callback_fn function, void *ctx, u8_t block);
+err_t  tcpip_callback_with_block( tcpip_callback_fn function, void *ctx, u8_t block );
 /**
  * @ingroup lwip_os
  * @see tcpip_callback_with_block
  */
 #define tcpip_callback(f, ctx)  tcpip_callback_with_block(f, ctx, 1)
 
-struct tcpip_callback_msg* tcpip_callbackmsg_new(tcpip_callback_fn function, void *ctx);
-void   tcpip_callbackmsg_delete(struct tcpip_callback_msg* msg);
-err_t  tcpip_trycallback(struct tcpip_callback_msg* msg);
+struct tcpip_callback_msg *tcpip_callbackmsg_new( tcpip_callback_fn function, void *ctx );
+void   tcpip_callbackmsg_delete( struct tcpip_callback_msg *msg );
+err_t  tcpip_trycallback( struct tcpip_callback_msg *msg );
 
 /* free pbufs or heap memory from another context without blocking */
-err_t  pbuf_free_callback(struct pbuf *p);
-err_t  mem_free_callback(void *m);
+err_t  pbuf_free_callback( struct pbuf *p );
+err_t  mem_free_callback( void *m );
 
 #if LWIP_TCPIP_TIMEOUT && LWIP_TIMERS
-err_t  tcpip_timeout(u32_t msecs, sys_timeout_handler h, void *arg);
-err_t  tcpip_untimeout(sys_timeout_handler h, void *arg);
+err_t  tcpip_timeout( u32_t msecs, sys_timeout_handler h, void *arg );
+err_t  tcpip_untimeout( sys_timeout_handler h, void *arg );
 #endif /* LWIP_TCPIP_TIMEOUT && LWIP_TIMERS */
 
 #ifdef __cplusplus

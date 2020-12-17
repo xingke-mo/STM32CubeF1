@@ -1,6 +1,6 @@
 /**
   ******************************************************************************
-  * @file    USB_Host/CDC_Standalone/Src/cdc_receive.c 
+  * @file    USB_Host/CDC_Standalone/Src/cdc_receive.c
   * @author  MCD Application Team
   * @brief   CDC Receive state machine
   ******************************************************************************
@@ -24,12 +24,13 @@
 #define RX_BUFF_SIZE   0x400    /* Max Received data 1KB */
 
 /* Private typedef ----------------------------------------------------------- */
-uint8_t *DEMO_RECEIVE_menu[] = {
-  (uint8_t *)
+uint8_t *DEMO_RECEIVE_menu[] =
+{
+    ( uint8_t * )
     "      1 - Start receiving data                                              ",
-  (uint8_t *)
+    ( uint8_t * )
     "      2 - Return                                                            ",
-  (uint8_t *)
+    ( uint8_t * )
     "                                                                            ",
 };
 
@@ -41,87 +42,90 @@ uint16_t xPos, yLinePos;
 uint8_t CDC_RX_Buffer[RX_BUFF_SIZE];
 
 /* Private functions --------------------------------------------------------- */
-static void DumpReceivedData(void);
-static void ReturnFromReceiveMenu(void);
+static void DumpReceivedData( void );
+static void ReturnFromReceiveMenu( void );
 
 /**
-  * @brief  Handles CDC Receive Menu. 
+  * @brief  Handles CDC Receive Menu.
   * @param  None
   * @retval None
   */
-void CDC_Handle_Receive_Menu(void)
+void CDC_Handle_Receive_Menu( void )
 {
-  switch (CdcDemo.Receive_state)
-  {
-  case CDC_RECEIVE_IDLE:
-    CdcDemo.Receive_state = CDC_RECEIVE_WAIT;
-    CDC_SelectItem(DEMO_RECEIVE_menu, 0);
-    CdcDemo.select = 0;
-    USBH_CDC_Stop(&hUSBHost);
-    BSP_LCD_SetTextColor(LCD_COLOR_GREEN);
-    BSP_LCD_DisplayStringAtLine(14,
-                                (uint8_t *)
-                                "                                          ");
-    BSP_LCD_DisplayStringAtLine(15,
-                                (uint8_t *)
-                                "Use [Buttons Left/Right] to scroll up/down");
-    break;
-
-  case CDC_RECEIVE_WAIT:
-    if (CdcDemo.select != PrevSelect)
+    switch( CdcDemo.Receive_state )
     {
-      PrevSelect = CdcDemo.select;
-      CDC_SelectItem(DEMO_RECEIVE_menu, CdcDemo.select & 0x7F);
-      /* Handle select item */
-      if (CdcDemo.select & 0x80)
-      {
-        switch (CdcDemo.select & 0x7F)
+    case CDC_RECEIVE_IDLE:
+        CdcDemo.Receive_state = CDC_RECEIVE_WAIT;
+        CDC_SelectItem( DEMO_RECEIVE_menu, 0 );
+        CdcDemo.select = 0;
+        USBH_CDC_Stop( &hUSBHost );
+        BSP_LCD_SetTextColor( LCD_COLOR_GREEN );
+        BSP_LCD_DisplayStringAtLine( 14,
+                                     ( uint8_t * )
+                                     "                                          " );
+        BSP_LCD_DisplayStringAtLine( 15,
+                                     ( uint8_t * )
+                                     "Use [Buttons Left/Right] to scroll up/down" );
+        break;
+
+    case CDC_RECEIVE_WAIT:
+        if( CdcDemo.select != PrevSelect )
         {
-        case 0:
-          BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
-          /* Start Reception */
-          LCD_ClearTextZone();
-          BSP_LCD_DisplayStringAtLine(3, (uint8_t *) "Receiving data ...");
-          xPos = 0;
-          yLinePos = 4;
-          memset(CDC_RX_Buffer, 0, RX_BUFF_SIZE);
-          USBH_CDC_Receive(&hUSBHost, CDC_RX_Buffer, RX_BUFF_SIZE);
-          CdcDemo.Receive_state = CDC_RECEIVE_WAIT;
-          break;
+            PrevSelect = CdcDemo.select;
+            CDC_SelectItem( DEMO_RECEIVE_menu, CdcDemo.select & 0x7F );
 
-        case 1:
-          BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
-          USBH_CDC_Stop(&hUSBHost);
-          ReturnFromReceiveMenu();
-          break;
+            /* Handle select item */
+            if( CdcDemo.select & 0x80 )
+            {
+                switch( CdcDemo.select & 0x7F )
+                {
+                case 0:
+                    BSP_LCD_SetTextColor( LCD_COLOR_WHITE );
+                    /* Start Reception */
+                    LCD_ClearTextZone();
+                    BSP_LCD_DisplayStringAtLine( 3, ( uint8_t * ) "Receiving data ..." );
+                    xPos = 0;
+                    yLinePos = 4;
+                    memset( CDC_RX_Buffer, 0, RX_BUFF_SIZE );
+                    USBH_CDC_Receive( &hUSBHost, CDC_RX_Buffer, RX_BUFF_SIZE );
+                    CdcDemo.Receive_state = CDC_RECEIVE_WAIT;
+                    break;
 
-        default:
-          break;
+                case 1:
+                    BSP_LCD_SetTextColor( LCD_COLOR_WHITE );
+                    USBH_CDC_Stop( &hUSBHost );
+                    ReturnFromReceiveMenu();
+                    break;
+
+                default:
+                    break;
+                }
+            }
         }
-      }
-    }
-    break;
 
-  default:
-    break;
-  }
-  CdcDemo.select &= 0x7F;
+        break;
+
+    default:
+        break;
+    }
+
+    CdcDemo.select &= 0x7F;
 }
 
 /**
-  * @brief  Returns from Receive Menu 
+  * @brief  Returns from Receive Menu
   * @param  None
   * @retval None
   */
-static void ReturnFromReceiveMenu(void)
+static void ReturnFromReceiveMenu( void )
 {
-  CdcDemo.state = CDC_DEMO_IDLE;
-  CdcDemo.select = 0;
+    CdcDemo.state = CDC_DEMO_IDLE;
+    CdcDemo.select = 0;
 
-  /* Restore main menu */
-  LCD_ClearTextZone();
-  LCD_LOG_UpdateDisplay();
-  Menu_Init();
+    /* Restore main menu */
+    LCD_ClearTextZone();
+    LCD_LOG_UpdateDisplay();
+    Menu_Init();
 }
 
 /**
@@ -129,10 +133,10 @@ static void ReturnFromReceiveMenu(void)
   * @param  phost: Host handle
   * @retval None
   */
-void USBH_CDC_ReceiveCallback(USBH_HandleTypeDef * phost)
+void USBH_CDC_ReceiveCallback( USBH_HandleTypeDef *phost )
 {
-  DumpReceivedData();
-  USBH_CDC_Receive(&hUSBHost, CDC_RX_Buffer, RX_BUFF_SIZE);
+    DumpReceivedData();
+    USBH_CDC_Receive( &hUSBHost, CDC_RX_Buffer, RX_BUFF_SIZE );
 }
 
 /**
@@ -140,61 +144,64 @@ void USBH_CDC_ReceiveCallback(USBH_HandleTypeDef * phost)
   * @param  data: Keyboard data to be displayed
   * @retval None
   */
-static void DumpReceivedData(void)
+static void DumpReceivedData( void )
 {
-  uint16_t size;
-  uint8_t *ptr = CDC_RX_Buffer;
+    uint16_t size;
+    uint8_t *ptr = CDC_RX_Buffer;
 
-  size = USBH_CDC_GetLastReceivedDataSize(&hUSBHost);
-  BSP_LCD_SetTextColor(LCD_COLOR_YELLOW);
-  while (size--)
-  {
-    if ((*ptr != '\n') && (*ptr != '\r'))
+    size = USBH_CDC_GetLastReceivedDataSize( &hUSBHost );
+    BSP_LCD_SetTextColor( LCD_COLOR_YELLOW );
+
+    while( size-- )
     {
-      if (*ptr == '\t')
-      {
-        BSP_LCD_DisplayChar(xPos, LINE(yLinePos), ' ');
-      }
-      else
-      {
-        BSP_LCD_DisplayChar(xPos, LINE(yLinePos), *ptr);
-      }
-      xPos += 7;
-    }
-    else if (*ptr == '\n')
-    {
-      yLinePos++;
-      xPos = 0;
-    }
+        if( ( *ptr != '\n' ) && ( *ptr != '\r' ) )
+        {
+            if( *ptr == '\t' )
+            {
+                BSP_LCD_DisplayChar( xPos, LINE( yLinePos ), ' ' );
+            }
+            else
+            {
+                BSP_LCD_DisplayChar( xPos, LINE( yLinePos ), *ptr );
+            }
 
-    ptr++;
+            xPos += 7;
+        }
+        else if( *ptr == '\n' )
+        {
+            yLinePos++;
+            xPos = 0;
+        }
 
-    if (xPos > (BSP_LCD_GetXSize() - 7))
-    {
-      xPos = 0;
-      yLinePos++;
+        ptr++;
+
+        if( xPos > ( BSP_LCD_GetXSize() - 7 ) )
+        {
+            xPos = 0;
+            yLinePos++;
+        }
+
+        if( yLinePos > 13 )
+        {
+            BSP_LCD_SetTextColor( LCD_COLOR_GREEN );
+            BSP_LCD_DisplayStringAtLine( 15,
+                                         ( uint8_t * )
+                                         "Use [User Key] to see more data" );
+
+            /* Key Button in polling */
+            while( BSP_PB_GetState( BUTTON_KEY ) != RESET )
+            {
+                /* Wait for User Input */
+            }
+
+            LCD_ClearTextZone();
+            BSP_LCD_SetTextColor( LCD_COLOR_WHITE );
+            BSP_LCD_DisplayStringAtLine( 3, ( uint8_t * ) "Receiving data ..." );
+            BSP_LCD_SetTextColor( LCD_COLOR_YELLOW );
+            xPos = 0;
+            yLinePos = 4;
+        }
     }
-
-    if (yLinePos > 13)
-    {
-      BSP_LCD_SetTextColor(LCD_COLOR_GREEN);
-      BSP_LCD_DisplayStringAtLine(15,
-                                  (uint8_t *)
-                                  "Use [User Key] to see more data");
-      /* Key Button in polling */
-      while (BSP_PB_GetState(BUTTON_KEY) != RESET)
-      {
-        /* Wait for User Input */
-      }
-
-      LCD_ClearTextZone();
-      BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
-      BSP_LCD_DisplayStringAtLine(3, (uint8_t *) "Receiving data ...");
-      BSP_LCD_SetTextColor(LCD_COLOR_YELLOW);
-      xPos = 0;
-      yLinePos = 4;
-    }
-  }
 }
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

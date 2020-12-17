@@ -35,7 +35,7 @@ Purpose     : Configures emWins abilities, fonts etc.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2018 STMicroelectronics. 
+  * <h2><center>&copy; Copyright (c) 2018 STMicroelectronics.
   * All rights reserved.</center></h2>
   *
   * This software component is licensed by ST under Ultimate Liberty license SLA0044,
@@ -45,7 +45,7 @@ Purpose     : Configures emWins abilities, fonts etc.
   *
   ******************************************************************************
   */
- 
+
 #ifndef GUICONF_H
 #define GUICONF_H
 
@@ -60,9 +60,9 @@ Purpose     : Configures emWins abilities, fonts etc.
 *       Multi tasking support
 */
 #ifdef OS_SUPPORT
- #define GUI_OS                    (1)  // Compile with multitasking support
+    #define GUI_OS                    (1)  // Compile with multitasking support
 #else
- #define GUI_OS                    (0)
+    #define GUI_OS                    (0)
 #endif
 
 /*********************************************************************
@@ -70,7 +70,7 @@ Purpose     : Configures emWins abilities, fonts etc.
 *       Configuration of touch support
 */
 #ifndef   GUI_SUPPORT_TOUCH
-  #define GUI_SUPPORT_TOUCH       (1)  // Support touchscreen
+    #define GUI_SUPPORT_TOUCH       (1)  // Support touchscreen
 #endif
 
 /*********************************************************************

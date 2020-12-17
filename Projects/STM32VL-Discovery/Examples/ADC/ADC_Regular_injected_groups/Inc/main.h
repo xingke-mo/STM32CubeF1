@@ -77,35 +77,35 @@
 
 
 #if defined(ADC_TRIGGER_FROM_TIMER)
-/* ## Definition of TIM related resources ################################### */
-/* Definition of TIMx clock resources */
-#define TIMx                            TIM3    /* Caution: Timer instance must be on APB1 (clocked by PCLK1) due to frequency computation in function "TIM_Config()" */
-#define TIMx_CLK_ENABLE()               __HAL_RCC_TIM3_CLK_ENABLE()
+    /* ## Definition of TIM related resources ################################### */
+    /* Definition of TIMx clock resources */
+    #define TIMx                            TIM3    /* Caution: Timer instance must be on APB1 (clocked by PCLK1) due to frequency computation in function "TIM_Config()" */
+    #define TIMx_CLK_ENABLE()               __HAL_RCC_TIM3_CLK_ENABLE()
 
-#define TIMx_FORCE_RESET()              __HAL_RCC_TIM3_FORCE_RESET()
-#define TIMx_RELEASE_RESET()            __HAL_RCC_TIM3_RELEASE_RESET()
+    #define TIMx_FORCE_RESET()              __HAL_RCC_TIM3_FORCE_RESET()
+    #define TIMx_RELEASE_RESET()            __HAL_RCC_TIM3_RELEASE_RESET()
 
-#define ADC_EXTERNALTRIGCONV_Tx_TRGO    ADC_EXTERNALTRIGCONV_T3_TRGO
+    #define ADC_EXTERNALTRIGCONV_Tx_TRGO    ADC_EXTERNALTRIGCONV_T3_TRGO
 
 #endif /* ADC_TRIGGER_FROM_TIMER */
 
 
 #if defined(WAVEFORM_VOLTAGE_GENERATION_FOR_TEST)
-/* ## Definition of DAC related resources ################################### */
-/* Definition of DACx clock resources */
-#define DACx                            DAC
-#define DACx_CLK_ENABLE()               __HAL_RCC_DAC_CLK_ENABLE()
-#define DACx_CHANNEL_GPIO_CLK_ENABLE()  __HAL_RCC_GPIOA_CLK_ENABLE()
+    /* ## Definition of DAC related resources ################################### */
+    /* Definition of DACx clock resources */
+    #define DACx                            DAC
+    #define DACx_CLK_ENABLE()               __HAL_RCC_DAC_CLK_ENABLE()
+    #define DACx_CHANNEL_GPIO_CLK_ENABLE()  __HAL_RCC_GPIOA_CLK_ENABLE()
 
-#define DACx_FORCE_RESET()              __HAL_RCC_DAC_FORCE_RESET()
-#define DACx_RELEASE_RESET()            __HAL_RCC_DAC_RELEASE_RESET()
+    #define DACx_FORCE_RESET()              __HAL_RCC_DAC_FORCE_RESET()
+    #define DACx_RELEASE_RESET()            __HAL_RCC_DAC_RELEASE_RESET()
 
-/* Definition of DACx channels */
-#define DACx_CHANNEL_TO_ADCx_CHANNELa            DAC_CHANNEL_1
+    /* Definition of DACx channels */
+    #define DACx_CHANNEL_TO_ADCx_CHANNELa            DAC_CHANNEL_1
 
-/* Definition of DACx channels pins */
-#define DACx_CHANNEL_TO_ADCx_CHANNELa_PIN        GPIO_PIN_4
-#define DACx_CHANNEL_TO_ADCx_CHANNELa_GPIO_PORT  GPIOA
+    /* Definition of DACx channels pins */
+    #define DACx_CHANNEL_TO_ADCx_CHANNELa_PIN        GPIO_PIN_4
+    #define DACx_CHANNEL_TO_ADCx_CHANNELa_GPIO_PORT  GPIOA
 
 #endif /* WAVEFORM_VOLTAGE_GENERATION_FOR_TEST */
 

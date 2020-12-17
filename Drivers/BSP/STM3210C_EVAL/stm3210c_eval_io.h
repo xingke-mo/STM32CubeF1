@@ -34,16 +34,16 @@
   * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   *
   ******************************************************************************
-  */ 
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM3210C_EVAL_IO_H
 #define __STM3210C_EVAL_IO_H
 
 #ifdef __cplusplus
- extern "C" {
-#endif   
-   
+extern "C" {
+#endif
+
 /* Includes ------------------------------------------------------------------*/
 #include "stm3210c_eval.h"
 #include "../Components/stmpe811/stmpe811.h"
@@ -51,32 +51,32 @@
 
 /** @addtogroup BSP
   * @{
-  */ 
+  */
 
 /** @addtogroup STM3210C_EVAL
   * @{
   */
-    
+
 /** @addtogroup STM3210C_EVAL_IO
   * @{
-  */    
+  */
 
 /* Exported types ------------------------------------------------------------*/
 
 /** @defgroup STM3210C_EVAL_IO_Exported_Types STM3210C EVAL IO Exported Types
   * @{
   */
-typedef enum 
+typedef enum
 {
-  IO_OK       = 0x00,
-  IO_ERROR    = 0x01,
-  IO_TIMEOUT  = 0x02
+    IO_OK       = 0x00,
+    IO_ERROR    = 0x01,
+    IO_TIMEOUT  = 0x02
 
-}IO_StatusTypeDef;
+} IO_StatusTypeDef;
 
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup STM3210C_EVAL_IO_Exported_Constants STM3210C EVAL IO Exported Constants
   * @{
@@ -110,7 +110,7 @@ typedef enum
 
 /**
   * @}
-  */ 
+  */
 
 /* Exported functions --------------------------------------------------------*/
 
@@ -118,13 +118,13 @@ typedef enum
   * @{
   */
 
-uint8_t  BSP_IO_Init(void);
-void     BSP_IO_ITClear(uint32_t IO_Pin);
-uint32_t BSP_IO_ITGetStatus(uint32_t IO_Pin);
-uint8_t  BSP_IO_ConfigPin(uint32_t IO_Pin, IO_ModeTypedef IO_Mode);
-void     BSP_IO_WritePin(uint32_t IO_Pin, uint8_t PinState);
-uint32_t BSP_IO_ReadPin(uint32_t IO_Pin);
-void     BSP_IO_TogglePin(uint32_t IO_Pin);
+uint8_t  BSP_IO_Init( void );
+void     BSP_IO_ITClear( uint32_t IO_Pin );
+uint32_t BSP_IO_ITGetStatus( uint32_t IO_Pin );
+uint8_t  BSP_IO_ConfigPin( uint32_t IO_Pin, IO_ModeTypedef IO_Mode );
+void     BSP_IO_WritePin( uint32_t IO_Pin, uint8_t PinState );
+uint32_t BSP_IO_ReadPin( uint32_t IO_Pin );
+void     BSP_IO_TogglePin( uint32_t IO_Pin );
 
 #ifdef __cplusplus
 }
@@ -133,7 +133,7 @@ void     BSP_IO_TogglePin(uint32_t IO_Pin);
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
@@ -141,9 +141,9 @@ void     BSP_IO_TogglePin(uint32_t IO_Pin);
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */       
+  */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

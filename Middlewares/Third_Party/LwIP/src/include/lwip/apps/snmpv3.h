@@ -56,34 +56,34 @@
  * There is a dummy implementation in snmpv3_dummy.c.
  */
 
-void snmpv3_get_engine_id(const char **id, u8_t *len);
-err_t snmpv3_set_engine_id(const char* id, u8_t len);
+void snmpv3_get_engine_id( const char **id, u8_t *len );
+err_t snmpv3_set_engine_id( const char *id, u8_t len );
 
-u32_t snmpv3_get_engine_boots(void);
-void snmpv3_set_engine_boots(u32_t boots);
+u32_t snmpv3_get_engine_boots( void );
+void snmpv3_set_engine_boots( u32_t boots );
 
-u32_t snmpv3_get_engine_time(void);
-void snmpv3_reset_engine_time(void);
+u32_t snmpv3_get_engine_time( void );
+void snmpv3_reset_engine_time( void );
 
-err_t snmpv3_get_user(const char* username, u8_t *auth_algo, u8_t *auth_key, u8_t *priv_algo, u8_t *priv_key);
+err_t snmpv3_get_user( const char *username, u8_t *auth_algo, u8_t *auth_key, u8_t *priv_algo, u8_t *priv_key );
 
 /* The following functions are provided by the SNMPv3 agent */
 
-void snmpv3_engine_id_changed(void);
+void snmpv3_engine_id_changed( void );
 
 void snmpv3_password_to_key_md5(
     const u8_t *password,     /* IN */
     u8_t        passwordlen,  /* IN */
     const u8_t *engineID,     /* IN  - pointer to snmpEngineID  */
     u8_t        engineLength, /* IN  - length of snmpEngineID */
-    u8_t       *key);         /* OUT - pointer to caller 16-octet buffer */
+    u8_t       *key );        /* OUT - pointer to caller 16-octet buffer */
 
 void snmpv3_password_to_key_sha(
     const u8_t *password,     /* IN */
     u8_t        passwordlen,  /* IN */
     const u8_t *engineID,     /* IN  - pointer to snmpEngineID  */
     u8_t        engineLength, /* IN  - length of snmpEngineID */
-    u8_t       *key);         /* OUT - pointer to caller 20-octet buffer */
+    u8_t       *key );        /* OUT - pointer to caller 20-octet buffer */
 
 #endif
 

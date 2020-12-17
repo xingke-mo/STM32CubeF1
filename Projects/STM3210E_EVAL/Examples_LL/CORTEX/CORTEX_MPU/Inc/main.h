@@ -31,24 +31,24 @@
 #include "stm32f1xx_ll_exti.h"
 #include "stm32f1xx_ll_pwr.h"
 #if defined(USE_FULL_ASSERT)
-#include "stm32_assert.h"
+    #include "stm32_assert.h"
 #endif /* USE_FULL_ASSERT */
 
 /* Exported types ------------------------------------------------------------*/
 /**
  * @brief LED Types Definition
  */
-typedef enum 
+typedef enum
 {
-  LED1 = 0,
-  LED2 = 1,
-  LED3 = 2,
-  LED4 = 3,
+    LED1 = 0,
+    LED2 = 1,
+    LED3 = 2,
+    LED4 = 3,
 
-  LED_GREEN  = LED1,
-  LED_ORANGE = LED2,
-  LED_RED    = LED3,
-  LED_BLUE   = LED4
+    LED_GREEN  = LED1,
+    LED_ORANGE = LED2,
+    LED_RED    = LED3,
+    LED_BLUE   = LED4
 
 } Led_TypeDef;
 /* Exported constants --------------------------------------------------------*/
@@ -83,8 +83,8 @@ typedef enum
 #define USER_BUTTON_GPIO_CLK_ENABLE()           LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOG)
 #define USER_BUTTON_EXTI_LINE                   LL_EXTI_LINE_8
 #define USER_BUTTON_EXTI_IRQn                   EXTI9_5_IRQn
-#define USER_BUTTON_EXTI_LINE_ENABLE()          LL_EXTI_EnableIT_0_31(USER_BUTTON_EXTI_LINE)   
-#define USER_BUTTON_EXTI_FALLING_TRIG_ENABLE()  LL_EXTI_EnableFallingTrig_0_31(USER_BUTTON_EXTI_LINE) 
+#define USER_BUTTON_EXTI_LINE_ENABLE()          LL_EXTI_EnableIT_0_31(USER_BUTTON_EXTI_LINE)
+#define USER_BUTTON_EXTI_FALLING_TRIG_ENABLE()  LL_EXTI_EnableFallingTrig_0_31(USER_BUTTON_EXTI_LINE)
 #define USER_BUTTON_SYSCFG_SET_EXTI()           do {                                                                     \
                                                   LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_AFIO);                  \
                                                   LL_GPIO_AF_SetEXTISource(LL_GPIO_AF_EXTI_PORTG, LL_GPIO_AF_EXTI_LINE8);  \
@@ -95,9 +95,9 @@ typedef enum
 
 /* Exported functions ------------------------------------------------------- */
 /* Memory Management Handler treatment. */
-void MemManage_Callback(void); 
+void MemManage_Callback( void );
 /* USER button IRQ Handler treatment. */
-void UserButton_Callback(void); 
+void UserButton_Callback( void );
 
 #endif /* __MAIN_H */
 

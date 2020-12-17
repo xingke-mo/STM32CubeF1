@@ -88,66 +88,66 @@
 /* Exported types ------------------------------------------------------------*/
 typedef enum
 {
-  SC_POWER_ON = 0x00,
-  SC_RESET_LOW = 0x01,
-  SC_RESET_HIGH = 0x02,
-  SC_ACTIVE = 0x03,
-  SC_ACTIVE_ON_T0 = 0x04,
-  SC_POWER_OFF = 0x05
+    SC_POWER_ON = 0x00,
+    SC_RESET_LOW = 0x01,
+    SC_RESET_HIGH = 0x02,
+    SC_ACTIVE = 0x03,
+    SC_ACTIVE_ON_T0 = 0x04,
+    SC_POWER_OFF = 0x05
 } SC_State;
 
 /* ATR structure - Answer To Reset -------------------------------------------*/
 typedef struct
 {
-  uint8_t TS;               /* Bit Convention */
-  uint8_t T0;               /* High nibble = Number of setup byte; low nibble = Number of historical byte */
-  uint8_t T[SETUP_LENGTH];  /* Setup array */
-  uint8_t H[HIST_LENGTH];   /* Historical array */
-  uint8_t Tlength;          /* Setup array dimension */
-  uint8_t Hlength;          /* Historical array dimension */
+    uint8_t TS;               /* Bit Convention */
+    uint8_t T0;               /* High nibble = Number of setup byte; low nibble = Number of historical byte */
+    uint8_t T[SETUP_LENGTH];  /* Setup array */
+    uint8_t H[HIST_LENGTH];   /* Historical array */
+    uint8_t Tlength;          /* Setup array dimension */
+    uint8_t Hlength;          /* Historical array dimension */
 } SC_ATR;
 
 /* ADPU-Header command structure ---------------------------------------------*/
 typedef struct
 {
-  uint8_t CLA;  /* Command class */
-  uint8_t INS;  /* Operation code */
-  uint8_t P1;   /* Selection Mode */
-  uint8_t P2;   /* Selection Option */
+    uint8_t CLA;  /* Command class */
+    uint8_t INS;  /* Operation code */
+    uint8_t P1;   /* Selection Mode */
+    uint8_t P2;   /* Selection Option */
 } SC_Header;
 
 /* ADPU-Body command structure -----------------------------------------------*/
 typedef struct
 {
-  uint8_t LC;           /* Data field length */
-  uint8_t Data[LC_MAX];  /* Command parameters */
-  uint8_t LE;           /* Expected length of data to be returned */
+    uint8_t LC;           /* Data field length */
+    uint8_t Data[LC_MAX];  /* Command parameters */
+    uint8_t LE;           /* Expected length of data to be returned */
 } SC_Body;
 
 /* ADPU Command structure ----------------------------------------------------*/
 typedef struct
 {
-  SC_Header Header;
-  SC_Body Body;
+    SC_Header Header;
+    SC_Body Body;
 } SC_ADPU_Commands;
 
 /* SC response structure -----------------------------------------------------*/
 typedef struct
 {
-  uint8_t Data[LC_MAX];  /* Data returned from the card */
-  uint8_t SW1;          /* Command Processing status */
-  uint8_t SW2;          /* Command Processing qualification */
+    uint8_t Data[LC_MAX];  /* Data returned from the card */
+    uint8_t SW1;          /* Command Processing status */
+    uint8_t SW2;          /* Command Processing qualification */
 } SC_ADPU_Response;
 
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 /* APPLICATION LAYER ---------------------------------------------------------*/
-void SC_Handler(SC_State *SCState, SC_ADPU_Commands *SC_ADPU, SC_ADPU_Response *SC_Response);
-void SC_PowerCmd(FunctionalState NewState);
-void SC_Reset(GPIO_PinState ResetState);
-void SC_IOConfig(void);
-void SC_ParityErrorHandler(void);
-void SC_PTSConfig(void);
+void SC_Handler( SC_State *SCState, SC_ADPU_Commands *SC_ADPU, SC_ADPU_Response *SC_Response );
+void SC_PowerCmd( FunctionalState NewState );
+void SC_Reset( GPIO_PinState ResetState );
+void SC_IOConfig( void );
+void SC_ParityErrorHandler( void );
+void SC_PTSConfig( void );
 
 #endif /* __SMARTCARD_H */
 

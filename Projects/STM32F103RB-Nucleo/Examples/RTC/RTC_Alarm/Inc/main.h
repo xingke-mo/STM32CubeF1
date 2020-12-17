@@ -1,6 +1,6 @@
 /**
   ******************************************************************************
-  * @file    RTC/RTC_Alarm/Inc/main.h 
+  * @file    RTC/RTC_Alarm/Inc/main.h
   * @author  MCD Application Team
   * @brief   Header for main.c module
   ******************************************************************************
@@ -35,7 +35,7 @@
 
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
-void Error_Handler(void);
+void Error_Handler( void );
 
 #endif /* __MAIN_H */
 

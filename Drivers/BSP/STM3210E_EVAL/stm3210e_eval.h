@@ -4,7 +4,7 @@
   * @author  MCD Application Team
   * @version V7.0.0
   * @date    14-April-2017
-  * @brief   This file contains definitions for STM3210E_EVAL's LEDs, 
+  * @brief   This file contains definitions for STM3210E_EVAL's LEDs,
   *          push-buttons and COM ports hardware resources.
   ******************************************************************************
   * @attention
@@ -41,23 +41,23 @@
 #define __STM3210E_EVAL_H
 
 #ifdef __cplusplus
- extern "C" {
-#endif 
+extern "C" {
+#endif
 
 /** @addtogroup BSP
   * @{
-  */ 
+  */
 
 /** @addtogroup STM3210E_EVAL
   * @{
-  */ 
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f1xx_hal.h"
 
 /** @addtogroup STM3210E_EVAL_Common
   * @{
-  */ 
+  */
 
 /** @defgroup STM3210E_EVAL_Exported_Types STM3210E EVAL Exported Types
   * @{
@@ -66,90 +66,90 @@
 /**
  * @brief LED Types Definition
  */
-typedef enum 
+typedef enum
 {
-  LED1 = 0,
-  LED2 = 1,
-  LED3 = 2,
-  LED4 = 3,
+    LED1 = 0,
+    LED2 = 1,
+    LED3 = 2,
+    LED4 = 3,
 
-  LED_GREEN  = LED1,
-  LED_ORANGE = LED2,
-  LED_RED    = LED3,
-  LED_BLUE   = LED4
+    LED_GREEN  = LED1,
+    LED_ORANGE = LED2,
+    LED_RED    = LED3,
+    LED_BLUE   = LED4
 
 } Led_TypeDef;
 
 /**
  * @brief BUTTON Types Definition
  */
-typedef enum 
+typedef enum
 {
-  BUTTON_WAKEUP = 0,
-  BUTTON_TAMPER = 1,
-  BUTTON_KEY    = 2,
-  BUTTON_SEL    = 3,
-  BUTTON_LEFT   = 4,
-  BUTTON_RIGHT  = 5,
-  BUTTON_DOWN   = 6,
-  BUTTON_UP     = 7,
+    BUTTON_WAKEUP = 0,
+    BUTTON_TAMPER = 1,
+    BUTTON_KEY    = 2,
+    BUTTON_SEL    = 3,
+    BUTTON_LEFT   = 4,
+    BUTTON_RIGHT  = 5,
+    BUTTON_DOWN   = 6,
+    BUTTON_UP     = 7,
 
 } Button_TypeDef;
 
-typedef enum 
-{  
-  BUTTON_MODE_GPIO = 0,
-  BUTTON_MODE_EXTI = 1,
-  BUTTON_MODE_EVT  = 2
+typedef enum
+{
+    BUTTON_MODE_GPIO = 0,
+    BUTTON_MODE_EXTI = 1,
+    BUTTON_MODE_EVT  = 2
 
 } ButtonMode_TypeDef;
 
 /**
  * @brief JOYSTICK Types Definition
  */
-typedef enum 
-{ 
-  JOY_SEL   = 0,
-  JOY_LEFT  = 1,
-  JOY_RIGHT = 2,
-  JOY_DOWN  = 3,
-  JOY_UP    = 4,
-  JOY_NONE  = 5
+typedef enum
+{
+    JOY_SEL   = 0,
+    JOY_LEFT  = 1,
+    JOY_RIGHT = 2,
+    JOY_DOWN  = 3,
+    JOY_UP    = 4,
+    JOY_NONE  = 5
 
-}JOYState_TypeDef;
+} JOYState_TypeDef;
 
-typedef enum 
-{ 
-  JOY_MODE_GPIO = 0,
-  JOY_MODE_EXTI = 1
+typedef enum
+{
+    JOY_MODE_GPIO = 0,
+    JOY_MODE_EXTI = 1
 
-}JOYMode_TypeDef;
+} JOYMode_TypeDef;
 
 /**
  * @brief COM Types Definition
  */
-typedef enum 
+typedef enum
 {
-  COM1 = 0,
-  COM2 = 1
+    COM1 = 0,
+    COM2 = 1
 
-} COM_TypeDef;  
+} COM_TypeDef;
 
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup STM3210E_EVAL_Exported_Constants STM3210E EVAL Exported Constants
   * @{
-  */ 
+  */
 
-/** 
-  * @brief  Define for STM3210E_EVAL board  
-  */ 
+/**
+  * @brief  Define for STM3210E_EVAL board
+  */
 #if !defined (USE_STM3210E_EVAL)
- #define USE_STM3210E_EVAL
+#define USE_STM3210E_EVAL
 #endif
-  
+
 /** @defgroup STM3210E_EVAL_LED STM3210E EVAL LED
   * @{
   */
@@ -159,7 +159,7 @@ typedef enum
 #define LED1_GPIO_PORT                   GPIOF
 #define LED1_GPIO_CLK_ENABLE()           __HAL_RCC_GPIOF_CLK_ENABLE()
 #define LED1_GPIO_CLK_DISABLE()          __HAL_RCC_GPIOF_CLK_DISABLE()
-  
+
 #define LED2_PIN                         GPIO_PIN_7             /* PF.07*/
 #define LED2_GPIO_PORT                   GPIOF
 #define LED2_GPIO_CLK_ENABLE()           __HAL_RCC_GPIOF_CLK_ENABLE()
@@ -190,10 +190,10 @@ typedef enum
 /**
   * @}
   */
-  
+
 /** @defgroup STM3210E_EVAL_BUTTON  STM3210E EVAL BUTTON
   * @{
-  */  
+  */
 #define JOYn                             5
 #define BUTTONn                          3 + JOYn
 
@@ -235,7 +235,7 @@ typedef enum
 
 /**
  * @brief Joystick Left push-button
- */    
+ */
 #define LEFT_JOY_PIN                        GPIO_PIN_14             /* PG.14*/
 #define LEFT_JOY_GPIO_PORT                  GPIOG
 #define LEFT_JOY_GPIO_CLK_ENABLE()          __HAL_RCC_GPIOG_CLK_ENABLE()
@@ -253,7 +253,7 @@ typedef enum
 
 /**
  * @brief Joystick Down push-button
- */   
+ */
 #define DOWN_JOY_PIN                        GPIO_PIN_3             /* PD.03*/
 #define DOWN_JOY_GPIO_PORT                  GPIOD
 #define DOWN_JOY_GPIO_CLK_ENABLE()          __HAL_RCC_GPIOD_CLK_ENABLE()
@@ -262,7 +262,7 @@ typedef enum
 
 /**
  * @brief Joystick Sel push-button
- */  
+ */
 #define SEL_JOY_PIN                         GPIO_PIN_7             /* PG.07*/
 #define SEL_JOY_GPIO_PORT                   GPIOG
 #define SEL_JOY_GPIO_CLK_ENABLE()           __HAL_RCC_GPIOG_CLK_ENABLE()
@@ -301,7 +301,7 @@ typedef enum
 
 /**
   * @}
-  */ 
+  */
 
 /** @addtogroup STM3210E_EVAL_COM
   * @{
@@ -310,7 +310,7 @@ typedef enum
 
 /**
  * @brief Definition for COM port1, connected to USART1
- */ 
+ */
 #define EVAL_COM1                        USART1
 #define EVAL_COM1_CLK_ENABLE()           __HAL_RCC_USART1_CLK_ENABLE()
 #define EVAL_COM1_CLK_DISABLE()          __HAL_RCC_USART1_CLK_DISABLE()
@@ -329,7 +329,7 @@ typedef enum
 
 /**
  * @brief Definition for COM port2, connected to USART2
- */ 
+ */
 #define EVAL_COM2                        USART2
 #define EVAL_COM2_CLK_ENABLE()           __HAL_RCC_USART2_CLK_ENABLE()
 #define EVAL_COM2_CLK_DISABLE()          __HAL_RCC_USART2_CLK_DISABLE()
@@ -366,7 +366,7 @@ typedef enum
 
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup STM3210E_EVAL_BUS STM3210E EVAL BUS
   * @{
@@ -374,7 +374,7 @@ typedef enum
 
 /* Exported constant IO ------------------------------------------------------*/
 /*##################### I2Cx ###################################*/
-/* User can use this section to tailor I2Cx instance used and associated 
+/* User can use this section to tailor I2Cx instance used and associated
    resources */
 /* Definition for I2Cx Pins */
 #define EVAL_I2Cx_SCL_PIN                       GPIO_PIN_6        /* PB.06*/
@@ -386,23 +386,23 @@ typedef enum
 #define EVAL_I2Cx                               I2C1
 #define EVAL_I2Cx_CLK_ENABLE()                  __HAL_RCC_I2C1_CLK_ENABLE()
 #define EVAL_I2Cx_SDA_GPIO_CLK_ENABLE()         __HAL_RCC_GPIOB_CLK_ENABLE()
-#define EVAL_I2Cx_SCL_GPIO_CLK_ENABLE()         __HAL_RCC_GPIOB_CLK_ENABLE() 
+#define EVAL_I2Cx_SCL_GPIO_CLK_ENABLE()         __HAL_RCC_GPIOB_CLK_ENABLE()
 
 #define EVAL_I2Cx_FORCE_RESET()                 __HAL_RCC_I2C1_FORCE_RESET()
 #define EVAL_I2Cx_RELEASE_RESET()               __HAL_RCC_I2C1_RELEASE_RESET()
-    
+
 /* Definition for I2Cx's NVIC */
 #define EVAL_I2Cx_EV_IRQn                       I2C1_EV_IRQn
 #define EVAL_I2Cx_EV_IRQHandler                 I2C1_EV_IRQHandler
 #define EVAL_I2Cx_ER_IRQn                       I2C1_ER_IRQn
 #define EVAL_I2Cx_ER_IRQHandler                 I2C1_ER_IRQHandler
 
-/* I2C clock speed configuration (in Hz) 
-   WARNING: 
-   Make sure that this define is not already declared in other files (ie. 
+/* I2C clock speed configuration (in Hz)
+   WARNING:
+   Make sure that this define is not already declared in other files (ie.
    stm3210e_eval.h file). It can be used in parallel by other modules. */
 #ifndef BSP_I2C_SPEED
- #define BSP_I2C_SPEED                            100000
+#define BSP_I2C_SPEED                            100000
 #endif /* I2C_SPEED */
 
 
@@ -410,7 +410,7 @@ typedef enum
    on accurate values, they just guarantee that the application will not remain
    stuck if the I2C communication is corrupted.
    You may modify these timeout values depending on CPU frequency and application
-   conditions (interrupts routines ...). */   
+   conditions (interrupts routines ...). */
 #define EVAL_I2Cx_TIMEOUT_MAX                   3000
 
 /*##################### SPIx ###################################*/
@@ -431,12 +431,12 @@ typedef enum
    on accurate values, they just guarantee that the application will not remain
    stuck if the SPI communication is corrupted.
    You may modify these timeout values depending on CPU frequency and application
-   conditions (interrupts routines ...). */   
+   conditions (interrupts routines ...). */
 #define EVAL_SPIx_TIMEOUT_MAX                   1000
 
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup STM3210E_EVAL_COMPONENT STM3210E EVAL COMPONENT
   * @{
@@ -444,7 +444,7 @@ typedef enum
 
 /*##################### FLASH SPI ###################################*/
 /**
-  * @brief  M25P FLASH SPI Chip Select macro definition 
+  * @brief  M25P FLASH SPI Chip Select macro definition
   */
 #define FLASH_SPI_CS_LOW()       HAL_GPIO_WritePin(FLASH_SPI_CS_GPIO_PORT, FLASH_SPI_CS_PIN, GPIO_PIN_RESET)
 #define FLASH_SPI_CS_HIGH()      HAL_GPIO_WritePin(FLASH_SPI_CS_GPIO_PORT, FLASH_SPI_CS_PIN, GPIO_PIN_SET)
@@ -459,7 +459,7 @@ typedef enum
 
 /**
   * @brief  M25P FLASH SPI supported commands
-  */  
+  */
 #define FLASH_SPI_CMD_WRITE          0x02  /*!< Write to Memory instruction */
 #define FLASH_SPI_CMD_WRSR           0x01  /*!< Write Status Register instruction */
 #define FLASH_SPI_CMD_WREN           0x06  /*!< Write enable instruction */
@@ -483,8 +483,8 @@ typedef enum
   * @brief  AUDIO I2C Interface pins
   */
 #define AUDIO_I2C_ADDRESS                     0x27
-  
-  /* Audio Reset Pin definition */
+
+/* Audio Reset Pin definition */
 #define AUDIO_RESET_GPIO_CLK_ENABLE()         __HAL_RCC_GPIOG_CLK_ENABLE()
 #define AUDIO_RESET_PIN                       GPIO_PIN_11
 #define AUDIO_RESET_GPIO                      GPIOG
@@ -495,25 +495,25 @@ typedef enum
 
 /**
   * @}
-  */ 
+  */
 
 
 
 /** @addtogroup STM3210E_EVAL_Exported_Functions
   * @{
-  */ 
-uint32_t                BSP_GetVersion(void);
-void                    BSP_LED_Init(Led_TypeDef Led);
-void                    BSP_LED_On(Led_TypeDef Led);
-void                    BSP_LED_Off(Led_TypeDef Led);
-void                    BSP_LED_Toggle(Led_TypeDef Led);
-void                    BSP_PB_Init(Button_TypeDef Button, ButtonMode_TypeDef Button_Mode);
-uint32_t                BSP_PB_GetState(Button_TypeDef Button);
+  */
+uint32_t                BSP_GetVersion( void );
+void                    BSP_LED_Init( Led_TypeDef Led );
+void                    BSP_LED_On( Led_TypeDef Led );
+void                    BSP_LED_Off( Led_TypeDef Led );
+void                    BSP_LED_Toggle( Led_TypeDef Led );
+void                    BSP_PB_Init( Button_TypeDef Button, ButtonMode_TypeDef Button_Mode );
+uint32_t                BSP_PB_GetState( Button_TypeDef Button );
 #ifdef HAL_UART_MODULE_ENABLED
-void                    BSP_COM_Init(COM_TypeDef COM, UART_HandleTypeDef* huart);
+void                    BSP_COM_Init( COM_TypeDef COM, UART_HandleTypeDef *huart );
 #endif /* HAL_UART_MODULE_ENABLED */
-uint8_t                 BSP_JOY_Init(JOYMode_TypeDef Joy_Mode);
-JOYState_TypeDef        BSP_JOY_GetState(void);
+uint8_t                 BSP_JOY_Init( JOYMode_TypeDef Joy_Mode );
+JOYState_TypeDef        BSP_JOY_GetState( void );
 
 /**
   * @}
@@ -523,19 +523,19 @@ JOYState_TypeDef        BSP_JOY_GetState(void);
 /**
   * @}
   */
-  
+
 /**
   * @}
   */
-  
+
 /**
   * @}
   */
-  
+
 #ifdef __cplusplus
 }
 #endif
-  
+
 #endif /* __STM3210E_EVAL_H */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

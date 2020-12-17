@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
-  * @file    RTC/RTC_Alarm/Src/main.c 
+  * @file    RTC/RTC_Alarm/Src/main.c
   * @author  MCD Application Team
-  * @brief   This sample code shows how to use STM32F1xx RTC HAL API to configure 
+  * @brief   This sample code shows how to use STM32F1xx RTC HAL API to configure
   *          Time and Date.
   ******************************************************************************
   * @attention
@@ -40,9 +40,9 @@ RTC_HandleTypeDef RtcHandle;
 uint8_t aShowTime[50] = {0};
 
 /* Private function prototypes -----------------------------------------------*/
-void SystemClock_Config(void);
-static void RTC_AlarmConfig(void);
-static void RTC_TimeShow(uint8_t* showtime);
+void SystemClock_Config( void );
+static void RTC_AlarmConfig( void );
+static void RTC_TimeShow( uint8_t *showtime );
 
 /* Private functions ---------------------------------------------------------*/
 
@@ -51,50 +51,51 @@ static void RTC_TimeShow(uint8_t* showtime);
   * @param  None
   * @retval None
   */
-int main(void)
+int main( void )
 {
-  /* STM32F103xB HAL library initialization:
-       - Configure the Flash prefetch
-       - Systick timer is configured by default as source of time base, but user 
-         can eventually implement his proper time base source (a general purpose 
-         timer for example or other time source), keeping in mind that Time base 
-         duration should be kept 1ms since PPP_TIMEOUT_VALUEs are defined and 
-         handled in milliseconds basis.
-       - Set NVIC Group Priority to 4
-       - Low Level Initialization
-     */
-  HAL_Init();
+    /* STM32F103xB HAL library initialization:
+         - Configure the Flash prefetch
+         - Systick timer is configured by default as source of time base, but user
+           can eventually implement his proper time base source (a general purpose
+           timer for example or other time source), keeping in mind that Time base
+           duration should be kept 1ms since PPP_TIMEOUT_VALUEs are defined and
+           handled in milliseconds basis.
+         - Set NVIC Group Priority to 4
+         - Low Level Initialization
+       */
+    HAL_Init();
 
-  /* Configure the system clock to 64 MHz */
-  SystemClock_Config();
+    /* Configure the system clock to 64 MHz */
+    SystemClock_Config();
 
-  /* Configure LED_GREEN */
-  BSP_LED_Init(LED_GREEN);
+    /* Configure LED_GREEN */
+    BSP_LED_Init( LED_GREEN );
 
-  /*##-1- Configure the RTC peripheral #######################################*/
-  RtcHandle.Instance = RTC;
+    /*##-1- Configure the RTC peripheral #######################################*/
+    RtcHandle.Instance = RTC;
 
-  /* Configure RTC prescaler and RTC data registers */
-  /* RTC configured as follows:
-      - Asynch Prediv  = Automatic calculation of prediv for 1 sec timebase
-  */
-  RtcHandle.Init.AsynchPrediv = RTC_AUTO_1_SECOND;
-  if (HAL_RTC_Init(&RtcHandle) != HAL_OK)
-  {
-    /* Initialization Error */
-    Error_Handler();
-  }
+    /* Configure RTC prescaler and RTC data registers */
+    /* RTC configured as follows:
+        - Asynch Prediv  = Automatic calculation of prediv for 1 sec timebase
+    */
+    RtcHandle.Init.AsynchPrediv = RTC_AUTO_1_SECOND;
 
-  /*##-2- Configure Alarm ####################################################*/
-  /* Configure RTC Alarm */
-  RTC_AlarmConfig();
-  
-  /* Infinite loop */  
-  while (1)
-  {
-    /*##-3- Display the updated Time #########################################*/
-    RTC_TimeShow(aShowTime);
-  }
+    if( HAL_RTC_Init( &RtcHandle ) != HAL_OK )
+    {
+        /* Initialization Error */
+        Error_Handler();
+    }
+
+    /*##-2- Configure Alarm ####################################################*/
+    /* Configure RTC Alarm */
+    RTC_AlarmConfig();
+
+    /* Infinite loop */
+    while( 1 )
+    {
+        /*##-3- Display the updated Time #########################################*/
+        RTC_TimeShow( aShowTime );
+    }
 }
 
 /**
@@ -102,15 +103,15 @@ int main(void)
   * @param  hrtc : RTC handle
   * @retval None
   */
-void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc)
+void HAL_RTC_AlarmAEventCallback( RTC_HandleTypeDef *hrtc )
 {
-  /* Turn LED_GREEN on: Alarm generation */
-  BSP_LED_On(LED_GREEN);
+    /* Turn LED_GREEN on: Alarm generation */
+    BSP_LED_On( LED_GREEN );
 }
 
 /**
   * @brief  System Clock Configuration
-  *         The system Clock is configured as follow : 
+  *         The system Clock is configured as follow :
   *            System Clock source            = PLL (HSI)
   *            SYSCLK(Hz)                     = 64000000
   *            HCLK(Hz)                       = 64000000
@@ -122,42 +123,44 @@ void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc)
   * @param  None
   * @retval None
   */
-void SystemClock_Config(void)
+void SystemClock_Config( void )
 {
-  RCC_ClkInitTypeDef clkinitstruct = {0};
-  RCC_OscInitTypeDef oscinitstruct = {0};
-  
-  /* Configure PLL ------------------------------------------------------*/
-  /* PLL configuration: PLLCLK = (HSI / 2) * PLLMUL = (8 / 2) * 16 = 64 MHz */
-  /* PREDIV1 configuration: PREDIV1CLK = PLLCLK / HSEPredivValue = 64 / 1 = 64 MHz */
-  /* Enable HSI and activate PLL with HSi_DIV2 as source */
-  oscinitstruct.OscillatorType  = RCC_OSCILLATORTYPE_HSI;
-  oscinitstruct.HSEState        = RCC_HSE_OFF;
-  oscinitstruct.LSEState        = RCC_LSE_OFF;
-  oscinitstruct.HSIState        = RCC_HSI_ON;
-  oscinitstruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-  oscinitstruct.HSEPredivValue    = RCC_HSE_PREDIV_DIV1;
-  oscinitstruct.PLL.PLLState    = RCC_PLL_ON;
-  oscinitstruct.PLL.PLLSource   = RCC_PLLSOURCE_HSI_DIV2;
-  oscinitstruct.PLL.PLLMUL      = RCC_PLL_MUL16;
-  if (HAL_RCC_OscConfig(&oscinitstruct)!= HAL_OK)
-  {
-    /* Initialization Error */
-    while(1); 
-  }
+    RCC_ClkInitTypeDef clkinitstruct = {0};
+    RCC_OscInitTypeDef oscinitstruct = {0};
 
-  /* Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2 
-     clocks dividers */
-  clkinitstruct.ClockType = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2);
-  clkinitstruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-  clkinitstruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  clkinitstruct.APB2CLKDivider = RCC_HCLK_DIV1;
-  clkinitstruct.APB1CLKDivider = RCC_HCLK_DIV2;  
-  if (HAL_RCC_ClockConfig(&clkinitstruct, FLASH_LATENCY_2)!= HAL_OK)
-  {
-    /* Initialization Error */
-    while(1); 
-  }
+    /* Configure PLL ------------------------------------------------------*/
+    /* PLL configuration: PLLCLK = (HSI / 2) * PLLMUL = (8 / 2) * 16 = 64 MHz */
+    /* PREDIV1 configuration: PREDIV1CLK = PLLCLK / HSEPredivValue = 64 / 1 = 64 MHz */
+    /* Enable HSI and activate PLL with HSi_DIV2 as source */
+    oscinitstruct.OscillatorType  = RCC_OSCILLATORTYPE_HSI;
+    oscinitstruct.HSEState        = RCC_HSE_OFF;
+    oscinitstruct.LSEState        = RCC_LSE_OFF;
+    oscinitstruct.HSIState        = RCC_HSI_ON;
+    oscinitstruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+    oscinitstruct.HSEPredivValue    = RCC_HSE_PREDIV_DIV1;
+    oscinitstruct.PLL.PLLState    = RCC_PLL_ON;
+    oscinitstruct.PLL.PLLSource   = RCC_PLLSOURCE_HSI_DIV2;
+    oscinitstruct.PLL.PLLMUL      = RCC_PLL_MUL16;
+
+    if( HAL_RCC_OscConfig( &oscinitstruct ) != HAL_OK )
+    {
+        /* Initialization Error */
+        while( 1 );
+    }
+
+    /* Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2
+       clocks dividers */
+    clkinitstruct.ClockType = ( RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2 );
+    clkinitstruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+    clkinitstruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+    clkinitstruct.APB2CLKDivider = RCC_HCLK_DIV1;
+    clkinitstruct.APB1CLKDivider = RCC_HCLK_DIV2;
+
+    if( HAL_RCC_ClockConfig( &clkinitstruct, FLASH_LATENCY_2 ) != HAL_OK )
+    {
+        /* Initialization Error */
+        while( 1 );
+    }
 }
 
 /**
@@ -165,14 +168,14 @@ void SystemClock_Config(void)
   * @param  None
   * @retval None
   */
-void Error_Handler(void)
+void Error_Handler( void )
 {
-  while (1)
-  {
-    /* Toggle LED2 with a period of one second */
-    BSP_LED_Toggle(LED2);
-    HAL_Delay(1000);
-  }
+    while( 1 )
+    {
+        /* Toggle LED2 with a period of one second */
+        BSP_LED_Toggle( LED2 );
+        HAL_Delay( 1000 );
+    }
 }
 
 /**
@@ -180,50 +183,50 @@ void Error_Handler(void)
   * @param  None
   * @retval None
   */
-static void RTC_AlarmConfig(void)
+static void RTC_AlarmConfig( void )
 {
-  RTC_DateTypeDef  sdatestructure;
-  RTC_TimeTypeDef  stimestructure;
-  RTC_AlarmTypeDef salarmstructure;
- 
-  /*##-1- Configure the Date #################################################*/
-  /* Set Date: Tuesday February 18th 2014 */
-  sdatestructure.Year = 0x14;
-  sdatestructure.Month = RTC_MONTH_FEBRUARY;
-  sdatestructure.Date = 0x18;
-  sdatestructure.WeekDay = RTC_WEEKDAY_TUESDAY;
-  
-  if(HAL_RTC_SetDate(&RtcHandle,&sdatestructure,RTC_FORMAT_BCD) != HAL_OK)
-  {
-    /* Initialization Error */
-    Error_Handler(); 
-  } 
-  
-  /*##-2- Configure the Time #################################################*/
-  /* Set Time: 02:20:00 */
-  stimestructure.Hours = 0x02;
-  stimestructure.Minutes = 0x20;
-  stimestructure.Seconds = 0x00;
-  
-  if(HAL_RTC_SetTime(&RtcHandle,&stimestructure,RTC_FORMAT_BCD) != HAL_OK)
-  {
-    /* Initialization Error */
-    Error_Handler(); 
-  }  
+    RTC_DateTypeDef  sdatestructure;
+    RTC_TimeTypeDef  stimestructure;
+    RTC_AlarmTypeDef salarmstructure;
 
-  /*##-3- Configure the RTC Alarm peripheral #################################*/
-  /* Set Alarm to 02:20:30 
-     RTC Alarm Generation: Alarm on Hours, Minutes and Seconds */
-  salarmstructure.Alarm = RTC_ALARM_A;
- salarmstructure.AlarmTime.Hours = 0x02;
-  salarmstructure.AlarmTime.Minutes = 0x20;
-  salarmstructure.AlarmTime.Seconds = 0x30;
-  
-  if(HAL_RTC_SetAlarm_IT(&RtcHandle,&salarmstructure,RTC_FORMAT_BCD) != HAL_OK)
-  {
-    /* Initialization Error */
-    Error_Handler(); 
-  }
+    /*##-1- Configure the Date #################################################*/
+    /* Set Date: Tuesday February 18th 2014 */
+    sdatestructure.Year = 0x14;
+    sdatestructure.Month = RTC_MONTH_FEBRUARY;
+    sdatestructure.Date = 0x18;
+    sdatestructure.WeekDay = RTC_WEEKDAY_TUESDAY;
+
+    if( HAL_RTC_SetDate( &RtcHandle, &sdatestructure, RTC_FORMAT_BCD ) != HAL_OK )
+    {
+        /* Initialization Error */
+        Error_Handler();
+    }
+
+    /*##-2- Configure the Time #################################################*/
+    /* Set Time: 02:20:00 */
+    stimestructure.Hours = 0x02;
+    stimestructure.Minutes = 0x20;
+    stimestructure.Seconds = 0x00;
+
+    if( HAL_RTC_SetTime( &RtcHandle, &stimestructure, RTC_FORMAT_BCD ) != HAL_OK )
+    {
+        /* Initialization Error */
+        Error_Handler();
+    }
+
+    /*##-3- Configure the RTC Alarm peripheral #################################*/
+    /* Set Alarm to 02:20:30
+       RTC Alarm Generation: Alarm on Hours, Minutes and Seconds */
+    salarmstructure.Alarm = RTC_ALARM_A;
+    salarmstructure.AlarmTime.Hours = 0x02;
+    salarmstructure.AlarmTime.Minutes = 0x20;
+    salarmstructure.AlarmTime.Seconds = 0x30;
+
+    if( HAL_RTC_SetAlarm_IT( &RtcHandle, &salarmstructure, RTC_FORMAT_BCD ) != HAL_OK )
+    {
+        /* Initialization Error */
+        Error_Handler();
+    }
 }
 
 /**
@@ -231,18 +234,18 @@ static void RTC_AlarmConfig(void)
   * @param  showtime : pointer to buffer
   * @retval None
   */
-static void RTC_TimeShow(uint8_t* showtime)
+static void RTC_TimeShow( uint8_t *showtime )
 {
-  RTC_DateTypeDef sdatestructureget;
-  RTC_TimeTypeDef stimestructureget;
-  
-  /* Get the RTC current Time */
-  HAL_RTC_GetTime(&RtcHandle, &stimestructureget, RTC_FORMAT_BIN);
-  /* Get the RTC current Date */
-  HAL_RTC_GetDate(&RtcHandle, &sdatestructureget, RTC_FORMAT_BIN);
-  /* Display time Format : hh:mm:ss */
-  sprintf((char*)showtime,"%02d:%02d:%02d",stimestructureget.Hours, stimestructureget.Minutes, stimestructureget.Seconds);
-} 
+    RTC_DateTypeDef sdatestructureget;
+    RTC_TimeTypeDef stimestructureget;
+
+    /* Get the RTC current Time */
+    HAL_RTC_GetTime( &RtcHandle, &stimestructureget, RTC_FORMAT_BIN );
+    /* Get the RTC current Date */
+    HAL_RTC_GetDate( &RtcHandle, &sdatestructureget, RTC_FORMAT_BIN );
+    /* Display time Format : hh:mm:ss */
+    sprintf( ( char * )showtime, "%02d:%02d:%02d", stimestructureget.Hours, stimestructureget.Minutes, stimestructureget.Seconds );
+}
 
 #ifdef  USE_FULL_ASSERT
 
@@ -253,15 +256,15 @@ static void RTC_TimeShow(uint8_t* showtime)
   * @param  line: assert_param error line source number
   * @retval None
   */
-void assert_failed(uint8_t *file, uint32_t line)
+void assert_failed( uint8_t *file, uint32_t line )
 {
-  /* User can add his own implementation to report the file name and line number,
-     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+    /* User can add his own implementation to report the file name and line number,
+       ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
-  /* Infinite loop */
-  while (1)
-  {
-  }
+    /* Infinite loop */
+    while( 1 )
+    {
+    }
 }
 #endif
 

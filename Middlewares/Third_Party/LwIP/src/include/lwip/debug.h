@@ -105,8 +105,8 @@
  * To disable assertions define LWIP_NOASSERT in arch/cc.h.
  */
 #ifdef __DOXYGEN__
-#define LWIP_NOASSERT
-#undef LWIP_NOASSERT
+    #define LWIP_NOASSERT
+    #undef LWIP_NOASSERT
 #endif
 /**
  * @}
@@ -116,7 +116,7 @@
 #define LWIP_ASSERT(message, assertion) do { if (!(assertion)) { \
   LWIP_PLATFORM_ASSERT(message); }} while(0)
 #ifndef LWIP_PLATFORM_ASSERT
-#error "If you want to use LWIP_ASSERT, LWIP_PLATFORM_ASSERT(message) needs to be defined in your arch/cc.h"
+    #error "If you want to use LWIP_ASSERT, LWIP_PLATFORM_ASSERT(message) needs to be defined in your arch/cc.h"
 #endif
 #else  /* LWIP_NOASSERT */
 #define LWIP_ASSERT(message, assertion)
@@ -124,11 +124,11 @@
 
 #ifndef LWIP_ERROR
 #ifndef LWIP_NOASSERT
-#define LWIP_PLATFORM_ERROR(message) LWIP_PLATFORM_ASSERT(message)
+    #define LWIP_PLATFORM_ERROR(message) LWIP_PLATFORM_ASSERT(message)
 #elif defined LWIP_DEBUG
-#define LWIP_PLATFORM_ERROR(message) LWIP_PLATFORM_DIAG((message))
+    #define LWIP_PLATFORM_ERROR(message) LWIP_PLATFORM_DIAG((message))
 #else
-#define LWIP_PLATFORM_ERROR(message)
+    #define LWIP_PLATFORM_ERROR(message)
 #endif
 
 /* if "expression" isn't true, then print "message" and execute "handler" expression */
@@ -140,13 +140,13 @@
  *  AND is of correct type AND is at least LWIP_DBG_LEVEL.
  */
 #ifdef __DOXYGEN__
-#define LWIP_DEBUG
-#undef LWIP_DEBUG
+    #define LWIP_DEBUG
+    #undef LWIP_DEBUG
 #endif
 
 #ifdef LWIP_DEBUG
 #ifndef LWIP_PLATFORM_DIAG
-#error "If you want to use LWIP_DEBUG, LWIP_PLATFORM_DIAG(message) needs to be defined in your arch/cc.h"
+    #error "If you want to use LWIP_DEBUG, LWIP_PLATFORM_DIAG(message) needs to be defined in your arch/cc.h"
 #endif
 #define LWIP_DEBUGF(debug, message) do { \
                                if ( \

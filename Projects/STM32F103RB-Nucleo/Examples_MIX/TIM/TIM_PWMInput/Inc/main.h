@@ -46,7 +46,7 @@
 #define TIMx_CHANNEL_GPIO_PORT()       __HAL_RCC_GPIOA_CLK_ENABLE()
 #define GPIO_PORT                      GPIOA
 #define GPIO_PIN_CHANNEL2              GPIO_PIN_7
-#define GPIO_AF_TIMx                   
+#define GPIO_AF_TIMx
 
 /* Definition for TIMx's NVIC */
 #define TIMx_IRQn                      TIM3_IRQn
@@ -54,8 +54,8 @@
 
 
 /* Exported functions ------------------------------------------------------- */
-void TimerCaptureCompare_Ch2_Callback(void);
-void UserButton_Callback(void);
+void TimerCaptureCompare_Ch2_Callback( void );
+void UserButton_Callback( void );
 
 #endif /* __MAIN_H */
 

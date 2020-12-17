@@ -33,7 +33,7 @@
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
-void udp_echoserver_receive_callback(void *arg, struct udp_pcb *upcb, struct pbuf *p, const ip_addr_t *addr, u16_t port);
+void udp_echoserver_receive_callback( void *arg, struct udp_pcb *upcb, struct pbuf *p, const ip_addr_t *addr, u16_t port );
 
 /* Private functions ---------------------------------------------------------*/
 
@@ -42,26 +42,26 @@ void udp_echoserver_receive_callback(void *arg, struct udp_pcb *upcb, struct pbu
   * @param  None
   * @retval None
   */
-void udp_echoserver_init(void)
+void udp_echoserver_init( void )
 {
-   struct udp_pcb *upcb;
-   err_t err;
-   
-   /* Create a new UDP control block  */
-   upcb = udp_new();
-   
-   if (upcb)
-   {
-     /* Bind the upcb to the UDP_PORT port */
-     /* Using IP_ADDR_ANY allow the upcb to be used by any local interface */
-      err = udp_bind(upcb, IP_ADDR_ANY, UDP_SERVER_PORT);
-      
-      if(err == ERR_OK)
-      {
-        /* Set a receive callback for the upcb */
-        udp_recv(upcb, udp_echoserver_receive_callback, NULL);
-      }
-   }
+    struct udp_pcb *upcb;
+    err_t err;
+
+    /* Create a new UDP control block  */
+    upcb = udp_new();
+
+    if( upcb )
+    {
+        /* Bind the upcb to the UDP_PORT port */
+        /* Using IP_ADDR_ANY allow the upcb to be used by any local interface */
+        err = udp_bind( upcb, IP_ADDR_ANY, UDP_SERVER_PORT );
+
+        if( err == ERR_OK )
+        {
+            /* Set a receive callback for the upcb */
+            udp_recv( upcb, udp_echoserver_receive_callback, NULL );
+        }
+    }
 }
 
 /**
@@ -73,21 +73,21 @@ void udp_echoserver_init(void)
   * @param port the remote port from which the packet was received
   * @retval None
   */
-void udp_echoserver_receive_callback(void *arg, struct udp_pcb *upcb, struct pbuf *p, const ip_addr_t *addr, u16_t port)
+void udp_echoserver_receive_callback( void *arg, struct udp_pcb *upcb, struct pbuf *p, const ip_addr_t *addr, u16_t port )
 {
 
-  /* Connect to the remote client */
-  udp_connect(upcb, addr, UDP_CLIENT_PORT);
-    
-  /* Tell the client that we have accepted it */
-  udp_send(upcb, p);
+    /* Connect to the remote client */
+    udp_connect( upcb, addr, UDP_CLIENT_PORT );
 
-  /* free the UDP connection, so we can accept new clients */
-  udp_disconnect(upcb);
-	
-  /* Free the p buffer */
-  pbuf_free(p);
-   
+    /* Tell the client that we have accepted it */
+    udp_send( upcb, p );
+
+    /* free the UDP connection, so we can accept new clients */
+    udp_disconnect( upcb );
+
+    /* Free the p buffer */
+    pbuf_free( p );
+
 }
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -1,6 +1,6 @@
 /**
   ******************************************************************************
-  * @file    USB_Host/MSC_RTOS/Src/menu.c 
+  * @file    USB_Host/MSC_RTOS/Src/menu.c
   * @author  MCD Application Team
   * @brief   This file implements Menu Functions
   ******************************************************************************
@@ -29,19 +29,20 @@
 MSC_DEMO_StateMachine msc_demo;
 osSemaphoreId MenuEvent;
 
-uint8_t *MSC_main_menu[] = {
-  (uint8_t *)
+uint8_t *MSC_main_menu[] =
+{
+    ( uint8_t * )
     "      1 - File Operations                                                   ",
-  (uint8_t *)
+    ( uint8_t * )
     "      2 - Explorer Disk                                                     ",
-  (uint8_t *)
+    ( uint8_t * )
     "      3 - Re-Enumerate                                                      ",
 };
 
 /* Private function prototypes ----------------------------------------------- */
-static void MSC_SelectItem(uint8_t ** menu, uint8_t item);
-static void MSC_DEMO_ProbeKey(JOYState_TypeDef state);
-static void MSC_MenuThread(void const *argument);
+static void MSC_SelectItem( uint8_t **menu, uint8_t item );
+static void MSC_DEMO_ProbeKey( JOYState_TypeDef state );
+static void MSC_MenuThread( void const *argument );
 
 /* Private functions --------------------------------------------------------- */
 
@@ -50,33 +51,33 @@ static void MSC_MenuThread(void const *argument);
   * @param  None
   * @retval None
   */
-void Menu_Init(void)
+void Menu_Init( void )
 {
-  /* Create Menu Semaphore */
-  osSemaphoreDef(osSem);
+    /* Create Menu Semaphore */
+    osSemaphoreDef( osSem );
 
-  MenuEvent = osSemaphoreCreate(osSemaphore(osSem), 1);
+    MenuEvent = osSemaphoreCreate( osSemaphore( osSem ), 1 );
 
-  /* Force menu to show Item 0 by default */
-  osSemaphoreRelease(MenuEvent);
+    /* Force menu to show Item 0 by default */
+    osSemaphoreRelease( MenuEvent );
 
-  /* Menu task */
+    /* Menu task */
 #if defined(__GNUC__)
-  osThreadDef(Menu_Thread, MSC_MenuThread, osPriorityHigh, 0,
-              8 * configMINIMAL_STACK_SIZE);
+    osThreadDef( Menu_Thread, MSC_MenuThread, osPriorityHigh, 0,
+                 8 * configMINIMAL_STACK_SIZE );
 #else
-  osThreadDef(Menu_Thread, MSC_MenuThread, osPriorityHigh, 0,
-              4 * configMINIMAL_STACK_SIZE);
+    osThreadDef( Menu_Thread, MSC_MenuThread, osPriorityHigh, 0,
+                 4 * configMINIMAL_STACK_SIZE );
 #endif
-  osThreadCreate(osThread(Menu_Thread), NULL);
+    osThreadCreate( osThread( Menu_Thread ), NULL );
 
-  BSP_LCD_SetTextColor(LCD_COLOR_GREEN);
-  BSP_LCD_DisplayStringAtLine(15,
-                              (uint8_t *)
-                              "Use [Joystick Left/Right] to scroll up/down");
-  BSP_LCD_DisplayStringAtLine(16,
-                              (uint8_t *)
-                              "Use [Joystick Up/Down] to scroll MSC menu");
+    BSP_LCD_SetTextColor( LCD_COLOR_GREEN );
+    BSP_LCD_DisplayStringAtLine( 15,
+                                 ( uint8_t * )
+                                 "Use [Joystick Left/Right] to scroll up/down" );
+    BSP_LCD_DisplayStringAtLine( 16,
+                                 ( uint8_t * )
+                                 "Use [Joystick Up/Down] to scroll MSC menu" );
 }
 
 /**
@@ -84,80 +85,86 @@ void Menu_Init(void)
   * @param  pvParameters not used
   * @retval None
   */
-static void MSC_MenuThread(void const *argument)
+static void MSC_MenuThread( void const *argument )
 {
-  for (;;)
-  {
-    if (osSemaphoreWait(MenuEvent, osWaitForever) == osOK)
+    for( ;; )
     {
-      switch (msc_demo.state)
-      {
-      case MSC_DEMO_IDLE:
-        MSC_SelectItem(MSC_main_menu, 0);
-        msc_demo.state = MSC_DEMO_WAIT;
-        msc_demo.select = 0;
-        osSemaphoreRelease(MenuEvent);
-        break;
-
-      case MSC_DEMO_WAIT:
-        MSC_SelectItem(MSC_main_menu, msc_demo.select & 0x7F);
-
-        /* Handle select item */
-        if (msc_demo.select & 0x80)
+        if( osSemaphoreWait( MenuEvent, osWaitForever ) == osOK )
         {
-          switch (msc_demo.select & 0x7F)
-          {
-          case 0:
-            msc_demo.state = MSC_DEMO_FILE_OPERATIONS;
-            osSemaphoreRelease(MenuEvent);
-            break;
+            switch( msc_demo.state )
+            {
+            case MSC_DEMO_IDLE:
+                MSC_SelectItem( MSC_main_menu, 0 );
+                msc_demo.state = MSC_DEMO_WAIT;
+                msc_demo.select = 0;
+                osSemaphoreRelease( MenuEvent );
+                break;
 
-          case 1:
-            msc_demo.state = MSC_DEMO_EXPLORER;
-            osSemaphoreRelease(MenuEvent);
-            break;
+            case MSC_DEMO_WAIT:
+                MSC_SelectItem( MSC_main_menu, msc_demo.select & 0x7F );
 
-          case 2:
-            msc_demo.state = MSC_REENUMERATE;
-            osSemaphoreRelease(MenuEvent);
-            break;
+                /* Handle select item */
+                if( msc_demo.select & 0x80 )
+                {
+                    switch( msc_demo.select & 0x7F )
+                    {
+                    case 0:
+                        msc_demo.state = MSC_DEMO_FILE_OPERATIONS;
+                        osSemaphoreRelease( MenuEvent );
+                        break;
 
-          default:
-            break;
-          }
+                    case 1:
+                        msc_demo.state = MSC_DEMO_EXPLORER;
+                        osSemaphoreRelease( MenuEvent );
+                        break;
+
+                    case 2:
+                        msc_demo.state = MSC_REENUMERATE;
+                        osSemaphoreRelease( MenuEvent );
+                        break;
+
+                    default:
+                        break;
+                    }
+                }
+
+                break;
+
+            case MSC_DEMO_FILE_OPERATIONS:
+
+                /* Read and Write File Here */
+                if( Appli_state == APPLICATION_READY )
+                {
+                    MSC_File_Operations();
+                }
+
+                msc_demo.state = MSC_DEMO_WAIT;
+                break;
+
+            case MSC_DEMO_EXPLORER:
+
+                /* Display disk content */
+                if( Appli_state == APPLICATION_READY )
+                {
+                    Explore_Disk( "0:/", 1 );
+                }
+
+                msc_demo.state = MSC_DEMO_WAIT;
+                break;
+
+            case MSC_REENUMERATE:
+                /* Force MSC Device to re-enumerate */
+                USBH_ReEnumerate( &hUSBHost );
+                msc_demo.state = MSC_DEMO_WAIT;
+                break;
+
+            default:
+                break;
+            }
+
+            msc_demo.select &= 0x7F;
         }
-        break;
-
-      case MSC_DEMO_FILE_OPERATIONS:
-        /* Read and Write File Here */
-        if (Appli_state == APPLICATION_READY)
-        {
-          MSC_File_Operations();
-        }
-        msc_demo.state = MSC_DEMO_WAIT;
-        break;
-
-      case MSC_DEMO_EXPLORER:
-        /* Display disk content */
-        if (Appli_state == APPLICATION_READY)
-        {
-          Explore_Disk("0:/", 1);
-        }
-        msc_demo.state = MSC_DEMO_WAIT;
-        break;
-
-      case MSC_REENUMERATE:
-        /* Force MSC Device to re-enumerate */
-        USBH_ReEnumerate(&hUSBHost);
-        msc_demo.state = MSC_DEMO_WAIT;
-        break;
-
-      default:
-        break;
-      }
-      msc_demo.select &= 0x7F;
     }
-  }
 }
 
 /**
@@ -166,39 +173,40 @@ static void MSC_MenuThread(void const *argument)
   * @param  item: Selected item to be highlighted
   * @retval None
   */
-static void MSC_SelectItem(uint8_t ** menu, uint8_t item)
+static void MSC_SelectItem( uint8_t **menu, uint8_t item )
 {
-  BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
+    BSP_LCD_SetTextColor( LCD_COLOR_WHITE );
 
-  switch (item)
-  {
-  case 0:
-    BSP_LCD_SetBackColor(LCD_COLOR_MAGENTA);
-    BSP_LCD_DisplayStringAtLine(17, menu[0]);
-    BSP_LCD_SetBackColor(LCD_COLOR_BLUE);
-    BSP_LCD_DisplayStringAtLine(18, menu[1]);
-    BSP_LCD_DisplayStringAtLine(19, menu[2]);
-    break;
+    switch( item )
+    {
+    case 0:
+        BSP_LCD_SetBackColor( LCD_COLOR_MAGENTA );
+        BSP_LCD_DisplayStringAtLine( 17, menu[0] );
+        BSP_LCD_SetBackColor( LCD_COLOR_BLUE );
+        BSP_LCD_DisplayStringAtLine( 18, menu[1] );
+        BSP_LCD_DisplayStringAtLine( 19, menu[2] );
+        break;
 
-  case 1:
-    BSP_LCD_SetBackColor(LCD_COLOR_BLUE);
-    BSP_LCD_DisplayStringAtLine(17, menu[0]);
-    BSP_LCD_SetBackColor(LCD_COLOR_MAGENTA);
-    BSP_LCD_DisplayStringAtLine(18, menu[1]);
-    BSP_LCD_SetBackColor(LCD_COLOR_BLUE);
-    BSP_LCD_DisplayStringAtLine(19, menu[2]);
-    break;
+    case 1:
+        BSP_LCD_SetBackColor( LCD_COLOR_BLUE );
+        BSP_LCD_DisplayStringAtLine( 17, menu[0] );
+        BSP_LCD_SetBackColor( LCD_COLOR_MAGENTA );
+        BSP_LCD_DisplayStringAtLine( 18, menu[1] );
+        BSP_LCD_SetBackColor( LCD_COLOR_BLUE );
+        BSP_LCD_DisplayStringAtLine( 19, menu[2] );
+        break;
 
-  case 2:
-    BSP_LCD_SetBackColor(LCD_COLOR_BLUE);
-    BSP_LCD_DisplayStringAtLine(17, menu[0]);
-    BSP_LCD_SetBackColor(LCD_COLOR_BLUE);
-    BSP_LCD_DisplayStringAtLine(18, menu[1]);
-    BSP_LCD_SetBackColor(LCD_COLOR_MAGENTA);
-    BSP_LCD_DisplayStringAtLine(19, menu[2]);
-    break;
-  }
-  BSP_LCD_SetBackColor(LCD_COLOR_BLACK);
+    case 2:
+        BSP_LCD_SetBackColor( LCD_COLOR_BLUE );
+        BSP_LCD_DisplayStringAtLine( 17, menu[0] );
+        BSP_LCD_SetBackColor( LCD_COLOR_BLUE );
+        BSP_LCD_DisplayStringAtLine( 18, menu[1] );
+        BSP_LCD_SetBackColor( LCD_COLOR_MAGENTA );
+        BSP_LCD_DisplayStringAtLine( 19, menu[2] );
+        break;
+    }
+
+    BSP_LCD_SetBackColor( LCD_COLOR_BLACK );
 }
 
 /**
@@ -206,21 +214,21 @@ static void MSC_SelectItem(uint8_t ** menu, uint8_t item)
   * @param  state: Joystick state
   * @retval None
   */
-static void MSC_DEMO_ProbeKey(JOYState_TypeDef state)
+static void MSC_DEMO_ProbeKey( JOYState_TypeDef state )
 {
-  /* Handle Menu inputs */
-  if ((state == JOY_UP) && (msc_demo.select > 0))
-  {
-    msc_demo.select--;
-  }
-  else if ((state == JOY_DOWN) && (msc_demo.select < 2))
-  {
-    msc_demo.select++;
-  }
-  else if (state == JOY_SEL)
-  {
-    msc_demo.select |= 0x80;
-  }
+    /* Handle Menu inputs */
+    if( ( state == JOY_UP ) && ( msc_demo.select > 0 ) )
+    {
+        msc_demo.select--;
+    }
+    else if( ( state == JOY_DOWN ) && ( msc_demo.select < 2 ) )
+    {
+        msc_demo.select++;
+    }
+    else if( state == JOY_SEL )
+    {
+        msc_demo.select |= 0x80;
+    }
 }
 
 /**
@@ -228,34 +236,35 @@ static void MSC_DEMO_ProbeKey(JOYState_TypeDef state)
   * @param  GPIO_Pin: Specifies the pins connected EXTI line
   * @retval None
   */
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+void HAL_GPIO_EXTI_Callback( uint16_t GPIO_Pin )
 {
-  static JOYState_TypeDef JoyState = JOY_NONE;
+    static JOYState_TypeDef JoyState = JOY_NONE;
 
-  if (GPIO_Pin == GPIO_PIN_14)
-  {
-    /* Get the Joystick State */
-    JoyState = BSP_JOY_GetState();
-
-    MSC_DEMO_ProbeKey(JoyState);
-
-    switch (JoyState)
+    if( GPIO_Pin == GPIO_PIN_14 )
     {
-    case JOY_LEFT:
-      LCD_LOG_ScrollBack();
-      break;
+        /* Get the Joystick State */
+        JoyState = BSP_JOY_GetState();
 
-    case JOY_RIGHT:
-      LCD_LOG_ScrollForward();
-      break;
+        MSC_DEMO_ProbeKey( JoyState );
 
-    default:
-      break;
+        switch( JoyState )
+        {
+        case JOY_LEFT:
+            LCD_LOG_ScrollBack();
+            break;
+
+        case JOY_RIGHT:
+            LCD_LOG_ScrollForward();
+            break;
+
+        default:
+            break;
+        }
+
+        /* Clear joystick interrupt pending bits */
+        BSP_IO_ITClear( JOY_ALL_PINS );
+        osSemaphoreRelease( MenuEvent );
     }
-    /* Clear joystick interrupt pending bits */
-    BSP_IO_ITClear(JOY_ALL_PINS);
-    osSemaphoreRelease(MenuEvent);
-  }
 }
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

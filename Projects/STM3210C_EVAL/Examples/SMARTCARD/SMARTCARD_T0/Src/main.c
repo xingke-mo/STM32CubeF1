@@ -22,7 +22,7 @@
 #include "main.h"
 
 #if defined(HAL_UART_MODULE_ENABLED)
-#include <stdio.h>
+    #include <stdio.h>
 #endif /* HAL_UART_MODULE_ENABLED */
 
 
@@ -38,7 +38,7 @@
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 #if defined(HAL_UART_MODULE_ENABLED)
-#define UART_TIMEOUT_VALUE   1000
+    #define UART_TIMEOUT_VALUE   1000
 #endif /* HAL_UART_MODULE_ENABLED */
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -60,21 +60,21 @@ __IO uint8_t IMSI_Content[9] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
 
 
 #if defined(HAL_UART_MODULE_ENABLED)
-UART_HandleTypeDef   huart;
+    UART_HandleTypeDef   huart;
 #endif /* HAL_UART_MODULE_ENABLED */
 
 /* Private function prototypes -----------------------------------------------*/
-void SystemClock_Config(void);
-void Error_Handler(void);
+void SystemClock_Config( void );
+void Error_Handler( void );
 #if defined(HAL_UART_MODULE_ENABLED)
-void       UART_Config(void);
-#ifdef __GNUC__
-/* With GCC, small printf (option LD Linker->Libraries->Small printf
-   set to 'Yes') calls __io_putchar() */
-#define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
-#else
-#define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
-#endif /* __GNUC__ */
+    void       UART_Config( void );
+    #ifdef __GNUC__
+        /* With GCC, small printf (option LD Linker->Libraries->Small printf
+        set to 'Yes') calls __io_putchar() */
+        #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+    #else
+        #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+    #endif /* __GNUC__ */
 #endif /* HAL_UART_MODULE_ENABLED */
 
 /* Private functions ---------------------------------------------------------*/
@@ -84,395 +84,416 @@ void       UART_Config(void);
   * @param  None
   * @retval None
   */
-int main(void)
+int main( void )
 {
-  /* STM32F107xC HAL library initialization:
-       - Configure the Flash prefetch
-       - Systick timer is configured by default as source of time base, but user
-         can eventually implement his proper time base source (a general purpose
-         timer for example or other time source), keeping in mind that Time base
-         duration should be kept 1ms since PPP_TIMEOUT_VALUEs are defined and
-         handled in milliseconds basis.
-       - Set NVIC Group Priority to 4
-       - Low Level Initialization
-     */
-  HAL_Init();
+    /* STM32F107xC HAL library initialization:
+         - Configure the Flash prefetch
+         - Systick timer is configured by default as source of time base, but user
+           can eventually implement his proper time base source (a general purpose
+           timer for example or other time source), keeping in mind that Time base
+           duration should be kept 1ms since PPP_TIMEOUT_VALUEs are defined and
+           handled in milliseconds basis.
+         - Set NVIC Group Priority to 4
+         - Low Level Initialization
+       */
+    HAL_Init();
 
-  /* Configure the system clock to 72 MHz */
-  SystemClock_Config();
+    /* Configure the system clock to 72 MHz */
+    SystemClock_Config();
 
-  /* Initialize LEDs *************************/
-  BSP_LED_Init(LED1);
-  BSP_LED_Init(LED2);
-  BSP_LED_Init(LED3);
-  BSP_LED_Init(LED4);
+    /* Initialize LEDs *************************/
+    BSP_LED_Init( LED1 );
+    BSP_LED_Init( LED2 );
+    BSP_LED_Init( LED3 );
+    BSP_LED_Init( LED4 );
 
 #if defined(HAL_UART_MODULE_ENABLED)
-  UART_Config();
+    UART_Config();
 #endif /* HAL_UART_MODULE_ENABLED */
 
-  SC_State SCState = SC_POWER_OFF;
+    SC_State SCState = SC_POWER_OFF;
 
-  /* Configure Smartcard Interface GPIO pins */
-  SC_IOConfig();
+    /* Configure Smartcard Interface GPIO pins */
+    SC_IOConfig();
 
-  /*-------------------------------- Idle task ---------------------------------*/
-  while(1)
-  {
-#if defined(HAL_UART_MODULE_ENABLED)
-    printf("-- Waiting for card insertion -- (LED1 blinking) \n\r");
-#endif /* HAL_UART_MODULE_ENABLED */
-
-    /* Loop while no Smartcard is detected */
-    while(CardInserted == 0)
+    /*-------------------------------- Idle task ---------------------------------*/
+    while( 1 )
     {
-      BSP_LED_Toggle(LED1);
-      HAL_Delay(200);
-    }
-    BSP_LED_On(LED1);
-
-    /* Start SC Demo ---------------------------------------------------------*/
 #if defined(HAL_UART_MODULE_ENABLED)
-    printf("-- Card inserted -- (All LEDs On) \n\r");
+        printf( "-- Waiting for card insertion -- (LED1 blinking) \n\r" );
 #endif /* HAL_UART_MODULE_ENABLED */
 
-    /* Wait A2R --------------------------------------------------------------*/
-    SCState = SC_POWER_ON;
+        /* Loop while no Smartcard is detected */
+        while( CardInserted == 0 )
+        {
+            BSP_LED_Toggle( LED1 );
+            HAL_Delay( 200 );
+        }
 
-    SC_ADPU.Header.CLA = 0x00;
-    SC_ADPU.Header.INS = SC_GET_A2R;
-    SC_ADPU.Header.P1 = 0x00;
-    SC_ADPU.Header.P2 = 0x00;
-    SC_ADPU.Body.LC = 0x00;
+        BSP_LED_On( LED1 );
 
-    while(SCState != SC_ACTIVE_ON_T0)
-    {
-      SC_Handler(&SCState, &SC_ADPU, &SC_Response);
-    }
-
+        /* Start SC Demo ---------------------------------------------------------*/
 #if defined(HAL_UART_MODULE_ENABLED)
-    printf("-- Card powered ON : ATR received --  \n\r");
+        printf( "-- Card inserted -- (All LEDs On) \n\r" );
 #endif /* HAL_UART_MODULE_ENABLED */
 
-    /* Apply the Procedure Type Selection (PTS) */
-    SC_PTSConfig();
+        /* Wait A2R --------------------------------------------------------------*/
+        SCState = SC_POWER_ON;
 
-#if defined(HAL_UART_MODULE_ENABLED)
-    printf("-- PTS procedure performed --  \n\r");
-#endif /* HAL_UART_MODULE_ENABLED */
-
-    /* Inserts delay(400ms) for Smartcard clock resynchronisation */
-    HAL_Delay(400);
-
-    /* Select MF -------------------------------------------------------------*/
-    SC_ADPU.Header.CLA = SC_CLA_GSM11;
-    SC_ADPU.Header.INS = SC_SELECT_FILE;
-    SC_ADPU.Header.P1 = 0x00;
-    SC_ADPU.Header.P2 = 0x00;
-    SC_ADPU.Body.LC = 0x02;
-
-    for(i = 0; i < SC_ADPU.Body.LC; i++)
-    {
-      SC_ADPU.Body.Data[i] = MasterRoot[i];
-    }
-    while(i < LC_MAX)
-    {
-      SC_ADPU.Body.Data[i++] = 0;
-    }
-    SC_ADPU.Body.LE = 0;
-
-    SC_Handler(&SCState, &SC_ADPU, &SC_Response);
-
-#if defined(HAL_UART_MODULE_ENABLED)
-    printf("-- ### SELECT MF ###  \n\r");
-#endif /* HAL_UART_MODULE_ENABLED */
-
-    /* Get Response on MF ----------------------------------------------------*/
-    if(SC_Response.SW1 == SC_DF_SELECTED)
-    {
-      SC_ADPU.Header.CLA = SC_CLA_GSM11;
-      SC_ADPU.Header.INS = SC_GET_RESPONCE;
-      SC_ADPU.Header.P1 = 0x00;
-      SC_ADPU.Header.P2 = 0x00;
-      SC_ADPU.Body.LC = 0x00;
-      SC_ADPU.Body.LE = SC_Response.SW2;
-
-      SC_Handler(&SCState, &SC_ADPU, &SC_Response);
-    }
-
-#if defined(HAL_UART_MODULE_ENABLED)
-    printf("-- ### GET RESPONSE ###  \n\r");
-#endif /* HAL_UART_MODULE_ENABLED */
-
-    /* Select ICCID ----------------------------------------------------------*/
-    if(((SC_Response.SW1 << 8) | (SC_Response.SW2)) == SC_OP_TERMINATED)
-    {
-      /* Check if the CHV1 is enabled */
-      if((SC_Response.Data[13] & 0x80) == 0x00)
-      {
-        CHV1Status = 0x01;
-#if defined(HAL_UART_MODULE_ENABLED)
-        printf("-- CHV1 is enabled --  \n\r");
-#endif /* HAL_UART_MODULE_ENABLED */
-      }
-      else
-      {
-#if defined(HAL_UART_MODULE_ENABLED)
-        printf("-- CHV1 is disabled --  \n\r");
-#endif /* HAL_UART_MODULE_ENABLED */
-      }
-
-      /* Send APDU Command for ICCID selection */
-      SC_ADPU.Header.CLA = SC_CLA_GSM11;
-      SC_ADPU.Header.INS = SC_SELECT_FILE;
-      SC_ADPU.Header.P1 = 0x00;
-      SC_ADPU.Header.P2 = 0x00;
-      SC_ADPU.Body.LC = 0x02;
-
-      for(i = 0; i < SC_ADPU.Body.LC; i++)
-      {
-        SC_ADPU.Body.Data[i] = ICCID[i];
-      }
-      while(i < LC_MAX)
-      {
-        SC_ADPU.Body.Data[i++] = 0;
-      }
-      SC_ADPU.Body.LE = 0;
-
-      SC_Handler(&SCState, &SC_ADPU, &SC_Response);
-
-#if defined(HAL_UART_MODULE_ENABLED)
-      printf("-- ### SELECT EF ICCID ###  \n\r");
-#endif /* HAL_UART_MODULE_ENABLED */
-
-    }
-
-    /* Read Binary in ICCID --------------------------------------------------*/
-    if(SC_Response.SW1 == SC_EF_SELECTED)
-    {
-      SC_ADPU.Header.CLA = SC_CLA_GSM11;
-      SC_ADPU.Header.INS = SC_READ_BINARY;
-      SC_ADPU.Header.P1 = 0x00;
-      SC_ADPU.Header.P2 = 0x00;
-      SC_ADPU.Body.LC = 0x00;
-
-      SC_ADPU.Body.LE = 10;
-
-      SC_Handler(&SCState, &SC_ADPU, &SC_Response);
-    }
-
-#if defined(HAL_UART_MODULE_ENABLED)
-    printf("-- ### READ BINARY (ICCID) ###  \n\r");
-#endif /* HAL_UART_MODULE_ENABLED */
-
-    /* Select GSMDir ---------------------------------------------------------*/
-    if(((SC_Response.SW1 << 8) | (SC_Response.SW2)) == SC_OP_TERMINATED)
-    {
-      /* Copy the ICCID File content into ICCID_Content buffer */
-      for(i = 0; i < SC_ADPU.Body.LE; i++)
-      {
-        ICCID_Content[i] =  SC_Response.Data[i];
-      }
-#if defined(HAL_UART_MODULE_ENABLED)
-      printf("--     ICCID Value =  ");
-      for(i = 0; i < SC_ADPU.Body.LE; i++)
-      {
-        printf("%x  ",ICCID_Content[i]);
-      }
-      printf("\n\r");
-#endif /* HAL_UART_MODULE_ENABLED */
-
-      /* Send APDU Command for GSMDir selection */
-      SC_ADPU.Header.CLA = SC_CLA_GSM11;
-      SC_ADPU.Header.INS = SC_SELECT_FILE;
-      SC_ADPU.Header.P1 = 0x00;
-      SC_ADPU.Header.P2 = 0x00;
-      SC_ADPU.Body.LC = 0x02;
-
-      for(i = 0; i < SC_ADPU.Body.LC; i++)
-      {
-        SC_ADPU.Body.Data[i] = GSMDir[i];
-      }
-      while(i < LC_MAX)
-      {
-        SC_ADPU.Body.Data[i++] = 0;
-      }
-      SC_ADPU.Body.LE = 0;
-
-      SC_Handler(&SCState, &SC_ADPU, &SC_Response);
-
-#if defined(HAL_UART_MODULE_ENABLED)
-      printf("-- ### SELECT DF GSM ###  \n\r");
-#endif /* HAL_UART_MODULE_ENABLED */
-    }
-
-    /* Select IMSI -----------------------------------------------------------*/
-    if(SC_Response.SW1 == SC_DF_SELECTED)
-    {
-      SC_ADPU.Header.CLA = SC_CLA_GSM11;
-      SC_ADPU.Header.INS = SC_SELECT_FILE;
-      SC_ADPU.Header.P1 = 0x00;
-      SC_ADPU.Header.P2 = 0x00;
-      SC_ADPU.Body.LC = 0x02;
-
-      for(i = 0; i < SC_ADPU.Body.LC; i++)
-      {
-        SC_ADPU.Body.Data[i] = IMSI[i];
-      }
-      while(i < LC_MAX)
-      {
-        SC_ADPU.Body.Data[i++] = 0;
-      }
-      SC_ADPU.Body.LE = 0;
-
-      SC_Handler(&SCState, &SC_ADPU, &SC_Response);
-
-#if defined(HAL_UART_MODULE_ENABLED)
-      printf("-- ### SELECT EF IMSI ###  \n\r");
-#endif /* HAL_UART_MODULE_ENABLED */
-    }
-
-    /* Get Response on IMSI File ---------------------------------------------*/
-    if(SC_Response.SW1 == SC_EF_SELECTED)
-    {
-      SC_ADPU.Header.CLA = SC_CLA_GSM11;
-      SC_ADPU.Header.INS = SC_GET_RESPONCE;
-      SC_ADPU.Header.P1 = 0x00;
-      SC_ADPU.Header.P2 = 0x00;
-      SC_ADPU.Body.LC = 0x00;
-      SC_ADPU.Body.LE = SC_Response.SW2;
-
-      SC_Handler(&SCState, &SC_ADPU, &SC_Response);
-    }
-
-    /* Read Binary in IMSI ---------------------------------------------------*/
-    if(CHV1Status == 0x00)
-    {
-      if(((SC_Response.SW1 << 8) | (SC_Response.SW2)) == SC_OP_TERMINATED)
-      {
-        /* Enable CHV1 (PIN1) ------------------------------------------------*/
-        /* CHV1 enabling should be done using proper value of used card CHV1 */
-        /* Please fill corresponding value in CHV1[array] . Current value is set to "00000000". */
-
-        SC_ADPU.Header.CLA = SC_CLA_GSM11;
-        SC_ADPU.Header.INS = SC_ENABLE;
+        SC_ADPU.Header.CLA = 0x00;
+        SC_ADPU.Header.INS = SC_GET_A2R;
         SC_ADPU.Header.P1 = 0x00;
-        SC_ADPU.Header.P2 = 0x01;
-        SC_ADPU.Body.LC = 0x08;
+        SC_ADPU.Header.P2 = 0x00;
+        SC_ADPU.Body.LC = 0x00;
 
-        for(i = 0; i < SC_ADPU.Body.LC; i++)
+        while( SCState != SC_ACTIVE_ON_T0 )
         {
-          SC_ADPU.Body.Data[i] = CHV1[i];
+            SC_Handler( &SCState, &SC_ADPU, &SC_Response );
         }
-        while(i < LC_MAX)
+
+#if defined(HAL_UART_MODULE_ENABLED)
+        printf( "-- Card powered ON : ATR received --  \n\r" );
+#endif /* HAL_UART_MODULE_ENABLED */
+
+        /* Apply the Procedure Type Selection (PTS) */
+        SC_PTSConfig();
+
+#if defined(HAL_UART_MODULE_ENABLED)
+        printf( "-- PTS procedure performed --  \n\r" );
+#endif /* HAL_UART_MODULE_ENABLED */
+
+        /* Inserts delay(400ms) for Smartcard clock resynchronisation */
+        HAL_Delay( 400 );
+
+        /* Select MF -------------------------------------------------------------*/
+        SC_ADPU.Header.CLA = SC_CLA_GSM11;
+        SC_ADPU.Header.INS = SC_SELECT_FILE;
+        SC_ADPU.Header.P1 = 0x00;
+        SC_ADPU.Header.P2 = 0x00;
+        SC_ADPU.Body.LC = 0x02;
+
+        for( i = 0; i < SC_ADPU.Body.LC; i++ )
         {
-          SC_ADPU.Body.Data[i++] = 0;
+            SC_ADPU.Body.Data[i] = MasterRoot[i];
         }
+
+        while( i < LC_MAX )
+        {
+            SC_ADPU.Body.Data[i++] = 0;
+        }
+
         SC_ADPU.Body.LE = 0;
 
-        SC_Handler(&SCState, &SC_ADPU, &SC_Response);
+        SC_Handler( &SCState, &SC_ADPU, &SC_Response );
 
 #if defined(HAL_UART_MODULE_ENABLED)
-       printf("-- ### CHV1 ENABLE ###  \n\r");
+        printf( "-- ### SELECT MF ###  \n\r" );
 #endif /* HAL_UART_MODULE_ENABLED */
-      }
-    }
-    else
-    {
-      if(((SC_Response.SW1 << 8) | (SC_Response.SW2)) == SC_OP_TERMINATED)
-      {
-        /* Verify CHV1 (PIN1) ------------------------------------------------*/
-        /* CHV1 enabling should be done using proper value of used card CHV1 */
-        /* Please fill corresponding value in CHV1[array] . Current value is set to "00000000". */
-        SC_ADPU.Header.CLA = SC_CLA_GSM11;
-        SC_ADPU.Header.INS = SC_VERIFY;
-        SC_ADPU.Header.P1 = 0x00;
-        SC_ADPU.Header.P2 = 0x01;
-        SC_ADPU.Body.LC = 0x08;
 
-        for(i = 0; i < SC_ADPU.Body.LC; i++)
+        /* Get Response on MF ----------------------------------------------------*/
+        if( SC_Response.SW1 == SC_DF_SELECTED )
         {
-          SC_ADPU.Body.Data[i] = CHV1[i];
+            SC_ADPU.Header.CLA = SC_CLA_GSM11;
+            SC_ADPU.Header.INS = SC_GET_RESPONCE;
+            SC_ADPU.Header.P1 = 0x00;
+            SC_ADPU.Header.P2 = 0x00;
+            SC_ADPU.Body.LC = 0x00;
+            SC_ADPU.Body.LE = SC_Response.SW2;
+
+            SC_Handler( &SCState, &SC_ADPU, &SC_Response );
         }
-        while(i < LC_MAX)
+
+#if defined(HAL_UART_MODULE_ENABLED)
+        printf( "-- ### GET RESPONSE ###  \n\r" );
+#endif /* HAL_UART_MODULE_ENABLED */
+
+        /* Select ICCID ----------------------------------------------------------*/
+        if( ( ( SC_Response.SW1 << 8 ) | ( SC_Response.SW2 ) ) == SC_OP_TERMINATED )
         {
-          SC_ADPU.Body.Data[i++] = 0;
+            /* Check if the CHV1 is enabled */
+            if( ( SC_Response.Data[13] & 0x80 ) == 0x00 )
+            {
+                CHV1Status = 0x01;
+#if defined(HAL_UART_MODULE_ENABLED)
+                printf( "-- CHV1 is enabled --  \n\r" );
+#endif /* HAL_UART_MODULE_ENABLED */
+            }
+            else
+            {
+#if defined(HAL_UART_MODULE_ENABLED)
+                printf( "-- CHV1 is disabled --  \n\r" );
+#endif /* HAL_UART_MODULE_ENABLED */
+            }
+
+            /* Send APDU Command for ICCID selection */
+            SC_ADPU.Header.CLA = SC_CLA_GSM11;
+            SC_ADPU.Header.INS = SC_SELECT_FILE;
+            SC_ADPU.Header.P1 = 0x00;
+            SC_ADPU.Header.P2 = 0x00;
+            SC_ADPU.Body.LC = 0x02;
+
+            for( i = 0; i < SC_ADPU.Body.LC; i++ )
+            {
+                SC_ADPU.Body.Data[i] = ICCID[i];
+            }
+
+            while( i < LC_MAX )
+            {
+                SC_ADPU.Body.Data[i++] = 0;
+            }
+
+            SC_ADPU.Body.LE = 0;
+
+            SC_Handler( &SCState, &SC_ADPU, &SC_Response );
+
+#if defined(HAL_UART_MODULE_ENABLED)
+            printf( "-- ### SELECT EF ICCID ###  \n\r" );
+#endif /* HAL_UART_MODULE_ENABLED */
+
         }
-        SC_ADPU.Body.LE = 0;
 
-        SC_Handler(&SCState, &SC_ADPU, &SC_Response);
+        /* Read Binary in ICCID --------------------------------------------------*/
+        if( SC_Response.SW1 == SC_EF_SELECTED )
+        {
+            SC_ADPU.Header.CLA = SC_CLA_GSM11;
+            SC_ADPU.Header.INS = SC_READ_BINARY;
+            SC_ADPU.Header.P1 = 0x00;
+            SC_ADPU.Header.P2 = 0x00;
+            SC_ADPU.Body.LC = 0x00;
+
+            SC_ADPU.Body.LE = 10;
+
+            SC_Handler( &SCState, &SC_ADPU, &SC_Response );
+        }
+
 #if defined(HAL_UART_MODULE_ENABLED)
-        printf("-- ### CHV1 VERIFY ###  \n\r");
+        printf( "-- ### READ BINARY (ICCID) ###  \n\r" );
 #endif /* HAL_UART_MODULE_ENABLED */
-      }
+
+        /* Select GSMDir ---------------------------------------------------------*/
+        if( ( ( SC_Response.SW1 << 8 ) | ( SC_Response.SW2 ) ) == SC_OP_TERMINATED )
+        {
+            /* Copy the ICCID File content into ICCID_Content buffer */
+            for( i = 0; i < SC_ADPU.Body.LE; i++ )
+            {
+                ICCID_Content[i] =  SC_Response.Data[i];
+            }
+
+#if defined(HAL_UART_MODULE_ENABLED)
+            printf( "--     ICCID Value =  " );
+
+            for( i = 0; i < SC_ADPU.Body.LE; i++ )
+            {
+                printf( "%x  ", ICCID_Content[i] );
+            }
+
+            printf( "\n\r" );
+#endif /* HAL_UART_MODULE_ENABLED */
+
+            /* Send APDU Command for GSMDir selection */
+            SC_ADPU.Header.CLA = SC_CLA_GSM11;
+            SC_ADPU.Header.INS = SC_SELECT_FILE;
+            SC_ADPU.Header.P1 = 0x00;
+            SC_ADPU.Header.P2 = 0x00;
+            SC_ADPU.Body.LC = 0x02;
+
+            for( i = 0; i < SC_ADPU.Body.LC; i++ )
+            {
+                SC_ADPU.Body.Data[i] = GSMDir[i];
+            }
+
+            while( i < LC_MAX )
+            {
+                SC_ADPU.Body.Data[i++] = 0;
+            }
+
+            SC_ADPU.Body.LE = 0;
+
+            SC_Handler( &SCState, &SC_ADPU, &SC_Response );
+
+#if defined(HAL_UART_MODULE_ENABLED)
+            printf( "-- ### SELECT DF GSM ###  \n\r" );
+#endif /* HAL_UART_MODULE_ENABLED */
+        }
+
+        /* Select IMSI -----------------------------------------------------------*/
+        if( SC_Response.SW1 == SC_DF_SELECTED )
+        {
+            SC_ADPU.Header.CLA = SC_CLA_GSM11;
+            SC_ADPU.Header.INS = SC_SELECT_FILE;
+            SC_ADPU.Header.P1 = 0x00;
+            SC_ADPU.Header.P2 = 0x00;
+            SC_ADPU.Body.LC = 0x02;
+
+            for( i = 0; i < SC_ADPU.Body.LC; i++ )
+            {
+                SC_ADPU.Body.Data[i] = IMSI[i];
+            }
+
+            while( i < LC_MAX )
+            {
+                SC_ADPU.Body.Data[i++] = 0;
+            }
+
+            SC_ADPU.Body.LE = 0;
+
+            SC_Handler( &SCState, &SC_ADPU, &SC_Response );
+
+#if defined(HAL_UART_MODULE_ENABLED)
+            printf( "-- ### SELECT EF IMSI ###  \n\r" );
+#endif /* HAL_UART_MODULE_ENABLED */
+        }
+
+        /* Get Response on IMSI File ---------------------------------------------*/
+        if( SC_Response.SW1 == SC_EF_SELECTED )
+        {
+            SC_ADPU.Header.CLA = SC_CLA_GSM11;
+            SC_ADPU.Header.INS = SC_GET_RESPONCE;
+            SC_ADPU.Header.P1 = 0x00;
+            SC_ADPU.Header.P2 = 0x00;
+            SC_ADPU.Body.LC = 0x00;
+            SC_ADPU.Body.LE = SC_Response.SW2;
+
+            SC_Handler( &SCState, &SC_ADPU, &SC_Response );
+        }
+
+        /* Read Binary in IMSI ---------------------------------------------------*/
+        if( CHV1Status == 0x00 )
+        {
+            if( ( ( SC_Response.SW1 << 8 ) | ( SC_Response.SW2 ) ) == SC_OP_TERMINATED )
+            {
+                /* Enable CHV1 (PIN1) ------------------------------------------------*/
+                /* CHV1 enabling should be done using proper value of used card CHV1 */
+                /* Please fill corresponding value in CHV1[array] . Current value is set to "00000000". */
+
+                SC_ADPU.Header.CLA = SC_CLA_GSM11;
+                SC_ADPU.Header.INS = SC_ENABLE;
+                SC_ADPU.Header.P1 = 0x00;
+                SC_ADPU.Header.P2 = 0x01;
+                SC_ADPU.Body.LC = 0x08;
+
+                for( i = 0; i < SC_ADPU.Body.LC; i++ )
+                {
+                    SC_ADPU.Body.Data[i] = CHV1[i];
+                }
+
+                while( i < LC_MAX )
+                {
+                    SC_ADPU.Body.Data[i++] = 0;
+                }
+
+                SC_ADPU.Body.LE = 0;
+
+                SC_Handler( &SCState, &SC_ADPU, &SC_Response );
+
+#if defined(HAL_UART_MODULE_ENABLED)
+                printf( "-- ### CHV1 ENABLE ###  \n\r" );
+#endif /* HAL_UART_MODULE_ENABLED */
+            }
+        }
+        else
+        {
+            if( ( ( SC_Response.SW1 << 8 ) | ( SC_Response.SW2 ) ) == SC_OP_TERMINATED )
+            {
+                /* Verify CHV1 (PIN1) ------------------------------------------------*/
+                /* CHV1 enabling should be done using proper value of used card CHV1 */
+                /* Please fill corresponding value in CHV1[array] . Current value is set to "00000000". */
+                SC_ADPU.Header.CLA = SC_CLA_GSM11;
+                SC_ADPU.Header.INS = SC_VERIFY;
+                SC_ADPU.Header.P1 = 0x00;
+                SC_ADPU.Header.P2 = 0x01;
+                SC_ADPU.Body.LC = 0x08;
+
+                for( i = 0; i < SC_ADPU.Body.LC; i++ )
+                {
+                    SC_ADPU.Body.Data[i] = CHV1[i];
+                }
+
+                while( i < LC_MAX )
+                {
+                    SC_ADPU.Body.Data[i++] = 0;
+                }
+
+                SC_ADPU.Body.LE = 0;
+
+                SC_Handler( &SCState, &SC_ADPU, &SC_Response );
+#if defined(HAL_UART_MODULE_ENABLED)
+                printf( "-- ### CHV1 VERIFY ###  \n\r" );
+#endif /* HAL_UART_MODULE_ENABLED */
+            }
+        }
+
+        /* Read Binary in IMSI ---------------------------------------------------*/
+        if( ( ( SC_Response.SW1 << 8 ) | ( SC_Response.SW2 ) ) == SC_OP_TERMINATED )
+        {
+#if defined(HAL_UART_MODULE_ENABLED)
+            printf( "-- ### CHV1 Operation successfull ###  \n\r" );
+#endif /* HAL_UART_MODULE_ENABLED */
+            SC_ADPU.Header.CLA = SC_CLA_GSM11;
+            SC_ADPU.Header.INS = SC_READ_BINARY;
+            SC_ADPU.Header.P1 = 0x00;
+            SC_ADPU.Header.P2 = 0x00;
+            SC_ADPU.Body.LC = 0x00;
+
+            SC_ADPU.Body.LE = 9;
+
+            SC_Handler( &SCState, &SC_ADPU, &SC_Response );
+        }
+        else
+        {
+#if defined(HAL_UART_MODULE_ENABLED)
+            printf( "-- ### CHV1 Operation unsuccessfull : SW1/SW2=0x%4x ###  \n\r", ( ( SC_Response.SW1 << 8 ) | ( SC_Response.SW2 ) ) );
+#endif /* HAL_UART_MODULE_ENABLED */
+        }
+
+#if defined(HAL_UART_MODULE_ENABLED)
+        printf( "-- ### READ BINARY (IMSI) ###  \n\r" );
+#endif /* HAL_UART_MODULE_ENABLED */
+
+        if( ( ( SC_Response.SW1 << 8 ) | ( SC_Response.SW2 ) ) == SC_OP_TERMINATED )
+        {
+            /* Copy the IMSI File content into IMSI_Content buffer */
+            for( i = 0; i < SC_ADPU.Body.LE; i++ )
+            {
+                IMSI_Content[i] =  SC_Response.Data[i];
+            }
+        }
+
+#if defined(HAL_UART_MODULE_ENABLED)
+        printf( "--     IMSI Value =  " );
+
+        for( i = 0; i < SC_ADPU.Body.LE; i++ )
+        {
+            printf( "%x  ", IMSI_Content[i] );
+        }
+
+        printf( "\n\r" );
+#endif /* HAL_UART_MODULE_ENABLED */
+
+        /* Disable the Smartcard interface */
+        SCState = SC_POWER_OFF;
+        SC_Handler( &SCState, &SC_ADPU, &SC_Response );
+
+#if defined(HAL_UART_MODULE_ENABLED)
+        printf( "-- Card powered OFF --  \n\r" );
+#endif /* HAL_UART_MODULE_ENABLED */
+
+#if defined(HAL_UART_MODULE_ENABLED)
+        printf( "-- Waiting for card removal -- (LED1 blinking) \n\r" );
+#endif /* HAL_UART_MODULE_ENABLED */
+
+        /* Loop while a Smartcard is detected */
+        while( CardInserted == 1 )
+        {
+            BSP_LED_Toggle( LED1 );
+            HAL_Delay( 200 );
+        }
+
+        BSP_LED_Off( LED1 );
+        BSP_LED_Off( LED2 );
+        BSP_LED_Off( LED3 );
+        BSP_LED_Off( LED4 );
     }
-    /* Read Binary in IMSI ---------------------------------------------------*/
-    if(((SC_Response.SW1 << 8) | (SC_Response.SW2)) == SC_OP_TERMINATED)
-    {
-#if defined(HAL_UART_MODULE_ENABLED)
-      printf("-- ### CHV1 Operation successfull ###  \n\r");
-#endif /* HAL_UART_MODULE_ENABLED */
-      SC_ADPU.Header.CLA = SC_CLA_GSM11;
-      SC_ADPU.Header.INS = SC_READ_BINARY;
-      SC_ADPU.Header.P1 = 0x00;
-      SC_ADPU.Header.P2 = 0x00;
-      SC_ADPU.Body.LC = 0x00;
-
-      SC_ADPU.Body.LE = 9;
-
-      SC_Handler(&SCState, &SC_ADPU, &SC_Response);
-    }
-    else
-    {
-#if defined(HAL_UART_MODULE_ENABLED)
-      printf("-- ### CHV1 Operation unsuccessfull : SW1/SW2=0x%4x ###  \n\r", ((SC_Response.SW1 << 8) | (SC_Response.SW2)));
-#endif /* HAL_UART_MODULE_ENABLED */
-    }
-
-#if defined(HAL_UART_MODULE_ENABLED)
-    printf("-- ### READ BINARY (IMSI) ###  \n\r");
-#endif /* HAL_UART_MODULE_ENABLED */
-
-    if(((SC_Response.SW1 << 8) | (SC_Response.SW2)) == SC_OP_TERMINATED)
-    {
-      /* Copy the IMSI File content into IMSI_Content buffer */
-      for(i = 0; i < SC_ADPU.Body.LE; i++)
-      {
-        IMSI_Content[i] =  SC_Response.Data[i];
-      }
-    }
-#if defined(HAL_UART_MODULE_ENABLED)
-    printf("--     IMSI Value =  ");
-    for(i = 0; i < SC_ADPU.Body.LE; i++)
-    {
-      printf("%x  ",IMSI_Content[i]);
-    }
-    printf("\n\r");
-#endif /* HAL_UART_MODULE_ENABLED */
-
-    /* Disable the Smartcard interface */
-    SCState = SC_POWER_OFF;
-    SC_Handler(&SCState, &SC_ADPU, &SC_Response);
-
-#if defined(HAL_UART_MODULE_ENABLED)
-    printf("-- Card powered OFF --  \n\r");
-#endif /* HAL_UART_MODULE_ENABLED */
-
-#if defined(HAL_UART_MODULE_ENABLED)
-    printf("-- Waiting for card removal -- (LED1 blinking) \n\r");
-#endif /* HAL_UART_MODULE_ENABLED */
-
-    /* Loop while a Smartcard is detected */
-    while(CardInserted == 1)
-    {
-      BSP_LED_Toggle(LED1);
-      HAL_Delay(200);
-    }
-    BSP_LED_Off(LED1);
-    BSP_LED_Off(LED2);
-    BSP_LED_Off(LED3);
-    BSP_LED_Off(LED4);
-  }
 }
 
 /**
@@ -492,45 +513,47 @@ int main(void)
   * @param  None
   * @retval None
   */
-void SystemClock_Config(void)
+void SystemClock_Config( void )
 {
-  RCC_ClkInitTypeDef clkinitstruct = {0};
-  RCC_OscInitTypeDef oscinitstruct = {0};
+    RCC_ClkInitTypeDef clkinitstruct = {0};
+    RCC_OscInitTypeDef oscinitstruct = {0};
 
-  /* Configure PLLs ------------------------------------------------------*/
-  /* PLL2 configuration: PLL2CLK = (HSE / HSEPrediv2Value) * PLL2MUL = (25 / 5) * 8 = 40 MHz */
-  /* PREDIV1 configuration: PREDIV1CLK = PLL2CLK / HSEPredivValue = 40 / 5 = 8 MHz */
-  /* PLL configuration: PLLCLK = PREDIV1CLK * PLLMUL = 8 * 9 = 72 MHz */
+    /* Configure PLLs ------------------------------------------------------*/
+    /* PLL2 configuration: PLL2CLK = (HSE / HSEPrediv2Value) * PLL2MUL = (25 / 5) * 8 = 40 MHz */
+    /* PREDIV1 configuration: PREDIV1CLK = PLL2CLK / HSEPredivValue = 40 / 5 = 8 MHz */
+    /* PLL configuration: PLLCLK = PREDIV1CLK * PLLMUL = 8 * 9 = 72 MHz */
 
-  /* Enable HSE Oscillator and activate PLL with HSE as source */
-  oscinitstruct.OscillatorType        = RCC_OSCILLATORTYPE_HSE;
-  oscinitstruct.HSEState              = RCC_HSE_ON;
-  oscinitstruct.HSEPredivValue        = RCC_HSE_PREDIV_DIV5;
-  oscinitstruct.Prediv1Source         = RCC_PREDIV1_SOURCE_PLL2;
-  oscinitstruct.PLL.PLLState          = RCC_PLL_ON;
-  oscinitstruct.PLL.PLLSource         = RCC_PLLSOURCE_HSE;
-  oscinitstruct.PLL.PLLMUL            = RCC_PLL_MUL9;
-  oscinitstruct.PLL2.PLL2State        = RCC_PLL2_ON;
-  oscinitstruct.PLL2.PLL2MUL          = RCC_PLL2_MUL8;
-  oscinitstruct.PLL2.HSEPrediv2Value  = RCC_HSE_PREDIV2_DIV5;
-  if (HAL_RCC_OscConfig(&oscinitstruct)!= HAL_OK)
-  {
-    /* Initialization Error */
-    while(1);
-  }
+    /* Enable HSE Oscillator and activate PLL with HSE as source */
+    oscinitstruct.OscillatorType        = RCC_OSCILLATORTYPE_HSE;
+    oscinitstruct.HSEState              = RCC_HSE_ON;
+    oscinitstruct.HSEPredivValue        = RCC_HSE_PREDIV_DIV5;
+    oscinitstruct.Prediv1Source         = RCC_PREDIV1_SOURCE_PLL2;
+    oscinitstruct.PLL.PLLState          = RCC_PLL_ON;
+    oscinitstruct.PLL.PLLSource         = RCC_PLLSOURCE_HSE;
+    oscinitstruct.PLL.PLLMUL            = RCC_PLL_MUL9;
+    oscinitstruct.PLL2.PLL2State        = RCC_PLL2_ON;
+    oscinitstruct.PLL2.PLL2MUL          = RCC_PLL2_MUL8;
+    oscinitstruct.PLL2.HSEPrediv2Value  = RCC_HSE_PREDIV2_DIV5;
 
-  /* Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2
-     clocks dividers */
-  clkinitstruct.ClockType = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2);
-  clkinitstruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-  clkinitstruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  clkinitstruct.APB2CLKDivider = RCC_HCLK_DIV1;
-  clkinitstruct.APB1CLKDivider = RCC_HCLK_DIV2;
-  if (HAL_RCC_ClockConfig(&clkinitstruct, FLASH_LATENCY_2)!= HAL_OK)
-  {
-    /* Initialization Error */
-    while(1);
-  }
+    if( HAL_RCC_OscConfig( &oscinitstruct ) != HAL_OK )
+    {
+        /* Initialization Error */
+        while( 1 );
+    }
+
+    /* Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2
+       clocks dividers */
+    clkinitstruct.ClockType = ( RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2 );
+    clkinitstruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+    clkinitstruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+    clkinitstruct.APB2CLKDivider = RCC_HCLK_DIV1;
+    clkinitstruct.APB1CLKDivider = RCC_HCLK_DIV2;
+
+    if( HAL_RCC_ClockConfig( &clkinitstruct, FLASH_LATENCY_2 ) != HAL_OK )
+    {
+        /* Initialization Error */
+        while( 1 );
+    }
 }
 
 
@@ -538,14 +561,14 @@ void SystemClock_Config(void)
   * @brief  This function is executed in case of error occurrence.
   * @retval None
   */
-void Error_Handler(void)
+void Error_Handler( void )
 {
-  /* Toggle LED_RED */
-  while (1)
-  {
-    BSP_LED_Toggle(LED_RED);
-    HAL_Delay(1000);
-  }
+    /* Toggle LED_RED */
+    while( 1 )
+    {
+        BSP_LED_Toggle( LED_RED );
+        HAL_Delay( 1000 );
+    }
 }
 
 /**
@@ -553,40 +576,40 @@ void Error_Handler(void)
   * @param GPIO_Pin: Specifies the pins connected EXTI line
   * @retval None
   */
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+void HAL_GPIO_EXTI_Callback( uint16_t GPIO_Pin )
 {
-  if(GPIO_Pin == SC_OFF_PIN)
-  {
-    /* Toggle LED2..4 */
-    BSP_LED_Toggle(LED2);
-    BSP_LED_Toggle(LED3);
-    BSP_LED_Toggle(LED4);
-
-    if (CardInserted == 0)
+    if( GPIO_Pin == SC_OFF_PIN )
     {
-      /* Smartcard detected */
-      CardInserted = 1;
+        /* Toggle LED2..4 */
+        BSP_LED_Toggle( LED2 );
+        BSP_LED_Toggle( LED3 );
+        BSP_LED_Toggle( LED4 );
 
-      /* Enable CMDVCC */
-      SC_PowerCmd(ENABLE);
+        if( CardInserted == 0 )
+        {
+            /* Smartcard detected */
+            CardInserted = 1;
 
-      /* Reset the card */
-      SC_Reset(GPIO_PIN_RESET);
+            /* Enable CMDVCC */
+            SC_PowerCmd( ENABLE );
+
+            /* Reset the card */
+            SC_Reset( GPIO_PIN_RESET );
+        }
+        else
+        {
+            /* Smartcard removed */
+            CardInserted = 0;
+
+            /* Enable CMDVCC */
+            SC_PowerCmd( DISABLE );
+        }
     }
     else
     {
-      /* Smartcard removed */
-      CardInserted = 0;
-
-      /* Enable CMDVCC */
-      SC_PowerCmd(DISABLE);
+        /* Smartcard removed */
+        CardInserted = 0;
     }
-  }
-  else
-  {
-    /* Smartcard removed */
-    CardInserted = 0;
-  }
 }
 
 /**
@@ -594,31 +617,32 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
   * @param hsc: usart handle
   * @retval None
   */
-void HAL_SMARTCARD_ErrorCallback(SMARTCARD_HandleTypeDef *hsc)
+void HAL_SMARTCARD_ErrorCallback( SMARTCARD_HandleTypeDef *hsc )
 {
-  if(HAL_SMARTCARD_GetError(hsc) & HAL_SMARTCARD_ERROR_FE)
-  {
-    __HAL_SMARTCARD_FLUSH_DRREGISTER(hsc);
-    /* Resend the byte that failed to be received (by the Smartcard) correctly */
-    SC_ParityErrorHandler();
-  }
+    if( HAL_SMARTCARD_GetError( hsc ) & HAL_SMARTCARD_ERROR_FE )
+    {
+        __HAL_SMARTCARD_FLUSH_DRREGISTER( hsc );
+        /* Resend the byte that failed to be received (by the Smartcard) correctly */
+        SC_ParityErrorHandler();
+    }
 
-  if(HAL_SMARTCARD_GetError(hsc) & HAL_SMARTCARD_ERROR_PE)
-  {
-    /* Enable SC_USART RXNE Interrupt (until receiving the corrupted byte) */
-    __HAL_SMARTCARD_ENABLE_IT(hsc, SMARTCARD_IT_RXNE);
-    /* Flush the SC_USART DR register */
-    __HAL_SMARTCARD_FLUSH_DRREGISTER(hsc);
-  }
-  if(HAL_SMARTCARD_GetError(hsc) & HAL_SMARTCARD_ERROR_NE)
-  {
-    __HAL_SMARTCARD_FLUSH_DRREGISTER(hsc);
-  }
+    if( HAL_SMARTCARD_GetError( hsc ) & HAL_SMARTCARD_ERROR_PE )
+    {
+        /* Enable SC_USART RXNE Interrupt (until receiving the corrupted byte) */
+        __HAL_SMARTCARD_ENABLE_IT( hsc, SMARTCARD_IT_RXNE );
+        /* Flush the SC_USART DR register */
+        __HAL_SMARTCARD_FLUSH_DRREGISTER( hsc );
+    }
 
-  if(HAL_SMARTCARD_GetError(hsc) & HAL_SMARTCARD_ERROR_ORE)
-  {
-    __HAL_SMARTCARD_FLUSH_DRREGISTER(hsc);
-  }
+    if( HAL_SMARTCARD_GetError( hsc ) & HAL_SMARTCARD_ERROR_NE )
+    {
+        __HAL_SMARTCARD_FLUSH_DRREGISTER( hsc );
+    }
+
+    if( HAL_SMARTCARD_GetError( hsc ) & HAL_SMARTCARD_ERROR_ORE )
+    {
+        __HAL_SMARTCARD_FLUSH_DRREGISTER( hsc );
+    }
 }
 
 /**
@@ -626,11 +650,11 @@ void HAL_SMARTCARD_ErrorCallback(SMARTCARD_HandleTypeDef *hsc)
   * @param hsc: usart handle
   * @retval None
   */
-void HAL_SMARTCARD_RxCpltCallback(SMARTCARD_HandleTypeDef *hsc)
+void HAL_SMARTCARD_RxCpltCallback( SMARTCARD_HandleTypeDef *hsc )
 {
-  /* Disable SC_USART RXNE Interrupt */
-  __HAL_SMARTCARD_DISABLE_IT(hsc, SMARTCARD_IT_RXNE);
-  hsc->Instance->DR;
+    /* Disable SC_USART RXNE Interrupt */
+    __HAL_SMARTCARD_DISABLE_IT( hsc, SMARTCARD_IT_RXNE );
+    hsc->Instance->DR;
 }
 
 #ifdef  USE_FULL_ASSERT
@@ -641,15 +665,15 @@ void HAL_SMARTCARD_RxCpltCallback(SMARTCARD_HandleTypeDef *hsc)
   * @param  line: assert_param error line source number
   * @retval None
   */
-void assert_failed(uint8_t *file, uint32_t line)
+void assert_failed( uint8_t *file, uint32_t line )
 {
-  /* User can add his own implementation to report the file name and line number,
-     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+    /* User can add his own implementation to report the file name and line number,
+       ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
-  /* Infinite loop */
-  while (1)
-  {
-  }
+    /* Infinite loop */
+    while( 1 )
+    {
+    }
 }
 #endif
 
@@ -660,23 +684,23 @@ void assert_failed(uint8_t *file, uint32_t line)
   * @param  None
   * @retval None
   */
-void UART_Config(void)
+void UART_Config( void )
 {
-  /* UARTx configured as follow:
-        - BaudRate = 115200 baud
-        - Word Length = 8 Bits
-        - One Stop Bit
-        - No parity
-        - Hardware flow control disabled (RTS and CTS signals)
-        - Receive and transmit enabled
-  */
-  huart.Init.BaudRate   = 115200;
-  huart.Init.Mode       = UART_MODE_TX_RX;
-  huart.Init.Parity     = UART_PARITY_NONE;
-  huart.Init.StopBits   = UART_STOPBITS_1;
-  huart.Init.WordLength = UART_WORDLENGTH_8B;
-  huart.Init.HwFlowCtl  = UART_HWCONTROL_NONE;
-  BSP_COM_Init(COM1, &huart);
+    /* UARTx configured as follow:
+          - BaudRate = 115200 baud
+          - Word Length = 8 Bits
+          - One Stop Bit
+          - No parity
+          - Hardware flow control disabled (RTS and CTS signals)
+          - Receive and transmit enabled
+    */
+    huart.Init.BaudRate   = 115200;
+    huart.Init.Mode       = UART_MODE_TX_RX;
+    huart.Init.Parity     = UART_PARITY_NONE;
+    huart.Init.StopBits   = UART_STOPBITS_1;
+    huart.Init.WordLength = UART_WORDLENGTH_8B;
+    huart.Init.HwFlowCtl  = UART_HWCONTROL_NONE;
+    BSP_COM_Init( COM1, &huart );
 }
 
 /**
@@ -687,11 +711,11 @@ void UART_Config(void)
   */
 PUTCHAR_PROTOTYPE
 {
-  /* Place your implementation of fputc here */
-  /* e.g. write a character to the EVAL_COM1 and Loop until the end of transmission */
-  HAL_UART_Transmit(&huart, (uint8_t *)&ch, 1, UART_TIMEOUT_VALUE);
+    /* Place your implementation of fputc here */
+    /* e.g. write a character to the EVAL_COM1 and Loop until the end of transmission */
+    HAL_UART_Transmit( &huart, ( uint8_t * )&ch, 1, UART_TIMEOUT_VALUE );
 
-  return ch;
+    return ch;
 }
 
 /**
@@ -699,14 +723,14 @@ PUTCHAR_PROTOTYPE
   * @param  f: pointer to file (not used)
   * @retval The character received
   */
-int fgetc(FILE * f)
+int fgetc( FILE *f )
 {
-  uint8_t ch = 0;
-  /* We received the charracter on the handler of the USART2 */
-  /* The handler must be initialise before */
-  HAL_UART_Receive(&huart, (uint8_t *)&ch, 1, UART_TIMEOUT_VALUE);
+    uint8_t ch = 0;
+    /* We received the charracter on the handler of the USART2 */
+    /* The handler must be initialise before */
+    HAL_UART_Receive( &huart, ( uint8_t * )&ch, 1, UART_TIMEOUT_VALUE );
 
-  return ch;
+    return ch;
 }
 
 #endif /* HAL_UART_MODULE_ENABLED */

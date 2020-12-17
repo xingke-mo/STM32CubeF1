@@ -33,30 +33,30 @@
   * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   *
   ******************************************************************************
-  */ 
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM3210E_EVAL_SD_H
 #define __STM3210E_EVAL_SD_H
 
 #ifdef __cplusplus
- extern "C" {
-#endif 
+extern "C" {
+#endif
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f1xx_hal.h"
 
 /** @addtogroup BSP
   * @{
-  */ 
+  */
 
 /** @addtogroup STM3210E_EVAL
   * @{
   */
-    
+
 /** @addtogroup STM3210E_EVAL_SD
   * @{
-  */    
+  */
 
 /* Exported types ------------------------------------------------------------*/
 
@@ -64,12 +64,12 @@
   * @{
   */
 
-/** 
-  * @brief SD Card information structure 
+/**
+  * @brief SD Card information structure
   */
 #define BSP_SD_CardInfo HAL_SD_CardInfoTypeDef
 
-/** 
+/**
   * @brief SD status structure definition
   */
 #define MSD_OK         ((uint8_t)0x00)
@@ -80,15 +80,15 @@
   */
 
 
-/* Exported constants --------------------------------------------------------*/  
- 
+/* Exported constants --------------------------------------------------------*/
+
 /** @defgroup STM3210E_EVAL_SD_Exported_Constants STM3210E EVAL SD Exported Constants
   * @{
-  */ 
+  */
 
-/** 
-  * @brief  SD transfer state definition  
-  */     
+/**
+  * @brief  SD transfer state definition
+  */
 #define  SD_TRANSFER_OK                ((uint8_t)0x00)
 #define  SD_TRANSFER_BUSY              ((uint8_t)0x01)
 
@@ -96,7 +96,7 @@
 #define SD_DETECT_GPIO_PORT              GPIOF
 #define __SD_DETECT_GPIO_CLK_ENABLE()    __HAL_RCC_GPIOF_CLK_ENABLE()
 #define SD_DETECT_IRQn                   EXTI15_10_IRQn
-   
+
 #define SD_DATATIMEOUT           100000000U
 
 #define SD_PRESENT               ((uint8_t)0x01)
@@ -120,25 +120,25 @@
 /** @addtogroup STM3210E_EVAL_SD_Exported_Functions
   * @{
   */
-uint8_t BSP_SD_Init(void);
-uint8_t BSP_SD_ITConfig(void);
-void    BSP_SD_DetectIT(void);
-void    BSP_SD_DetectCallback(void);
-uint8_t BSP_SD_ReadBlocks(uint32_t *pData, uint32_t ReadAddr, uint32_t NumOfBlocks, uint32_t Timeout);
-uint8_t BSP_SD_WriteBlocks(uint32_t *pData, uint32_t WriteAddr, uint32_t NumOfBlocks, uint32_t Timeout);
-uint8_t BSP_SD_ReadBlocks_DMA(uint32_t *pData, uint32_t ReadAddr, uint32_t NumOfBlocks);
-uint8_t BSP_SD_WriteBlocks_DMA(uint32_t *pData, uint32_t WriteAddr, uint32_t NumOfBlocks);
-uint8_t BSP_SD_Erase(uint32_t StartAddr, uint32_t EndAddr);
-uint8_t BSP_SD_GetCardState(void);
-void    BSP_SD_GetCardInfo(HAL_SD_CardInfoTypeDef *CardInfo);
-uint8_t BSP_SD_IsDetected(void);
-   
+uint8_t BSP_SD_Init( void );
+uint8_t BSP_SD_ITConfig( void );
+void    BSP_SD_DetectIT( void );
+void    BSP_SD_DetectCallback( void );
+uint8_t BSP_SD_ReadBlocks( uint32_t *pData, uint32_t ReadAddr, uint32_t NumOfBlocks, uint32_t Timeout );
+uint8_t BSP_SD_WriteBlocks( uint32_t *pData, uint32_t WriteAddr, uint32_t NumOfBlocks, uint32_t Timeout );
+uint8_t BSP_SD_ReadBlocks_DMA( uint32_t *pData, uint32_t ReadAddr, uint32_t NumOfBlocks );
+uint8_t BSP_SD_WriteBlocks_DMA( uint32_t *pData, uint32_t WriteAddr, uint32_t NumOfBlocks );
+uint8_t BSP_SD_Erase( uint32_t StartAddr, uint32_t EndAddr );
+uint8_t BSP_SD_GetCardState( void );
+void    BSP_SD_GetCardInfo( HAL_SD_CardInfoTypeDef *CardInfo );
+uint8_t BSP_SD_IsDetected( void );
+
 /* These functions can be modified in case the current settings
    need to be changed for specific application needs */
-void    BSP_SD_MspInit(void *Params);
-void    BSP_SD_AbortCallback(void);
-void    BSP_SD_WriteCpltCallback(void);
-void    BSP_SD_ReadCpltCallback(void); 
+void    BSP_SD_MspInit( void *Params );
+void    BSP_SD_AbortCallback( void );
+void    BSP_SD_WriteCpltCallback( void );
+void    BSP_SD_ReadCpltCallback( void );
 
 /**
   * @}
@@ -146,15 +146,15 @@ void    BSP_SD_ReadCpltCallback(void);
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 #ifdef __cplusplus
 }

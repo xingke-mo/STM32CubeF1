@@ -1,9 +1,9 @@
 /**
   ******************************************************************************
-  * @file    USB_Device/HID_Standalone/Src/stm32f1xx_it.c 
+  * @file    USB_Device/HID_Standalone/Src/stm32f1xx_it.c
   * @author  MCD Application Team
   * @brief   Main Interrupt Service Routines.
-  *          This file provides template for all exceptions handler and 
+  *          This file provides template for all exceptions handler and
   *          peripherals interrupt service routine.
   ******************************************************************************
   * @attention
@@ -39,7 +39,7 @@ extern USBD_HandleTypeDef USBD_Device;
 extern __IO uint8_t JOYInitState;
 
 /* Private function prototypes ----------------------------------------------- */
-static void GetPointerData(uint8_t * pbuf);
+static void GetPointerData( uint8_t *pbuf );
 
 /* Private functions --------------------------------------------------------- */
 
@@ -52,7 +52,7 @@ static void GetPointerData(uint8_t * pbuf);
   * @param  None
   * @retval None
   */
-void NMI_Handler(void)
+void NMI_Handler( void )
 {
 }
 
@@ -61,12 +61,12 @@ void NMI_Handler(void)
   * @param  None
   * @retval None
   */
-void HardFault_Handler(void)
+void HardFault_Handler( void )
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while( 1 )
+    {
+    }
 }
 
 /**
@@ -74,12 +74,12 @@ void HardFault_Handler(void)
   * @param  None
   * @retval None
   */
-void MemManage_Handler(void)
+void MemManage_Handler( void )
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while( 1 )
+    {
+    }
 }
 
 /**
@@ -87,12 +87,12 @@ void MemManage_Handler(void)
   * @param  None
   * @retval None
   */
-void BusFault_Handler(void)
+void BusFault_Handler( void )
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while( 1 )
+    {
+    }
 }
 
 /**
@@ -100,12 +100,12 @@ void BusFault_Handler(void)
   * @param  None
   * @retval None
   */
-void UsageFault_Handler(void)
+void UsageFault_Handler( void )
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while( 1 )
+    {
+    }
 }
 
 /**
@@ -113,7 +113,7 @@ void UsageFault_Handler(void)
   * @param  None
   * @retval None
   */
-void SVC_Handler(void)
+void SVC_Handler( void )
 {
 }
 
@@ -122,7 +122,7 @@ void SVC_Handler(void)
   * @param  None
   * @retval None
   */
-void DebugMon_Handler(void)
+void DebugMon_Handler( void )
 {
 }
 
@@ -131,7 +131,7 @@ void DebugMon_Handler(void)
   * @param  None
   * @retval None
   */
-void PendSV_Handler(void)
+void PendSV_Handler( void )
 {
 }
 
@@ -140,26 +140,27 @@ void PendSV_Handler(void)
   * @param  None
   * @retval None
   */
-void SysTick_Handler(void)
+void SysTick_Handler( void )
 {
-  static __IO uint32_t counter = 0;
-  HAL_IncTick();
+    static __IO uint32_t counter = 0;
+    HAL_IncTick();
 
-  /* check Joystick state every polling interval (10ms) */
-  if (JOYInitState == 1)
-  {
-    if (counter++ == USBD_HID_GetPollingInterval(&USBD_Device))
+    /* check Joystick state every polling interval (10ms) */
+    if( JOYInitState == 1 )
     {
-      GetPointerData(HID_Buffer);
+        if( counter++ == USBD_HID_GetPollingInterval( &USBD_Device ) )
+        {
+            GetPointerData( HID_Buffer );
 
-      /* send data though IN endpoint */
-      if ((HID_Buffer[1] != 0) || (HID_Buffer[2] != 0))
-      {
-        USBD_HID_SendReport(&USBD_Device, HID_Buffer, 4);
-      }
-      counter = 0;
+            /* send data though IN endpoint */
+            if( ( HID_Buffer[1] != 0 ) || ( HID_Buffer[2] != 0 ) )
+            {
+                USBD_HID_SendReport( &USBD_Device, HID_Buffer, 4 );
+            }
+
+            counter = 0;
+        }
     }
-  }
 }
 
 /******************************************************************************/
@@ -174,9 +175,9 @@ void SysTick_Handler(void)
   * @param  None
   * @retval None
   */
-void OTG_FS_IRQHandler(void)
+void OTG_FS_IRQHandler( void )
 {
-  HAL_PCD_IRQHandler(&hpcd);
+    HAL_PCD_IRQHandler( &hpcd );
 }
 
 /**
@@ -184,24 +185,24 @@ void OTG_FS_IRQHandler(void)
   * @param  None
   * @retval None
   */
-void OTG_FS_WKUP_IRQHandler(void)
+void OTG_FS_WKUP_IRQHandler( void )
 {
-  if ((&hpcd)->Init.low_power_enable)
-  {
-    /* Reset SLEEPDEEP bit of Cortex System Control Register */
-    SCB->SCR &=
-      (uint32_t) ~
-      ((uint32_t) (SCB_SCR_SLEEPDEEP_Msk | SCB_SCR_SLEEPONEXIT_Msk));
+    if( ( &hpcd )->Init.low_power_enable )
+    {
+        /* Reset SLEEPDEEP bit of Cortex System Control Register */
+        SCB->SCR &=
+            ( uint32_t ) ~
+            ( ( uint32_t )( SCB_SCR_SLEEPDEEP_Msk | SCB_SCR_SLEEPONEXIT_Msk ) );
 
-    /* Configures system clock after wake-up from STOP */
-    SystemClock_Config();
+        /* Configures system clock after wake-up from STOP */
+        SystemClock_Config();
 
-    /* ungate PHY clock */
-    __HAL_PCD_UNGATE_PHYCLOCK((&hpcd));
-  }
+        /* ungate PHY clock */
+        __HAL_PCD_UNGATE_PHYCLOCK( ( &hpcd ) );
+    }
 
-  /* Clear EXTI pending Bit */
-  __HAL_USB_OTG_FS_WAKEUP_EXTI_CLEAR_FLAG();
+    /* Clear EXTI pending Bit */
+    __HAL_USB_OTG_FS_WAKEUP_EXTI_CLEAR_FLAG();
 }
 
 /**
@@ -209,9 +210,9 @@ void OTG_FS_WKUP_IRQHandler(void)
   * @param  None
   * @retval None
   */
-void EXTI9_5_IRQHandler(void)
+void EXTI9_5_IRQHandler( void )
 {
-  HAL_GPIO_EXTI_IRQHandler(KEY_BUTTON_PIN);
+    HAL_GPIO_EXTI_IRQHandler( KEY_BUTTON_PIN );
 }
 
 /**
@@ -219,36 +220,36 @@ void EXTI9_5_IRQHandler(void)
   * @param  pbuf: Pointer to report
   * @retval None
   */
-static void GetPointerData(uint8_t * pbuf)
+static void GetPointerData( uint8_t *pbuf )
 {
-  int8_t x = 0, y = 0;
+    int8_t x = 0, y = 0;
 
-  switch (BSP_JOY_GetState())
-  {
-  case JOY_LEFT:
-    x -= CURSOR_STEP;
-    break;
+    switch( BSP_JOY_GetState() )
+    {
+    case JOY_LEFT:
+        x -= CURSOR_STEP;
+        break;
 
-  case JOY_RIGHT:
-    x += CURSOR_STEP;
-    break;
+    case JOY_RIGHT:
+        x += CURSOR_STEP;
+        break;
 
-  case JOY_UP:
-    y -= CURSOR_STEP;
-    break;
+    case JOY_UP:
+        y -= CURSOR_STEP;
+        break;
 
-  case JOY_DOWN:
-    y += CURSOR_STEP;
-    break;
+    case JOY_DOWN:
+        y += CURSOR_STEP;
+        break;
 
-  default:
-    break;
-  }
+    default:
+        break;
+    }
 
-  pbuf[0] = 0;
-  pbuf[1] = x;
-  pbuf[2] = y;
-  pbuf[3] = 0;
+    pbuf[0] = 0;
+    pbuf[1] = x;
+    pbuf[2] = y;
+    pbuf[3] = 0;
 }
 
 /**

@@ -36,35 +36,36 @@ FILELIST_FileTypeDef FileList;
   * @param  None
   * @retval Status
   */
-uint8_t SD_StorageInit(void)
+uint8_t SD_StorageInit( void )
 {
-  /* Initializes the SD card device */
-  BSP_SD_Init();
+    /* Initializes the SD card device */
+    BSP_SD_Init();
 
-  /* Check if the SD card is plugged in the slot */
-  if (BSP_SD_IsDetected() == SD_PRESENT)
-  {
-    /* Link the SD Card disk I/O driver */
-    if (FATFS_LinkDriver(&SD_Driver, SD_Path) == 0)
+    /* Check if the SD card is plugged in the slot */
+    if( BSP_SD_IsDetected() == SD_PRESENT )
     {
-      if ((f_mount(&SD_FatFs, (TCHAR const *)SD_Path, 0) != FR_OK))
-      {
-        /* FatFs Initialization Error */
-        LCD_ErrLog("Cannot Initialize FatFs! \n");
-        return 1;
-      }
-      else
-      {
-        LCD_DbgLog("INFO : FatFs Initialized! \n");
-      }
+        /* Link the SD Card disk I/O driver */
+        if( FATFS_LinkDriver( &SD_Driver, SD_Path ) == 0 )
+        {
+            if( ( f_mount( &SD_FatFs, ( TCHAR const * )SD_Path, 0 ) != FR_OK ) )
+            {
+                /* FatFs Initialization Error */
+                LCD_ErrLog( "Cannot Initialize FatFs! \n" );
+                return 1;
+            }
+            else
+            {
+                LCD_DbgLog( "INFO : FatFs Initialized! \n" );
+            }
+        }
     }
-  }
-  else
-  {
-    LCD_ErrLog("SD card NOT plugged \n");
-    return 1;
-  }
-  return 0;
+    else
+    {
+        LCD_ErrLog( "SD card NOT plugged \n" );
+        return 1;
+    }
+
+    return 0;
 }
 
 /**
@@ -72,56 +73,59 @@ uint8_t SD_StorageInit(void)
   * @param  None
   * @retval Operation result
   */
-FRESULT SD_StorageParse(void)
+FRESULT SD_StorageParse( void )
 {
-  FRESULT res;
-  FILINFO fno;
-  DIR dir;
-  char *fn;
+    FRESULT res;
+    FILINFO fno;
+    DIR dir;
+    char *fn;
 
 #if _USE_LFN
-  static char lfn[_MAX_LFN];
-  fno.lfname = lfn;
-  fno.lfsize = sizeof(lfn);
+    static char lfn[_MAX_LFN];
+    fno.lfname = lfn;
+    fno.lfsize = sizeof( lfn );
 #endif
 
-  res = f_opendir(&dir, SD_Path);
-  FileList.ptr = 0;
+    res = f_opendir( &dir, SD_Path );
+    FileList.ptr = 0;
 
-  if (res == FR_OK)
-  {
-    while (1)
+    if( res == FR_OK )
     {
-      res = f_readdir(&dir, &fno);
+        while( 1 )
+        {
+            res = f_readdir( &dir, &fno );
 
-      if (res != FR_OK || fno.fname[0] == 0)
-      {
-        break;
-      }
-      if (fno.fname[0] == '.')
-      {
-        continue;
-      }
+            if( res != FR_OK || fno.fname[0] == 0 )
+            {
+                break;
+            }
+
+            if( fno.fname[0] == '.' )
+            {
+                continue;
+            }
+
 #if _USE_LFN
-      fn = *fno.lfname ? fno.lfname : fno.fname;
+            fn = *fno.lfname ? fno.lfname : fno.fname;
 #else
-      fn = fno.fname;
+            fn = fno.fname;
 #endif
 
-      if (FileList.ptr < FILEMGR_LIST_DEPDTH)
-      {
-        if ((fno.fattrib & AM_DIR) == 0)
-        {
-          strncpy((char *)FileList.file[FileList.ptr].name, (char *)fn,
-                  FILEMGR_FILE_NAME_SIZE);
-          FileList.file[FileList.ptr].type = FILETYPE_FILE;
-          FileList.ptr++;
+            if( FileList.ptr < FILEMGR_LIST_DEPDTH )
+            {
+                if( ( fno.fattrib & AM_DIR ) == 0 )
+                {
+                    strncpy( ( char * )FileList.file[FileList.ptr].name, ( char * )fn,
+                             FILEMGR_FILE_NAME_SIZE );
+                    FileList.file[FileList.ptr].type = FILETYPE_FILE;
+                    FileList.ptr++;
+                }
+            }
         }
-      }
     }
-  }
-  f_closedir(&dir);
-  return res;
+
+    f_closedir( &dir );
+    return res;
 }
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

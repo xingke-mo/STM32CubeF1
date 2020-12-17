@@ -34,15 +34,15 @@
   * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   *
   ******************************************************************************
-  */ 
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM3210C_EVAL_AUDIO_H
 #define __STM3210C_EVAL_AUDIO_H
 
 #ifdef __cplusplus
- extern "C" {
-#endif 
+extern "C" {
+#endif
 
 /* Includes ------------------------------------------------------------------*/
 /* Include audio component Driver */
@@ -56,14 +56,14 @@
 /** @addtogroup STM3210C_EVAL
   * @{
   */
-    
+
 /** @addtogroup STM3210C_EVAL_AUDIO
   * @{
-  */    
+  */
 
-/** @defgroup STM3210C_EVAL_AUDIO_OUT_Exported_Constants STM3210C EVAL AUDIO OUT Exported Constants 
+/** @defgroup STM3210C_EVAL_AUDIO_OUT_Exported_Constants STM3210C EVAL AUDIO OUT Exported Constants
   * @{
-  */ 
+  */
 
 
 /*------------------------------------------------------------------------------
@@ -102,14 +102,14 @@
              CONFIGURATION: Audio Driver Configuration parameters
 ------------------------------------------------------------------------------*/
 
-/* Audio status definition */     
+/* Audio status definition */
 #define AUDIO_OK                              0
 #define AUDIO_ERROR                           1
 #define AUDIO_TIMEOUT                         2
 
 /* PDM buffer input size */
 #define INTERNAL_BUFF_SIZE                    128*DEFAULT_AUDIO_IN_FREQ/16000*DEFAULT_AUDIO_IN_CHANNEL_NBR
-   
+
 /*------------------------------------------------------------------------------
                     OPTIONAL Configuration defines parameters
 ------------------------------------------------------------------------------*/
@@ -117,7 +117,7 @@
 
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup STM3210C_EVAL_AUDIO_Exported_Macros STM3210C EVAL AUDIO Exported Macros
   * @{
@@ -128,36 +128,36 @@
   * @}
   */
 
-/** @addtogroup STM3210C_EVAL_AUDIO_OUT_Exported_Functions 
+/** @addtogroup STM3210C_EVAL_AUDIO_OUT_Exported_Functions
   * @{
-  */ 
-uint8_t BSP_AUDIO_OUT_Init(uint16_t OutputDevice, uint8_t Volume, uint32_t AudioFreq);
-void BSP_AUDIO_OUT_DeInit(void);
-uint8_t BSP_AUDIO_OUT_Play(uint16_t* pBuffer, uint32_t Size);
-void    BSP_AUDIO_OUT_ChangeBuffer(uint16_t *pData, uint16_t Size);
-uint8_t BSP_AUDIO_OUT_Pause(void);
-uint8_t BSP_AUDIO_OUT_Resume(void);
-uint8_t BSP_AUDIO_OUT_Stop(uint32_t Option);
-uint8_t BSP_AUDIO_OUT_SetVolume(uint8_t Volume);
-void    BSP_AUDIO_OUT_SetFrequency(uint32_t AudioFreq);
-uint8_t BSP_AUDIO_OUT_SetMute(uint32_t Command);
-uint8_t BSP_AUDIO_OUT_SetOutputMode(uint8_t Output);
+  */
+uint8_t BSP_AUDIO_OUT_Init( uint16_t OutputDevice, uint8_t Volume, uint32_t AudioFreq );
+void BSP_AUDIO_OUT_DeInit( void );
+uint8_t BSP_AUDIO_OUT_Play( uint16_t *pBuffer, uint32_t Size );
+void    BSP_AUDIO_OUT_ChangeBuffer( uint16_t *pData, uint16_t Size );
+uint8_t BSP_AUDIO_OUT_Pause( void );
+uint8_t BSP_AUDIO_OUT_Resume( void );
+uint8_t BSP_AUDIO_OUT_Stop( uint32_t Option );
+uint8_t BSP_AUDIO_OUT_SetVolume( uint8_t Volume );
+void    BSP_AUDIO_OUT_SetFrequency( uint32_t AudioFreq );
+uint8_t BSP_AUDIO_OUT_SetMute( uint32_t Command );
+uint8_t BSP_AUDIO_OUT_SetOutputMode( uint8_t Output );
 
 /* User Callbacks: user has to implement these functions in his code if they are needed. */
 /* This function is called when the requested data has been completely transferred.*/
-void    BSP_AUDIO_OUT_TransferComplete_CallBack(void);
+void    BSP_AUDIO_OUT_TransferComplete_CallBack( void );
 
 /* This function is called when half of the requested buffer has been transferred. */
-void    BSP_AUDIO_OUT_HalfTransfer_CallBack(void);
+void    BSP_AUDIO_OUT_HalfTransfer_CallBack( void );
 
 /* This function is called when an Interrupt due to transfer error on or peripheral
    error occurs. */
-void    BSP_AUDIO_OUT_Error_CallBack(void);
+void    BSP_AUDIO_OUT_Error_CallBack( void );
 
 /* These function can be modified in case the current settings
    need to be changed for specific application needs */
-void  BSP_AUDIO_OUT_MspInit(I2S_HandleTypeDef *hi2s, void *Params);
-void  BSP_AUDIO_OUT_MspDeInit(I2S_HandleTypeDef *hi2s, void *Params);
+void  BSP_AUDIO_OUT_MspInit( I2S_HandleTypeDef *hi2s, void *Params );
+void  BSP_AUDIO_OUT_MspDeInit( I2S_HandleTypeDef *hi2s, void *Params );
 
 /**
   * @}
@@ -167,7 +167,7 @@ void  BSP_AUDIO_OUT_MspDeInit(I2S_HandleTypeDef *hi2s, void *Params);
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
@@ -175,12 +175,12 @@ void  BSP_AUDIO_OUT_MspDeInit(I2S_HandleTypeDef *hi2s, void *Params);
 
 /**
   * @}
-  */ 
+  */
 
 #ifdef __cplusplus
 }
 #endif
-   
+
 #endif /* __STM3210C_EVAL_AUDIO_H */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

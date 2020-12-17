@@ -6,7 +6,7 @@
   * @date    14-April-2017
   * @brief   This file provides
   *            - set of firmware functions to manage Led and push-button
-  *          available on STM32VL-Discovery board from STMicroelectronics.  
+  *          available on STM32VL-Discovery board from STMicroelectronics.
   ******************************************************************************
   * @attention
   *
@@ -47,118 +47,120 @@
   * @brief This file provides firmware functions to manage Leds and push-buttons
   *        available on STM32VL discovery board from STMicroelectronics.
   * @{
-  */ 
+  */
 
 /** @defgroup STM32VL_DISCOVERY_Private_Defines STM32VL DISCOVERY Private Defines
   * @{
-  */ 
-  
+  */
+
 /**
 * @brief STM32VL-Discovery BSP Driver version number
 */
 #define __STM32VL_DISCO_BSP_VERSION_MAIN   (0x01) /*!< [31:24] main version */
 #define __STM32VL_DISCO_BSP_VERSION_SUB1   (0x00) /*!< [23:16] sub1 version */
 #define __STM32VL_DISCO_BSP_VERSION_SUB2   (0x02) /*!< [15:8]  sub2 version */
-#define __STM32VL_DISCO_BSP_VERSION_RC     (0x00) /*!< [7:0]  release candidate */ 
+#define __STM32VL_DISCO_BSP_VERSION_RC     (0x00) /*!< [7:0]  release candidate */
 #define __STM32VL_DISCO_BSP_VERSION        ((__STM32VL_DISCO_BSP_VERSION_MAIN << 24)\
                                            |(__STM32VL_DISCO_BSP_VERSION_SUB1 << 16)\
                                            |(__STM32VL_DISCO_BSP_VERSION_SUB2 << 8 )\
-                                           |(__STM32VL_DISCO_BSP_VERSION_RC)) 
+                                           |(__STM32VL_DISCO_BSP_VERSION_RC))
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup STM32VL_DISCOVERY_Private_Variables STM32VL DISCOVERY Private Variables
   * @{
-  */ 
-GPIO_TypeDef*   LED_PORT[LEDn] = {LED3_GPIO_PORT,
-                                  LED4_GPIO_PORT};
+  */
+GPIO_TypeDef   *LED_PORT[LEDn] = {LED3_GPIO_PORT,
+                                  LED4_GPIO_PORT
+                                 };
 
 const uint16_t  LED_PIN[LEDn]  = {LED3_PIN,
-                                  LED4_PIN};
+                                  LED4_PIN
+                                 };
 
 
-GPIO_TypeDef*   BUTTON_PORT[BUTTONn]  = {USER_BUTTON_GPIO_PORT};
+GPIO_TypeDef   *BUTTON_PORT[BUTTONn]  = {USER_BUTTON_GPIO_PORT};
 const uint16_t  BUTTON_PIN[BUTTONn]   = {USER_BUTTON_PIN};
 const uint8_t   BUTTON_IRQn[BUTTONn]  = {USER_BUTTON_EXTI_IRQn};
 
 /**
   * @}
-  */ 
+  */
 
 
 /** @defgroup STM32VL_DISCOVERY_Exported_Functions STM32VL DISCOVERY Exported Functions
   * @{
-  */ 
+  */
 
 /**
   * @brief  This method returns the STM32VL-Discovery BSP Driver version
   * @retval version : 0xXYZR (8bits for each decimal, R for RC)
   */
-uint32_t BSP_GetVersion(void)
+uint32_t BSP_GetVersion( void )
 {
-  return __STM32VL_DISCO_BSP_VERSION;
+    return __STM32VL_DISCO_BSP_VERSION;
 }
 
 /**
   * @brief  Configures LED GPIO.
-  * @param  Led: Specifies the Led to be configured. 
+  * @param  Led: Specifies the Led to be configured.
   *   This parameter can be one of following parameters:
   *     @arg LED3
   *     @arg LED4
   */
-void BSP_LED_Init(Led_TypeDef Led)
+void BSP_LED_Init( Led_TypeDef Led )
 {
-  GPIO_InitTypeDef  gpioinitstruct = {0};
-  
-  /* Enable the GPIO_LED Clock */
-  LEDx_GPIO_CLK_ENABLE(Led);
+    GPIO_InitTypeDef  gpioinitstruct = {0};
 
-  /* Configure the GPIO_LED pin */
-  gpioinitstruct.Pin    = LED_PIN[Led];
-  gpioinitstruct.Mode   = GPIO_MODE_OUTPUT_PP;
-  gpioinitstruct.Pull   = GPIO_NOPULL;
-  gpioinitstruct.Speed  = GPIO_SPEED_FREQ_HIGH;
-  HAL_GPIO_Init(LED_PORT[Led], &gpioinitstruct);
+    /* Enable the GPIO_LED Clock */
+    LEDx_GPIO_CLK_ENABLE( Led );
 
-  /* Reset PIN to switch off the LED */
-  HAL_GPIO_WritePin(LED_PORT[Led], LED_PIN[Led], GPIO_PIN_RESET);
+    /* Configure the GPIO_LED pin */
+    gpioinitstruct.Pin    = LED_PIN[Led];
+    gpioinitstruct.Mode   = GPIO_MODE_OUTPUT_PP;
+    gpioinitstruct.Pull   = GPIO_NOPULL;
+    gpioinitstruct.Speed  = GPIO_SPEED_FREQ_HIGH;
+    HAL_GPIO_Init( LED_PORT[Led], &gpioinitstruct );
+
+    /* Reset PIN to switch off the LED */
+    HAL_GPIO_WritePin( LED_PORT[Led], LED_PIN[Led], GPIO_PIN_RESET );
 }
 
 /**
   * @brief  Turns selected LED On.
-  * @param  Led: Specifies the Led to be set on. 
+  * @param  Led: Specifies the Led to be set on.
   *   This parameter can be one of following parameters:
   *     @arg LED3
   *     @arg LED4
   */
-void BSP_LED_On(Led_TypeDef Led)
+void BSP_LED_On( Led_TypeDef Led )
 {
-  HAL_GPIO_WritePin(LED_PORT[Led], LED_PIN[Led], GPIO_PIN_SET);
+    HAL_GPIO_WritePin( LED_PORT[Led], LED_PIN[Led], GPIO_PIN_SET );
 }
 
 /**
   * @brief  Turns selected LED Off.
-  * @param  Led: Specifies the Led to be set off. 
+  * @param  Led: Specifies the Led to be set off.
   *   This parameter can be one of following parameters:
   *     @arg LED3
   *     @arg LED4
   */
-void BSP_LED_Off(Led_TypeDef Led)
+void BSP_LED_Off( Led_TypeDef Led )
 {
-  HAL_GPIO_WritePin(LED_PORT[Led], LED_PIN[Led], GPIO_PIN_RESET);
+    HAL_GPIO_WritePin( LED_PORT[Led], LED_PIN[Led], GPIO_PIN_RESET );
 }
 
 /**
   * @brief  Toggles the selected LED.
-  * @param  Led: Specifies the Led to be toggled. 
+  * @param  Led: Specifies the Led to be toggled.
   *   This parameter can be one of following parameters:
   *     @arg LED3
   *     @arg LED4
   */
-void BSP_LED_Toggle(Led_TypeDef Led)
+void BSP_LED_Toggle( Led_TypeDef Led )
 {
-  HAL_GPIO_TogglePin(LED_PORT[Led], LED_PIN[Led]);
+    HAL_GPIO_TogglePin( LED_PORT[Led], LED_PIN[Led] );
 }
 
 /**
@@ -166,62 +168,62 @@ void BSP_LED_Toggle(Led_TypeDef Led)
   * @param  Button: Specifies the Button to be configured.
   *   This parameter should be: BUTTON_USER
   * @param  Button_Mode: Specifies Button mode.
-  *   This parameter can be one of following parameters:   
-  *     @arg BUTTON_MODE_GPIO: Button will be used as simple IO 
+  *   This parameter can be one of following parameters:
+  *     @arg BUTTON_MODE_GPIO: Button will be used as simple IO
   *     @arg BUTTON_MODE_EXTI: Button will be connected to EXTI line with interrupt
-  *                     generation capability  
+  *                     generation capability
   */
-void BSP_PB_Init(Button_TypeDef Button, ButtonMode_TypeDef Button_Mode)
+void BSP_PB_Init( Button_TypeDef Button, ButtonMode_TypeDef Button_Mode )
 {
-  GPIO_InitTypeDef gpioinitstruct = {0};
+    GPIO_InitTypeDef gpioinitstruct = {0};
 
-  /* Enable the BUTTON Clock */
-  BUTTONx_GPIO_CLK_ENABLE(Button);
+    /* Enable the BUTTON Clock */
+    BUTTONx_GPIO_CLK_ENABLE( Button );
 
-  gpioinitstruct.Pin    = BUTTON_PIN[Button];
-  gpioinitstruct.Pull   = GPIO_NOPULL;
-  gpioinitstruct.Speed  = GPIO_SPEED_FREQ_HIGH;
+    gpioinitstruct.Pin    = BUTTON_PIN[Button];
+    gpioinitstruct.Pull   = GPIO_NOPULL;
+    gpioinitstruct.Speed  = GPIO_SPEED_FREQ_HIGH;
 
-  if (Button_Mode == BUTTON_MODE_GPIO)
-  {
-    /* Configure Button pin as input */
-    gpioinitstruct.Mode = GPIO_MODE_INPUT;
-    HAL_GPIO_Init(BUTTON_PORT[Button], &gpioinitstruct);
-  }
-  else if (Button_Mode == BUTTON_MODE_EXTI)
-  {
-    /* Configure Button pin as input with External interrupt */
-    gpioinitstruct.Mode = GPIO_MODE_IT_RISING;
-    HAL_GPIO_Init(BUTTON_PORT[Button], &gpioinitstruct);
+    if( Button_Mode == BUTTON_MODE_GPIO )
+    {
+        /* Configure Button pin as input */
+        gpioinitstruct.Mode = GPIO_MODE_INPUT;
+        HAL_GPIO_Init( BUTTON_PORT[Button], &gpioinitstruct );
+    }
+    else if( Button_Mode == BUTTON_MODE_EXTI )
+    {
+        /* Configure Button pin as input with External interrupt */
+        gpioinitstruct.Mode = GPIO_MODE_IT_RISING;
+        HAL_GPIO_Init( BUTTON_PORT[Button], &gpioinitstruct );
 
-    /* Enable and set Button EXTI Interrupt to the lowest priority */
-    HAL_NVIC_SetPriority((IRQn_Type)(BUTTON_IRQn[Button]), 0x0F, 0);
-    HAL_NVIC_EnableIRQ((IRQn_Type)(BUTTON_IRQn[Button]));
-  }
+        /* Enable and set Button EXTI Interrupt to the lowest priority */
+        HAL_NVIC_SetPriority( ( IRQn_Type )( BUTTON_IRQn[Button] ), 0x0F, 0 );
+        HAL_NVIC_EnableIRQ( ( IRQn_Type )( BUTTON_IRQn[Button] ) );
+    }
 }
 
 /**
   * @brief  Returns the selected Button state.
   * @param  Button: Specifies the Button to be checked.
-  *   This parameter should be: BUTTON_USER  
+  *   This parameter should be: BUTTON_USER
   * @retval Button state.
   */
-uint32_t BSP_PB_GetState(Button_TypeDef Button)
+uint32_t BSP_PB_GetState( Button_TypeDef Button )
 {
-  return HAL_GPIO_ReadPin(BUTTON_PORT[Button], BUTTON_PIN[Button]);
+    return HAL_GPIO_ReadPin( BUTTON_PORT[Button], BUTTON_PIN[Button] );
 }
 
 /**
   * @}
-  */ 
-
-/**
-  * @}
-  */ 
+  */
 
 /**
   * @}
   */
-    
+
+/**
+  * @}
+  */
+
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
 

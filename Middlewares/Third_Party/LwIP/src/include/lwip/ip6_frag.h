@@ -77,19 +77,20 @@ extern "C" {
 /** IPv6 reassembly helper struct.
  * This is exported because memp needs to know the size.
  */
-struct ip6_reassdata {
-  struct ip6_reassdata *next;
-  struct pbuf *p;
-  struct ip6_hdr IPV6_FRAG_HDRPTR iphdr;
-  u32_t identification;
-  u16_t datagram_len;
-  u8_t nexth;
-  u8_t timer;
+struct ip6_reassdata
+{
+    struct ip6_reassdata *next;
+    struct pbuf *p;
+    struct ip6_hdr IPV6_FRAG_HDRPTR iphdr;
+    u32_t identification;
+    u16_t datagram_len;
+    u8_t nexth;
+    u8_t timer;
 };
 
 #define ip6_reass_init() /* Compatibility define */
-void ip6_reass_tmr(void);
-struct pbuf *ip6_reass(struct pbuf *p);
+void ip6_reass_tmr( void );
+struct pbuf *ip6_reass( struct pbuf *p );
 
 #endif /* LWIP_IPV6 && LWIP_IPV6_REASS */
 
@@ -100,15 +101,16 @@ struct pbuf *ip6_reass(struct pbuf *p);
 /** A custom pbuf that holds a reference to another pbuf, which is freed
  * when this custom pbuf is freed. This is used to create a custom PBUF_REF
  * that points into the original pbuf. */
-struct pbuf_custom_ref {
-  /** 'base class' */
-  struct pbuf_custom pc;
-  /** pointer to the original pbuf that is referenced */
-  struct pbuf *original;
+struct pbuf_custom_ref
+{
+    /** 'base class' */
+    struct pbuf_custom pc;
+    /** pointer to the original pbuf that is referenced */
+    struct pbuf *original;
 };
 #endif /* LWIP_PBUF_CUSTOM_REF_DEFINED */
 
-err_t ip6_frag(struct pbuf *p, struct netif *netif, const ip6_addr_t *dest);
+err_t ip6_frag( struct pbuf *p, struct netif *netif, const ip6_addr_t *dest );
 
 #endif /* LWIP_IPV6 && LWIP_IPV6_FRAG */
 

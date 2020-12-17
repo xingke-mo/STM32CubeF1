@@ -34,59 +34,59 @@
   * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   *
   ******************************************************************************
-  */ 
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM3210C_EVAL_ACCELEROMETER_H
 #define __STM3210C_EVAL_ACCELEROMETER_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm3210c_eval.h"
 /* Include Accelerometer component driver */
-#include "../Components/lis302dl/lis302dl.h"   
+#include "../Components/lis302dl/lis302dl.h"
 
-   /** @addtogroup BSP
-  * @{
-  */
-  
+/** @addtogroup BSP
+* @{
+*/
+
 /** @addtogroup STM3210C_EVAL
   * @{
-  */ 
+  */
 
 /** @addtogroup STM3210C_EVAL_ACCELEROMETER
   * @{
   */
-  
+
 
 /** @defgroup STM3210C_EVAL_ACCELEROMETER_Exported_Types STM3210C EVAL ACCELEROMETER Exported Types
   * @{
   */
-typedef enum 
+typedef enum
 {
-  ACCELERO_OK = 0,
-  ACCELERO_ERROR = 1,
-  ACCELERO_TIMEOUT = 2
-} 
+    ACCELERO_OK = 0,
+    ACCELERO_ERROR = 1,
+    ACCELERO_TIMEOUT = 2
+}
 ACCELERO_StatusTypeDef;
 
 /**
   * @}
   */
-  
+
 /** @addtogroup STM3210C_EVAL_ACCELEROMETER_Exported_Functions
   * @{
   */
-/* Acc functions */  
-uint8_t   BSP_ACCELERO_Init(void);
-uint8_t   BSP_ACCELERO_ReadID(void);
-void      BSP_ACCELERO_Reset(void);
-void      BSP_ACCELERO_Click_ITConfig(void);
-void      BSP_ACCELERO_Click_ITClear(void);
-void      BSP_ACCELERO_GetXYZ(int16_t *pDataXYZ);
+/* Acc functions */
+uint8_t   BSP_ACCELERO_Init( void );
+uint8_t   BSP_ACCELERO_ReadID( void );
+void      BSP_ACCELERO_Reset( void );
+void      BSP_ACCELERO_Click_ITConfig( void );
+void      BSP_ACCELERO_Click_ITClear( void );
+void      BSP_ACCELERO_GetXYZ( int16_t *pDataXYZ );
 
 #endif /* __STM3210C_EVAL_ACCELEROMETER_H */
 /**
@@ -103,7 +103,7 @@ void      BSP_ACCELERO_GetXYZ(int16_t *pDataXYZ);
 
 /**
   * @}
-  */ 
+  */
 
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

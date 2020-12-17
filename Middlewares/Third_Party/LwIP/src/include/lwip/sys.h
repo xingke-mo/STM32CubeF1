@@ -95,7 +95,7 @@ typedef u8_t sys_mbox_t;
 #include "arch/sys_arch.h"
 
 /** Function prototype for thread functions */
-typedef void (*lwip_thread_fn)(void *arg);
+typedef void ( *lwip_thread_fn )( void *arg );
 
 /* Function prototypes for functions to be implemented by platform ports
    (in sys_arch.c) */
@@ -128,38 +128,38 @@ typedef void (*lwip_thread_fn)(void *arg);
  * @param mutex pointer to the mutex to create
  * @return ERR_OK if successful, another err_t otherwise
  */
-err_t sys_mutex_new(sys_mutex_t *mutex);
+err_t sys_mutex_new( sys_mutex_t *mutex );
 /**
  * @ingroup sys_mutex
  * Lock a mutex
  * @param mutex the mutex to lock
  */
-void sys_mutex_lock(sys_mutex_t *mutex);
+void sys_mutex_lock( sys_mutex_t *mutex );
 /**
  * @ingroup sys_mutex
  * Unlock a mutex
  * @param mutex the mutex to unlock
  */
-void sys_mutex_unlock(sys_mutex_t *mutex);
+void sys_mutex_unlock( sys_mutex_t *mutex );
 /**
  * @ingroup sys_mutex
  * Delete a semaphore
  * @param mutex the mutex to delete
  */
-void sys_mutex_free(sys_mutex_t *mutex);
+void sys_mutex_free( sys_mutex_t *mutex );
 #ifndef sys_mutex_valid
 /**
  * @ingroup sys_mutex
  * Check if a mutex is valid/allocated: return 1 for valid, 0 for invalid
  */
-int sys_mutex_valid(sys_mutex_t *mutex);
+int sys_mutex_valid( sys_mutex_t *mutex );
 #endif
 #ifndef sys_mutex_set_invalid
 /**
  * @ingroup sys_mutex
  * Set a mutex invalid so that sys_mutex_valid returns 0
  */
-void sys_mutex_set_invalid(sys_mutex_t *mutex);
+void sys_mutex_set_invalid( sys_mutex_t *mutex );
 #endif
 #endif /* LWIP_COMPAT_MUTEX */
 
@@ -172,13 +172,13 @@ void sys_mutex_set_invalid(sys_mutex_t *mutex);
  * @param count initial count of the semaphore
  * @return ERR_OK if successful, another err_t otherwise
  */
-err_t sys_sem_new(sys_sem_t *sem, u8_t count);
+err_t sys_sem_new( sys_sem_t *sem, u8_t count );
 /**
  * @ingroup sys_sem
  * Signals a semaphore
  * @param sem the semaphore to signal
  */
-void sys_sem_signal(sys_sem_t *sem);
+void sys_sem_signal( sys_sem_t *sem );
 /**
  * @ingroup sys_sem
  * Wait for a semaphore for the specified timeout
@@ -187,13 +187,13 @@ void sys_sem_signal(sys_sem_t *sem);
  * @return time (in milliseconds) waited for the semaphore
  *         or SYS_ARCH_TIMEOUT on timeout
  */
-u32_t sys_arch_sem_wait(sys_sem_t *sem, u32_t timeout);
+u32_t sys_arch_sem_wait( sys_sem_t *sem, u32_t timeout );
 /**
  * @ingroup sys_sem
  * Delete a semaphore
  * @param sem semaphore to delete
  */
-void sys_sem_free(sys_sem_t *sem);
+void sys_sem_free( sys_sem_t *sem );
 /** Wait for a semaphore - forever/no timeout */
 #define sys_sem_wait(sem)                  sys_arch_sem_wait(sem, 0)
 #ifndef sys_sem_valid
@@ -201,14 +201,14 @@ void sys_sem_free(sys_sem_t *sem);
  * @ingroup sys_sem
  * Check if a semaphore is valid/allocated: return 1 for valid, 0 for invalid
  */
-int sys_sem_valid(sys_sem_t *sem);
+int sys_sem_valid( sys_sem_t *sem );
 #endif
 #ifndef sys_sem_set_invalid
 /**
  * @ingroup sys_sem
  * Set a semaphore invalid so that sys_sem_valid returns 0
  */
-void sys_sem_set_invalid(sys_sem_t *sem);
+void sys_sem_set_invalid( sys_sem_t *sem );
 #endif
 #ifndef sys_sem_valid_val
 /**
@@ -228,7 +228,7 @@ void sys_sem_set_invalid(sys_sem_t *sem);
  * @ingroup sys_misc
  * Sleep for specified number of ms
  */
-void sys_msleep(u32_t ms); /* only has a (close to) 1 ms resolution. */
+void sys_msleep( u32_t ms ); /* only has a (close to) 1 ms resolution. */
 #endif
 
 /* Mailbox functions. */
@@ -240,7 +240,7 @@ void sys_msleep(u32_t ms); /* only has a (close to) 1 ms resolution. */
  * @param size (minimum) number of messages in this mbox
  * @return ERR_OK if successful, another err_t otherwise
  */
-err_t sys_mbox_new(sys_mbox_t *mbox, int size);
+err_t sys_mbox_new( sys_mbox_t *mbox, int size );
 /**
  * @ingroup sys_mbox
  * Post a message to an mbox - may not fail
@@ -248,14 +248,14 @@ err_t sys_mbox_new(sys_mbox_t *mbox, int size);
  * @param mbox mbox to posts the message
  * @param msg message to post (ATTENTION: can be NULL)
  */
-void sys_mbox_post(sys_mbox_t *mbox, void *msg);
+void sys_mbox_post( sys_mbox_t *mbox, void *msg );
 /**
  * @ingroup sys_mbox
  * Try to post a message to an mbox - may fail if full or ISR
  * @param mbox mbox to posts the message
  * @param msg message to post (ATTENTION: can be NULL)
  */
-err_t sys_mbox_trypost(sys_mbox_t *mbox, void *msg);
+err_t sys_mbox_trypost( sys_mbox_t *mbox, void *msg );
 /**
  * @ingroup sys_mbox
  * Wait for a new message to arrive in the mbox
@@ -266,7 +266,7 @@ err_t sys_mbox_trypost(sys_mbox_t *mbox, void *msg);
            or SYS_ARCH_TIMEOUT on timeout
  *         The returned time has to be accurate to prevent timer jitter!
  */
-u32_t sys_arch_mbox_fetch(sys_mbox_t *mbox, void **msg, u32_t timeout);
+u32_t sys_arch_mbox_fetch( sys_mbox_t *mbox, void **msg, u32_t timeout );
 /* Allow port to override with a macro, e.g. special timeout for sys_arch_mbox_fetch() */
 #ifndef sys_arch_mbox_tryfetch
 /**
@@ -277,7 +277,7 @@ u32_t sys_arch_mbox_fetch(sys_mbox_t *mbox, void **msg, u32_t timeout);
  * @return 0 (milliseconds) if a message has been received
  *         or SYS_MBOX_EMPTY if the mailbox is empty
  */
-u32_t sys_arch_mbox_tryfetch(sys_mbox_t *mbox, void **msg);
+u32_t sys_arch_mbox_tryfetch( sys_mbox_t *mbox, void **msg );
 #endif
 /**
  * For now, we map straight to sys_arch implementation.
@@ -288,21 +288,21 @@ u32_t sys_arch_mbox_tryfetch(sys_mbox_t *mbox, void **msg);
  * Delete an mbox
  * @param mbox mbox to delete
  */
-void sys_mbox_free(sys_mbox_t *mbox);
+void sys_mbox_free( sys_mbox_t *mbox );
 #define sys_mbox_fetch(mbox, msg) sys_arch_mbox_fetch(mbox, msg, 0)
 #ifndef sys_mbox_valid
 /**
  * @ingroup sys_mbox
  * Check if an mbox is valid/allocated: return 1 for valid, 0 for invalid
  */
-int sys_mbox_valid(sys_mbox_t *mbox);
+int sys_mbox_valid( sys_mbox_t *mbox );
 #endif
 #ifndef sys_mbox_set_invalid
 /**
  * @ingroup sys_mbox
  * Set an mbox invalid so that sys_mbox_valid returns 0
  */
-void sys_mbox_set_invalid(sys_mbox_t *mbox);
+void sys_mbox_set_invalid( sys_mbox_t *mbox );
 #endif
 #ifndef sys_mbox_valid_val
 /**
@@ -328,18 +328,18 @@ void sys_mbox_set_invalid(sys_mbox_t *mbox);
  * @param arg parameter passed to 'thread'
  * @param stacksize stack size in bytes for the new thread (may be ignored by ports)
  * @param prio priority of the new thread (may be ignored by ports) */
-sys_thread_t sys_thread_new(const char *name, lwip_thread_fn thread, void *arg, int stacksize, int prio);
+sys_thread_t sys_thread_new( const char *name, lwip_thread_fn thread, void *arg, int stacksize, int prio );
 
 #endif /* NO_SYS */
 
 /* sys_init() must be called before anything else. */
-void sys_init(void);
+void sys_init( void );
 
 #ifndef sys_jiffies
 /**
  * Ticks/jiffies since power up.
  */
-u32_t sys_jiffies(void);
+u32_t sys_jiffies( void );
 #endif
 
 /**
@@ -347,7 +347,7 @@ u32_t sys_jiffies(void);
  * Returns the current time in milliseconds,
  * may be the same as sys_jiffies or at least based on it.
  */
-u32_t sys_now(void);
+u32_t sys_now( void );
 
 /* Critical Region Protection */
 /* These functions must be implemented in the sys_arch.c file.
@@ -393,8 +393,8 @@ u32_t sys_now(void);
  * this macro may be defined in sys_arch.h
  */
 #define SYS_ARCH_UNPROTECT(lev) sys_arch_unprotect(lev)
-sys_prot_t sys_arch_protect(void);
-void sys_arch_unprotect(sys_prot_t pval);
+sys_prot_t sys_arch_protect( void );
+void sys_arch_unprotect( sys_prot_t pval );
 
 #else
 

@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
-  * @file    FatFs/FatFs_uSD/Inc/main.h 
-  * @author  MCD Application Team 
+  * @file    FatFs/FatFs_uSD/Inc/main.h
+  * @author  MCD Application Team
   * @brief   Header for main.c module
   ******************************************************************************
   * @attention

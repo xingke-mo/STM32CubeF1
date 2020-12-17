@@ -34,10 +34,10 @@
 
 #include "lwip/apps/netbiosns_opts.h"
 
-void netbiosns_init(void);
+void netbiosns_init( void );
 #ifndef NETBIOS_LWIP_NAME
-void netbiosns_set_name(const char* hostname);
+    void netbiosns_set_name( const char *hostname );
 #endif
-void netbiosns_stop(void);
+void netbiosns_stop( void );
 
 #endif /* LWIP_HDR_APPS_NETBIOS_H */

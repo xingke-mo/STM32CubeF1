@@ -17,7 +17,7 @@
   ******************************************************************************
   */
 
-/* Define to prevent recursive inclusion -------------------------------------*/  
+/* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __UDP_ECHOCLIENT_H__
 #define __UDP_ECHOCLIENT_H__
 
@@ -26,8 +26,8 @@
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
-void udp_echoclient_connect(void);
-void udp_echoclient_send(void);
+void udp_echoclient_connect( void );
+void udp_echoclient_send( void );
 
 #endif /* __UDP_ECHOCLIENT_H__ */
 

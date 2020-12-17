@@ -39,7 +39,7 @@ Purpose     : Display controller initialization
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2018 STMicroelectronics. 
+  * <h2><center>&copy; Copyright (c) 2018 STMicroelectronics.
   * All rights reserved.</center></h2>
   *
   * This software component is licensed by ST under Ultimate Liberty license SLA0044,
@@ -86,10 +86,10 @@ static U32 extMem[GUI_NUMBYTES / 4];
 *   Called during the initialization process in order to set up the
 *   available memory for the GUI.
 */
-void GUI_X_Config(void)
+void GUI_X_Config( void )
 {
 
-  GUI_ALLOC_AssignMemory(extMem, GUI_NUMBYTES);
+    GUI_ALLOC_AssignMemory( extMem, GUI_NUMBYTES );
 
 }
 

@@ -31,5 +31,5 @@
 extern USBD_StorageTypeDef  USBD_DISK_fops;
 
 #endif /* __USBD_STORAGE_H_ */
- 
+
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

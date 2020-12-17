@@ -46,7 +46,7 @@
   * @param  None
   * @retval None
   */
-void NMI_Handler(void)
+void NMI_Handler( void )
 {
 }
 
@@ -55,12 +55,12 @@ void NMI_Handler(void)
   * @param  None
   * @retval None
   */
-void HardFault_Handler(void)
+void HardFault_Handler( void )
 {
-  /* Go to infinite loop when Hard Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Hard Fault exception occurs */
+    while( 1 )
+    {
+    }
 }
 
 /**
@@ -68,12 +68,12 @@ void HardFault_Handler(void)
   * @param  None
   * @retval None
   */
-void MemManage_Handler(void)
+void MemManage_Handler( void )
 {
-  /* Go to infinite loop when Memory Manage exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Memory Manage exception occurs */
+    while( 1 )
+    {
+    }
 }
 
 /**
@@ -81,12 +81,12 @@ void MemManage_Handler(void)
   * @param  None
   * @retval None
   */
-void BusFault_Handler(void)
+void BusFault_Handler( void )
 {
-  /* Go to infinite loop when Bus Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Bus Fault exception occurs */
+    while( 1 )
+    {
+    }
 }
 
 /**
@@ -94,12 +94,12 @@ void BusFault_Handler(void)
   * @param  None
   * @retval None
   */
-void UsageFault_Handler(void)
+void UsageFault_Handler( void )
 {
-  /* Go to infinite loop when Usage Fault exception occurs */
-  while (1)
-  {
-  }
+    /* Go to infinite loop when Usage Fault exception occurs */
+    while( 1 )
+    {
+    }
 }
 
 /**
@@ -107,7 +107,7 @@ void UsageFault_Handler(void)
   * @param  None
   * @retval None
   */
-void SVC_Handler(void)
+void SVC_Handler( void )
 {
 }
 
@@ -116,7 +116,7 @@ void SVC_Handler(void)
   * @param  None
   * @retval None
   */
-void DebugMon_Handler(void)
+void DebugMon_Handler( void )
 {
 }
 
@@ -125,7 +125,7 @@ void DebugMon_Handler(void)
   * @param  None
   * @retval None
   */
-void PendSV_Handler(void)
+void PendSV_Handler( void )
 {
 }
 
@@ -134,7 +134,7 @@ void PendSV_Handler(void)
   * @param  None
   * @retval None
   */
-void SysTick_Handler(void)
+void SysTick_Handler( void )
 {
 }
 
@@ -150,23 +150,24 @@ void SysTick_Handler(void)
   * @param  None
   * @retval None
   */
-void RTC_Alarm_IRQHandler(void)
+void RTC_Alarm_IRQHandler( void )
 {
-  if (LL_RTC_IsEnabledIT_ALR(RTC) != 0)
-  {
-    LL_GPIO_TogglePin(LED1_GPIO_PORT, LED1_PIN); 
-    
-    Alarm_Callback();
+    if( LL_RTC_IsEnabledIT_ALR( RTC ) != 0 )
+    {
+        LL_GPIO_TogglePin( LED1_GPIO_PORT, LED1_PIN );
 
-    /* Clear the RTC Second interrupt */
-    LL_RTC_ClearFlag_ALR(RTC);
+        Alarm_Callback();
 
-    /* Wait until last write operation on RTC registers has finished */
-    LL_RTC_WaitForSynchro(RTC);
-  }
-  /* Clear the EXTI's Flag for RTC Alarm */
-  LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_17);
-   
+        /* Clear the RTC Second interrupt */
+        LL_RTC_ClearFlag_ALR( RTC );
+
+        /* Wait until last write operation on RTC registers has finished */
+        LL_RTC_WaitForSynchro( RTC );
+    }
+
+    /* Clear the EXTI's Flag for RTC Alarm */
+    LL_EXTI_ClearFlag_0_31( LL_EXTI_LINE_17 );
+
 }
 
 

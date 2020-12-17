@@ -57,7 +57,7 @@
 #define  USBD_UsrLog(...)   printf(__VA_ARGS__);\
                             printf("\n");
 #else
-#define USBD_UsrLog(...)   
+#define USBD_UsrLog(...)
 #endif
 
 #if (USBD_DEBUG_LEVEL > 1)
@@ -65,10 +65,10 @@
                             printf(__VA_ARGS__);\
                             printf("\n");
 #else
-#define USBD_ErrLog(...)   
-#endif 
+#define USBD_ErrLog(...)
+#endif
 
-#if (USBD_DEBUG_LEVEL > 2)                         
+#if (USBD_DEBUG_LEVEL > 2)
 #define  USBD_DbgLog(...)   printf("DEBUG : ") ;\
                             printf(__VA_ARGS__);\
                             printf("\n");

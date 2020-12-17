@@ -44,12 +44,12 @@
 
 /** @addtogroup BSP
   * @{
-  */ 
+  */
 
 /** @addtogroup Component
   * @{
-  */ 
-  
+  */
+
 /** @addtogroup AK4343
   * @{
   */
@@ -64,7 +64,7 @@
 
 /** @defgroup AK4343_Exported_Constants
   * @{
-  */ 
+  */
 
 /******************************************************************************/
 /***************************  Codec User defines ******************************/
@@ -93,18 +93,18 @@
 /******************************************************************************/
 /****************************** REGISTER MAPPING ******************************/
 /******************************************************************************/
-/** 
-  * @brief  AK4343 registers definitions  
-  */  
+/**
+  * @brief  AK4343 registers definitions
+  */
 #define AK4343_MODE_CONTROL_1           0x04
 
 #define AK4343_I2S_STANDARD_PHILIPS     0x03
 #define AK4343_I2S_STANDARD_MSB         0x02
 #define AK4343_I2S_STANDARD_LSB         0x01
-    
+
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup AK4343_Exported_Macros
   * @{
@@ -113,31 +113,31 @@
 #define VOLUME_CONVERT(Volume) (((Volume) > 100) ? 255 : ((uint8_t)(255 - ((255*(Volume))/100))))
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup AK4343_Exported_Functions
   * @{
   */
-    
+
 /*------------------------------------------------------------------------------
-                           Audio Codec functions 
+                           Audio Codec functions
 ------------------------------------------------------------------------------*/
 /* High Layer codec functions */
-uint32_t ak4343_Init(uint16_t DeviceAddr, uint16_t OutputDevice, uint8_t Volume, uint32_t I2S_MCLKOutput);
+uint32_t ak4343_Init( uint16_t DeviceAddr, uint16_t OutputDevice, uint8_t Volume, uint32_t I2S_MCLKOutput );
 
-uint32_t ak4343_Play(uint16_t DeviceAddr, uint16_t* pBuffer, uint16_t Size);
-uint32_t ak4343_Pause(uint16_t DeviceAddr);
-uint32_t ak4343_Resume(uint16_t DeviceAddr);
-uint32_t ak4343_Stop(uint16_t DeviceAddr, uint32_t Cmd);
-uint32_t ak4343_SetVolume(uint16_t DeviceAddr, uint8_t Volume);
-uint32_t ak4343_SetMute(uint16_t DeviceAddr, uint32_t Cmd);
-uint32_t ak4343_SetOutputMode(uint16_t DeviceAddr, uint8_t Output);
+uint32_t ak4343_Play( uint16_t DeviceAddr, uint16_t *pBuffer, uint16_t Size );
+uint32_t ak4343_Pause( uint16_t DeviceAddr );
+uint32_t ak4343_Resume( uint16_t DeviceAddr );
+uint32_t ak4343_Stop( uint16_t DeviceAddr, uint32_t Cmd );
+uint32_t ak4343_SetVolume( uint16_t DeviceAddr, uint8_t Volume );
+uint32_t ak4343_SetMute( uint16_t DeviceAddr, uint32_t Cmd );
+uint32_t ak4343_SetOutputMode( uint16_t DeviceAddr, uint8_t Output );
 
 /* AUDIO IO functions */
-void AUDIO_IO_Init(void);
-void ak4343_MCLKOutput(uint32_t I2S_MCLKOutput);
-void AUDIO_IO_Write(uint8_t Addr, uint8_t Reg, uint8_t Value);
-uint8_t AUDIO_IO_Read(uint8_t Addr, uint8_t Reg);
+void AUDIO_IO_Init( void );
+void ak4343_MCLKOutput( uint32_t I2S_MCLKOutput );
+void AUDIO_IO_Write( uint8_t Addr, uint8_t Reg, uint8_t Value );
+uint8_t AUDIO_IO_Read( uint8_t Addr, uint8_t Reg );
 
 
 /* Audio driver structure */
@@ -147,11 +147,7 @@ extern AUDIO_DrvTypeDef   ak4343_drv;
 
 /**
   * @}
-  */ 
-
-/**
-  * @}
-  */ 
+  */
 
 /**
   * @}
@@ -159,6 +155,10 @@ extern AUDIO_DrvTypeDef   ak4343_drv;
 
 /**
   * @}
-  */ 
+  */
+
+/**
+  * @}
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

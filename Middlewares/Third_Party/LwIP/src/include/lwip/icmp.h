@@ -44,7 +44,7 @@
 #include "lwip/prot/icmp.h"
 
 #if LWIP_IPV6 && LWIP_ICMP6
-#include "lwip/icmp6.h"
+    #include "lwip/icmp6.h"
 #endif
 
 #ifdef __cplusplus
@@ -52,34 +52,36 @@ extern "C" {
 #endif
 
 /** ICMP destination unreachable codes */
-enum icmp_dur_type {
-  /** net unreachable */
-  ICMP_DUR_NET   = 0,
-  /** host unreachable */
-  ICMP_DUR_HOST  = 1,
-  /** protocol unreachable */
-  ICMP_DUR_PROTO = 2,
-  /** port unreachable */
-  ICMP_DUR_PORT  = 3,
-  /** fragmentation needed and DF set */
-  ICMP_DUR_FRAG  = 4,
-  /** source route failed */
-  ICMP_DUR_SR    = 5
+enum icmp_dur_type
+{
+    /** net unreachable */
+    ICMP_DUR_NET   = 0,
+    /** host unreachable */
+    ICMP_DUR_HOST  = 1,
+    /** protocol unreachable */
+    ICMP_DUR_PROTO = 2,
+    /** port unreachable */
+    ICMP_DUR_PORT  = 3,
+    /** fragmentation needed and DF set */
+    ICMP_DUR_FRAG  = 4,
+    /** source route failed */
+    ICMP_DUR_SR    = 5
 };
 
 /** ICMP time exceeded codes */
-enum icmp_te_type {
-  /** time to live exceeded in transit */
-  ICMP_TE_TTL  = 0,
-  /** fragment reassembly time exceeded */
-  ICMP_TE_FRAG = 1
+enum icmp_te_type
+{
+    /** time to live exceeded in transit */
+    ICMP_TE_TTL  = 0,
+    /** fragment reassembly time exceeded */
+    ICMP_TE_FRAG = 1
 };
 
 #if LWIP_IPV4 && LWIP_ICMP /* don't build if not configured for use in lwipopts.h */
 
-void icmp_input(struct pbuf *p, struct netif *inp);
-void icmp_dest_unreach(struct pbuf *p, enum icmp_dur_type t);
-void icmp_time_exceeded(struct pbuf *p, enum icmp_te_type t);
+void icmp_input( struct pbuf *p, struct netif *inp );
+void icmp_dest_unreach( struct pbuf *p, enum icmp_dur_type t );
+void icmp_time_exceeded( struct pbuf *p, enum icmp_te_type t );
 
 #endif /* LWIP_IPV4 && LWIP_ICMP */
 

@@ -18,26 +18,32 @@
 #include "Serial.h"
 
 #ifdef __DBG_ITM
-volatile int ITM_RxBuffer = ITM_RXBUFFER_EMPTY;  /*  CMSIS Debug Input        */
+    volatile int ITM_RxBuffer = ITM_RXBUFFER_EMPTY;  /*  CMSIS Debug Input        */
 #endif
 
 
 /*----------------------------------------------------------------------------
   Write character to Serial Port
  *----------------------------------------------------------------------------*/
-int SER_PutChar (int c) {
-__IO int i = 0;
-  ITM_SendChar(c);
-  return (c);
+int SER_PutChar( int c )
+{
+    __IO int i = 0;
+    ITM_SendChar( c );
+    return ( c );
 }
 
 
 /*----------------------------------------------------------------------------
   Read character from Serial Port   (blocking read)
  *----------------------------------------------------------------------------*/
-int SER_GetChar (void) {
+int SER_GetChar( void )
+{
 
-  while (ITM_CheckChar() != 1) __NOP();
-  return (ITM_ReceiveChar());
+    while( ITM_CheckChar() != 1 )
+    {
+        __NOP();
+    }
+
+    return ( ITM_ReceiveChar() );
 
 }

@@ -15,7 +15,7 @@
   *                      www.st.com/SLA0044
   *
   ******************************************************************************
-  */ 
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __USBD_CUSTOMHID_IF_H
@@ -42,26 +42,26 @@
 #define TAMPER_REPORT_ID         0x06
 #define ADC_REPORT_ID            0x07
 
-/* User can use this section to tailor ADCx instance used and associated 
+/* User can use this section to tailor ADCx instance used and associated
    resources */
 /* Definition for ADCx clock resources */
 #define ADCx                            ADC1
 #define ADCx_CLK_ENABLE()               __HAL_RCC_ADC1_CLK_ENABLE()
 #define ADCx_CHANNEL_GPIO_CLK_ENABLE()  __HAL_RCC_GPIOC_CLK_ENABLE()
-     
+
 #define ADCx_FORCE_RESET()              __HAL_RCC_ADC1_FORCE_RESET()
 #define ADCx_RELEASE_RESET()            __HAL_RCC_ADC1_RELEASE_RESET()
 
 /* Definition for ADCx Channel Pin */
 #define ADCx_CHANNEL_PIN                GPIO_PIN_4
-#define ADCx_CHANNEL_GPIO_PORT          GPIOC 
+#define ADCx_CHANNEL_GPIO_PORT          GPIOC
 
 /* Definition for ADCx's Channel */
 #define ADCx_CHANNEL                    ADC_CHANNEL_14
 
 /* Definition for ADCx's DMA */
 #define ADCx_DMA_CHANNEL                DMA1_Channel1
-        
+
 /* Definition for ADCx's NVIC */
 #define ADCx_DMA_IRQn                   DMA1_Channel1_IRQn
 

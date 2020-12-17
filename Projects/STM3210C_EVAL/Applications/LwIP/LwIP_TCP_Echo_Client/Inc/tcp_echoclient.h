@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * @file    LwIP/LwIP_TCP_Echo_Client/Inc/tcp_echoclient.h
-  * @author  MCD Application Team 
+  * @author  MCD Application Team
   * @brief   Header file for tcp_echoclient.c
   ******************************************************************************
   * @attention
@@ -16,7 +16,7 @@
   *
   ******************************************************************************
   */
-  
+
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __TCP_ECHOCLIENT_H__
 #define __TCP_ECHOCLIENT_H__
@@ -26,7 +26,7 @@
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
-void tcp_echoclient_connect(void);
+void tcp_echoclient_connect( void );
 
 #endif /* __TCP_ECHOCLIENT_H__ */
 

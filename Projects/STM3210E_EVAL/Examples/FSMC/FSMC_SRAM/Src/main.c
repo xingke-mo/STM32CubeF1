@@ -50,10 +50,10 @@ __IO uint32_t uwWriteReadStatus = 0;
 uint32_t uwIndex = 0;
 
 /* Private function prototypes -----------------------------------------------*/
-void SystemClock_Config(void);
-static void Error_Handler(void);
-static void Fill_Buffer(uint16_t *pBuffer, uint32_t uwBufferLenght, uint16_t uwOffset);
-static TestStatus Buffercmp(uint16_t *pBuffer1, uint16_t *pBuffer2, uint16_t BufferLength);
+void SystemClock_Config( void );
+static void Error_Handler( void );
+static void Fill_Buffer( uint16_t *pBuffer, uint32_t uwBufferLenght, uint16_t uwOffset );
+static TestStatus Buffercmp( uint16_t *pBuffer1, uint16_t *pBuffer2, uint16_t BufferLength );
 
 /* Private functions ---------------------------------------------------------*/
 
@@ -62,105 +62,105 @@ static TestStatus Buffercmp(uint16_t *pBuffer1, uint16_t *pBuffer2, uint16_t Buf
   * @param  None
   * @retval None
   */
-int main(void)
+int main( void )
 {
-  /* STM32F103xG HAL library initialization:
-       - Configure the Flash prefetch
-       - Systick timer is configured by default as source of time base, but user 
-         can eventually implement his proper time base source (a general purpose 
-         timer for example or other time source), keeping in mind that Time base 
-         duration should be kept 1ms since PPP_TIMEOUT_VALUEs are defined and 
-         handled in milliseconds basis.
-       - Set NVIC Group Priority to 4
-       - Low Level Initialization
-     */
-  HAL_Init();
+    /* STM32F103xG HAL library initialization:
+         - Configure the Flash prefetch
+         - Systick timer is configured by default as source of time base, but user
+           can eventually implement his proper time base source (a general purpose
+           timer for example or other time source), keeping in mind that Time base
+           duration should be kept 1ms since PPP_TIMEOUT_VALUEs are defined and
+           handled in milliseconds basis.
+         - Set NVIC Group Priority to 4
+         - Low Level Initialization
+       */
+    HAL_Init();
 
-  /* Configure LED1, LED2 and LED3 */
-  BSP_LED_Init(LED1);
-  BSP_LED_Init(LED2);
-  BSP_LED_Init(LED3);
+    /* Configure LED1, LED2 and LED3 */
+    BSP_LED_Init( LED1 );
+    BSP_LED_Init( LED2 );
+    BSP_LED_Init( LED3 );
 
-  /* Configure the system clock to 72 MHz */
-  SystemClock_Config();
+    /* Configure the system clock to 72 MHz */
+    SystemClock_Config();
 
-  /*##-1- Configure the SRAM device ##########################################*/
-  /* SRAM device configuration */
+    /*##-1- Configure the SRAM device ##########################################*/
+    /* SRAM device configuration */
 
-  hsram.Instance  = FSMC_NORSRAM_DEVICE;
-  hsram.Extended  = FSMC_NORSRAM_EXTENDED_DEVICE;
+    hsram.Instance  = FSMC_NORSRAM_DEVICE;
+    hsram.Extended  = FSMC_NORSRAM_EXTENDED_DEVICE;
 
-  /* SRAM device configuration */  
-  SRAM_Timing.AddressSetupTime      = 2;
-  SRAM_Timing.AddressHoldTime       = 1;
-  SRAM_Timing.DataSetupTime         = 2;
-  SRAM_Timing.BusTurnAroundDuration = 1;
-  SRAM_Timing.CLKDivision           = 2;
-  SRAM_Timing.DataLatency           = 2;
-  SRAM_Timing.AccessMode            = FSMC_ACCESS_MODE_A;
-  
-  hsram.Init.NSBank                 = FSMC_NORSRAM_BANK3;
-  hsram.Init.DataAddressMux         = FSMC_DATA_ADDRESS_MUX_DISABLE;
-  hsram.Init.MemoryType             = FSMC_MEMORY_TYPE_SRAM;
-  hsram.Init.MemoryDataWidth        = SRAM_MEMORY_WIDTH;
-  hsram.Init.BurstAccessMode        = FSMC_BURST_ACCESS_MODE_DISABLE;
-  hsram.Init.WaitSignalPolarity     = FSMC_WAIT_SIGNAL_POLARITY_LOW;
-  hsram.Init.WrapMode               = FSMC_WRAP_MODE_DISABLE;
-  hsram.Init.WaitSignalActive       = FSMC_WAIT_TIMING_BEFORE_WS;
-  hsram.Init.WriteOperation         = FSMC_WRITE_OPERATION_ENABLE;
-  hsram.Init.WaitSignal             = FSMC_WAIT_SIGNAL_DISABLE;
-  hsram.Init.ExtendedMode           = FSMC_EXTENDED_MODE_DISABLE;
-  hsram.Init.AsynchronousWait       = FSMC_ASYNCHRONOUS_WAIT_DISABLE;
-  hsram.Init.WriteBurst             = FSMC_WRITE_BURST_DISABLE;
+    /* SRAM device configuration */
+    SRAM_Timing.AddressSetupTime      = 2;
+    SRAM_Timing.AddressHoldTime       = 1;
+    SRAM_Timing.DataSetupTime         = 2;
+    SRAM_Timing.BusTurnAroundDuration = 1;
+    SRAM_Timing.CLKDivision           = 2;
+    SRAM_Timing.DataLatency           = 2;
+    SRAM_Timing.AccessMode            = FSMC_ACCESS_MODE_A;
 
-  /* Initialize the SRAM controller */
-  if(HAL_SRAM_Init(&hsram, &SRAM_Timing, &SRAM_Timing) != HAL_OK)
-  {
-    /* Initialization Error */
-    Error_Handler();
-  }
+    hsram.Init.NSBank                 = FSMC_NORSRAM_BANK3;
+    hsram.Init.DataAddressMux         = FSMC_DATA_ADDRESS_MUX_DISABLE;
+    hsram.Init.MemoryType             = FSMC_MEMORY_TYPE_SRAM;
+    hsram.Init.MemoryDataWidth        = SRAM_MEMORY_WIDTH;
+    hsram.Init.BurstAccessMode        = FSMC_BURST_ACCESS_MODE_DISABLE;
+    hsram.Init.WaitSignalPolarity     = FSMC_WAIT_SIGNAL_POLARITY_LOW;
+    hsram.Init.WrapMode               = FSMC_WRAP_MODE_DISABLE;
+    hsram.Init.WaitSignalActive       = FSMC_WAIT_TIMING_BEFORE_WS;
+    hsram.Init.WriteOperation         = FSMC_WRITE_OPERATION_ENABLE;
+    hsram.Init.WaitSignal             = FSMC_WAIT_SIGNAL_DISABLE;
+    hsram.Init.ExtendedMode           = FSMC_EXTENDED_MODE_DISABLE;
+    hsram.Init.AsynchronousWait       = FSMC_ASYNCHRONOUS_WAIT_DISABLE;
+    hsram.Init.WriteBurst             = FSMC_WRITE_BURST_DISABLE;
 
-  /*##-2- SRAM memory read/write access ######################################*/
-  /* Fill the buffer to write */
-  Fill_Buffer(aTxBuffer, BUFFER_SIZE, 0xC20F);
+    /* Initialize the SRAM controller */
+    if( HAL_SRAM_Init( &hsram, &SRAM_Timing, &SRAM_Timing ) != HAL_OK )
+    {
+        /* Initialization Error */
+        Error_Handler();
+    }
 
-  /* Write data to the SRAM memory */
-  for(uwIndex = 0; uwIndex < BUFFER_SIZE; uwIndex++)
-  {
-    *(__IO uint16_t *)(SRAM_BANK_ADDR + WRITE_READ_ADDR + 2 * uwIndex) = aTxBuffer[uwIndex];
-  }
+    /*##-2- SRAM memory read/write access ######################################*/
+    /* Fill the buffer to write */
+    Fill_Buffer( aTxBuffer, BUFFER_SIZE, 0xC20F );
 
-  /* Read back data from the SRAM memory */
-  for(uwIndex = 0; uwIndex < BUFFER_SIZE; uwIndex++)
-  {
-    aRxBuffer[uwIndex] = *(__IO uint16_t *)(SRAM_BANK_ADDR + WRITE_READ_ADDR + 2 * uwIndex);
-  }
+    /* Write data to the SRAM memory */
+    for( uwIndex = 0; uwIndex < BUFFER_SIZE; uwIndex++ )
+    {
+        *( __IO uint16_t * )( SRAM_BANK_ADDR + WRITE_READ_ADDR + 2 * uwIndex ) = aTxBuffer[uwIndex];
+    }
 
-  /*##-3- Checking data integrity ############################################*/
-  uwWriteReadStatus = Buffercmp(aTxBuffer, aRxBuffer, BUFFER_SIZE);
+    /* Read back data from the SRAM memory */
+    for( uwIndex = 0; uwIndex < BUFFER_SIZE; uwIndex++ )
+    {
+        aRxBuffer[uwIndex] = *( __IO uint16_t * )( SRAM_BANK_ADDR + WRITE_READ_ADDR + 2 * uwIndex );
+    }
 
-  if(uwWriteReadStatus != PASSED)
-  {
-    /* KO */
-    /* Turn on LED2 */
-    BSP_LED_On(LED2);
-  }
-  else
-  {
-    /* OK */
-    /* Turn on LED1 */
-    BSP_LED_On(LED1);
-  }
+    /*##-3- Checking data integrity ############################################*/
+    uwWriteReadStatus = Buffercmp( aTxBuffer, aRxBuffer, BUFFER_SIZE );
 
-  /* Infinite loop */
-  while (1)
-  {
-  }
+    if( uwWriteReadStatus != PASSED )
+    {
+        /* KO */
+        /* Turn on LED2 */
+        BSP_LED_On( LED2 );
+    }
+    else
+    {
+        /* OK */
+        /* Turn on LED1 */
+        BSP_LED_On( LED1 );
+    }
+
+    /* Infinite loop */
+    while( 1 )
+    {
+    }
 }
 
 /**
   * @brief  System Clock Configuration
-  *         The system Clock is configured as follow : 
+  *         The system Clock is configured as follow :
   *            System Clock source            = PLL (HSE)
   *            SYSCLK(Hz)                     = 72000000
   *            HCLK(Hz)                       = 72000000
@@ -174,36 +174,38 @@ int main(void)
   * @param  None
   * @retval None
   */
-void SystemClock_Config(void)
+void SystemClock_Config( void )
 {
-  RCC_ClkInitTypeDef clkinitstruct = {0};
-  RCC_OscInitTypeDef oscinitstruct = {0};
-  
-  /* Enable HSE Oscillator and activate PLL with HSE as source */
-  oscinitstruct.OscillatorType  = RCC_OSCILLATORTYPE_HSE;
-  oscinitstruct.HSEState        = RCC_HSE_ON;
-  oscinitstruct.HSEPredivValue  = RCC_HSE_PREDIV_DIV1;
-  oscinitstruct.PLL.PLLState    = RCC_PLL_ON;
-  oscinitstruct.PLL.PLLSource   = RCC_PLLSOURCE_HSE;
-  oscinitstruct.PLL.PLLMUL      = RCC_PLL_MUL9;
-  if (HAL_RCC_OscConfig(&oscinitstruct)!= HAL_OK)
-  {
-    /* Initialization Error */
-    while(1);
-  }
+    RCC_ClkInitTypeDef clkinitstruct = {0};
+    RCC_OscInitTypeDef oscinitstruct = {0};
 
-  /* Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2 
-     clocks dividers */
-  clkinitstruct.ClockType = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2);
-  clkinitstruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-  clkinitstruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  clkinitstruct.APB2CLKDivider = RCC_HCLK_DIV1;
-  clkinitstruct.APB1CLKDivider = RCC_HCLK_DIV2;  
-  if (HAL_RCC_ClockConfig(&clkinitstruct, FLASH_LATENCY_2)!= HAL_OK)
-  {
-    /* Initialization Error */
-    while(1);
-  }
+    /* Enable HSE Oscillator and activate PLL with HSE as source */
+    oscinitstruct.OscillatorType  = RCC_OSCILLATORTYPE_HSE;
+    oscinitstruct.HSEState        = RCC_HSE_ON;
+    oscinitstruct.HSEPredivValue  = RCC_HSE_PREDIV_DIV1;
+    oscinitstruct.PLL.PLLState    = RCC_PLL_ON;
+    oscinitstruct.PLL.PLLSource   = RCC_PLLSOURCE_HSE;
+    oscinitstruct.PLL.PLLMUL      = RCC_PLL_MUL9;
+
+    if( HAL_RCC_OscConfig( &oscinitstruct ) != HAL_OK )
+    {
+        /* Initialization Error */
+        while( 1 );
+    }
+
+    /* Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2
+       clocks dividers */
+    clkinitstruct.ClockType = ( RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2 );
+    clkinitstruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+    clkinitstruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+    clkinitstruct.APB2CLKDivider = RCC_HCLK_DIV1;
+    clkinitstruct.APB1CLKDivider = RCC_HCLK_DIV2;
+
+    if( HAL_RCC_ClockConfig( &clkinitstruct, FLASH_LATENCY_2 ) != HAL_OK )
+    {
+        /* Initialization Error */
+        while( 1 );
+    }
 }
 
 
@@ -212,13 +214,14 @@ void SystemClock_Config(void)
   * @param  None
   * @retval None
   */
-static void Error_Handler(void)
+static void Error_Handler( void )
 {
-  /* Turn LED3 on */
-  BSP_LED_On(LED3);
-  while (1)
-  {
-  }
+    /* Turn LED3 on */
+    BSP_LED_On( LED3 );
+
+    while( 1 )
+    {
+    }
 }
 
 /**
@@ -228,15 +231,15 @@ static void Error_Handler(void)
   * @param  uwOffset: first value to fill on the buffer
   * @retval None
   */
-static void Fill_Buffer(uint16_t *pBuffer, uint32_t uwBufferLenght, uint16_t uwOffset)
+static void Fill_Buffer( uint16_t *pBuffer, uint32_t uwBufferLenght, uint16_t uwOffset )
 {
-  uint16_t tmpIndex = 0;
+    uint16_t tmpIndex = 0;
 
-  /* Put in global buffer different values */
-  for (tmpIndex = 0; tmpIndex < uwBufferLenght; tmpIndex++)
-  {
-    pBuffer[tmpIndex] = tmpIndex + uwOffset;
-  }
+    /* Put in global buffer different values */
+    for( tmpIndex = 0; tmpIndex < uwBufferLenght; tmpIndex++ )
+    {
+        pBuffer[tmpIndex] = tmpIndex + uwOffset;
+    }
 }
 
 /**
@@ -246,20 +249,20 @@ static void Fill_Buffer(uint16_t *pBuffer, uint32_t uwBufferLenght, uint16_t uwO
   * @retval PASSED: pBuffer identical to pBuffer1
   *         FAILED: pBuffer differs from pBuffer1
   */
-static TestStatus Buffercmp(uint16_t *pBuffer1, uint16_t *pBuffer2, uint16_t BufferLength)
+static TestStatus Buffercmp( uint16_t *pBuffer1, uint16_t *pBuffer2, uint16_t BufferLength )
 {
-  while (BufferLength--)
-  {
-    if (*pBuffer1 != *pBuffer2)
+    while( BufferLength-- )
     {
-      return FAILED;
+        if( *pBuffer1 != *pBuffer2 )
+        {
+            return FAILED;
+        }
+
+        pBuffer1++;
+        pBuffer2++;
     }
 
-    pBuffer1++;
-    pBuffer2++;
-  }
-
-  return PASSED;
+    return PASSED;
 }
 
 #ifdef  USE_FULL_ASSERT
@@ -271,15 +274,15 @@ static TestStatus Buffercmp(uint16_t *pBuffer1, uint16_t *pBuffer2, uint16_t Buf
   * @param  line: assert_param error line source number
   * @retval None
   */
-void assert_failed(uint8_t *file, uint32_t line)
+void assert_failed( uint8_t *file, uint32_t line )
 {
-  /* User can add his own implementation to report the file name and line number,
-     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+    /* User can add his own implementation to report the file name and line number,
+       ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
-  /* Infinite loop */
-  while (1)
-  {
-  }
+    /* Infinite loop */
+    while( 1 )
+    {
+    }
 }
 #endif
 

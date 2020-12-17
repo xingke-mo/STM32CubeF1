@@ -41,10 +41,10 @@
 #include "lwip/arch.h"
 #include "lwip/opt.h"
 #if LWIP_PERF
-#include "arch/perf.h"
+    #include "arch/perf.h"
 #else /* LWIP_PERF */
-#define PERF_START    /* null definition */
-#define PERF_STOP(x)  /* null definition */
+    #define PERF_START    /* null definition */
+    #define PERF_STOP(x)  /* null definition */
 #endif /* LWIP_PERF */
 
 #ifdef __cplusplus
@@ -82,12 +82,12 @@ extern "C" {
 #define PP_NTOHL(x) (x)
 #else /* BYTE_ORDER != BIG_ENDIAN */
 #ifndef lwip_htons
-u16_t lwip_htons(u16_t x);
+u16_t lwip_htons( u16_t x );
 #endif
 #define lwip_ntohs(x) lwip_htons(x)
 
 #ifndef lwip_htonl
-u32_t lwip_htonl(u32_t x);
+u32_t lwip_htonl( u32_t x );
 #endif
 #define lwip_ntohl(x) lwip_htonl(x)
 
@@ -119,19 +119,19 @@ u32_t lwip_htonl(u32_t x);
 
 #ifndef lwip_itoa
 /* This can be #defined to itoa() or snprintf(result, bufsize, "%d", number) depending on your platform */
-void  lwip_itoa(char* result, size_t bufsize, int number);
+void  lwip_itoa( char *result, size_t bufsize, int number );
 #endif
 #ifndef lwip_strnicmp
 /* This can be #defined to strnicmp() or strncasecmp() depending on your platform */
-int   lwip_strnicmp(const char* str1, const char* str2, size_t len);
+int   lwip_strnicmp( const char *str1, const char *str2, size_t len );
 #endif
 #ifndef lwip_stricmp
 /* This can be #defined to stricmp() or strcasecmp() depending on your platform */
-int   lwip_stricmp(const char* str1, const char* str2);
+int   lwip_stricmp( const char *str1, const char *str2 );
 #endif
 #ifndef lwip_strnstr
 /* This can be #defined to strnstr() depending on your platform */
-char* lwip_strnstr(const char* buffer, const char* token, size_t n);
+char *lwip_strnstr( const char *buffer, const char *token, size_t n );
 #endif
 
 #ifdef __cplusplus

@@ -111,40 +111,40 @@
 
 
 #if defined(WAVEFORM_VOLTAGE_GENERATION_FOR_TEST)
-/* ## Definition of DAC related resources for waveform voltage generation test ## */
-/* Definition of DACx clock resources */
-#define DACx                            DAC
-#define DACx_CLK_ENABLE()               __HAL_RCC_DAC_CLK_ENABLE()
-#define DACx_CHANNEL_GPIO_CLK_ENABLE()  __HAL_RCC_GPIOA_CLK_ENABLE()
+    /* ## Definition of DAC related resources for waveform voltage generation test ## */
+    /* Definition of DACx clock resources */
+    #define DACx                            DAC
+    #define DACx_CLK_ENABLE()               __HAL_RCC_DAC_CLK_ENABLE()
+    #define DACx_CHANNEL_GPIO_CLK_ENABLE()  __HAL_RCC_GPIOA_CLK_ENABLE()
 
-#define DACx_FORCE_RESET()              __HAL_RCC_DAC_FORCE_RESET()
-#define DACx_RELEASE_RESET()            __HAL_RCC_DAC_RELEASE_RESET()
+    #define DACx_FORCE_RESET()              __HAL_RCC_DAC_FORCE_RESET()
+    #define DACx_RELEASE_RESET()            __HAL_RCC_DAC_RELEASE_RESET()
 
-/* Definition of DACx channels */
-#define DACx_CHANNELa                   DAC_CHANNEL_1
+    /* Definition of DACx channels */
+    #define DACx_CHANNELa                   DAC_CHANNEL_1
 
-/* Definition of DACx channels pins */
-#define DACx_CHANNELa_PIN               GPIO_PIN_4
-#define DACx_CHANNELa_GPIO_PORT         GPIOA
+    /* Definition of DACx channels pins */
+    #define DACx_CHANNELa_PIN               GPIO_PIN_4
+    #define DACx_CHANNELa_GPIO_PORT         GPIOA
 
 
 
-/* ## Definition of TIM related resources for waveform voltage generation test ## */
-#define TIM_test_signal_generation                            TIM6    /* Caution: Timer instance must be on APB1 (clocked by PCLK1) due to frequency computation in function "WaveformVoltageGenerationForTest()" */
-#define TIM_test_signal_generation_CLK_ENABLE()               __HAL_RCC_TIM6_CLK_ENABLE()
+    /* ## Definition of TIM related resources for waveform voltage generation test ## */
+    #define TIM_test_signal_generation                            TIM6    /* Caution: Timer instance must be on APB1 (clocked by PCLK1) due to frequency computation in function "WaveformVoltageGenerationForTest()" */
+    #define TIM_test_signal_generation_CLK_ENABLE()               __HAL_RCC_TIM6_CLK_ENABLE()
 
-#define TIM_test_signal_generation_FORCE_RESET()              __HAL_RCC_TIM6_FORCE_RESET()
-#define TIM_test_signal_generation_RELEASE_RESET()            __HAL_RCC_TIM6_RELEASE_RESET()
+    #define TIM_test_signal_generation_FORCE_RESET()              __HAL_RCC_TIM6_FORCE_RESET()
+    #define TIM_test_signal_generation_RELEASE_RESET()            __HAL_RCC_TIM6_RELEASE_RESET()
 
-#define DACx_TRIGGER_Tx_TRGO            DAC_TRIGGER_T6_TRGO
+    #define DACx_TRIGGER_Tx_TRGO            DAC_TRIGGER_T6_TRGO
 
-/* Definition of DACx DMA resources */
-#define DACx_CHANNELa_DMA_CLK_ENABLE()           __HAL_RCC_DMA2_CLK_ENABLE()
-#define DACx_CHANNELa_DMA                        DMA2_Channel3
-#define DACx_CHANNELb_DMA                        DMA2_Channel4
+    /* Definition of DACx DMA resources */
+    #define DACx_CHANNELa_DMA_CLK_ENABLE()           __HAL_RCC_DMA2_CLK_ENABLE()
+    #define DACx_CHANNELa_DMA                        DMA2_Channel3
+    #define DACx_CHANNELb_DMA                        DMA2_Channel4
 
-#define DACx_CHANNELa_DMA_IRQn                   DMA2_Channel3_IRQn
-#define DACx_CHANNELa_DMA_IRQHandler             DMA2_Channel3_IRQHandler
+    #define DACx_CHANNELa_DMA_IRQn                   DMA2_Channel3_IRQn
+    #define DACx_CHANNELa_DMA_IRQHandler             DMA2_Channel3_IRQHandler
 
 #endif /* WAVEFORM_VOLTAGE_GENERATION_FOR_TEST */
 

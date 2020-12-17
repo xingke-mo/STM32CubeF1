@@ -37,10 +37,10 @@
 /* Exported types ------------------------------------------------------------*/
 typedef struct
 {
-  void   (*DemoFunc)(void);
-  uint8_t DemoName[50]; 
-  uint32_t DemoIndex;
-}BSP_DemoTypedef;
+    void ( *DemoFunc )( void );
+    uint8_t DemoName[50];
+    uint32_t DemoIndex;
+} BSP_DemoTypedef;
 
 /* Exported variables --------------------------------------------------------*/
 extern const unsigned char stlogo[];
@@ -57,21 +57,21 @@ extern const unsigned char stlogo[];
 #define COUNT_OF_EXAMPLE(x)    (sizeof(x)/sizeof(BSP_DemoTypedef))
 
 /* Exported functions ------------------------------------------------------- */
-void LCD_demo (void);
-void Log_demo(void);
-void Joystick_demo (void);
-void SD_demo (void);
-void EEPROM_demo (void);
-void ACCELERO_MEMS_Test(void);
-void Touchscreen_demo(void);
-void Touchscreen_Calibration (void);
-uint16_t Calibration_GetX(uint16_t x);
-uint16_t Calibration_GetY(uint16_t y);
-uint8_t IsCalibrationDone(void);
-void AudioPlay_demo(void);
-uint8_t CheckForUserInput(void);
-void Toggle_Leds(void);
-void Error_Handler(void);
+void LCD_demo( void );
+void Log_demo( void );
+void Joystick_demo( void );
+void SD_demo( void );
+void EEPROM_demo( void );
+void ACCELERO_MEMS_Test( void );
+void Touchscreen_demo( void );
+void Touchscreen_Calibration( void );
+uint16_t Calibration_GetX( uint16_t x );
+uint16_t Calibration_GetY( uint16_t y );
+uint8_t IsCalibrationDone( void );
+void AudioPlay_demo( void );
+uint8_t CheckForUserInput( void );
+void Toggle_Leds( void );
+void Error_Handler( void );
 #endif /* __MAIN_H */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

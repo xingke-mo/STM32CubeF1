@@ -34,46 +34,46 @@
   * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   *
   ******************************************************************************
-  */ 
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM3210E_EVAL_NAND_H
 #define __STM3210E_EVAL_NAND_H
 
 #ifdef __cplusplus
- extern "C" {
-#endif 
+extern "C" {
+#endif
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f1xx_hal.h"
 
 /** @addtogroup BSP
   * @{
-  */ 
+  */
 
 /** @addtogroup STM3210E_EVAL
   * @{
   */
-    
+
 /** @addtogroup STM3210E_EVAL_NAND
   * @{
-  */    
+  */
 
-/* Exported constants --------------------------------------------------------*/ 
+/* Exported constants --------------------------------------------------------*/
 /** @defgroup STM3210E_EVAL_NAND_Exported_Constants STM3210E EVAL NAND Exported Constants
   * @{
   */
- 
-/** 
-  * @brief  NAND status structure definition  
-  */     
+
+/**
+  * @brief  NAND status structure definition
+  */
 #define   NAND_OK         0x00U
 
-#define NAND_DEVICE_ADDR  ((uint32_t)NAND_DEVICE1)  
-  
-/** 
-  * @brief  FSMC NAND memory parameters  
-  */  
+#define NAND_DEVICE_ADDR  ((uint32_t)NAND_DEVICE1)
+
+/**
+  * @brief  FSMC NAND memory parameters
+  */
 #define NAND_PAGE_SIZE             ((uint16_t)0x0200) /* 512 bytes per page w/o Spare Area */
 #define NAND_BLOCK_SIZE            ((uint16_t)0x0020) /* 32x512 bytes pages per block */
 #define NAND_PLANE_SIZE            ((uint16_t)0x0400) /* 1024 Block per plane */
@@ -88,29 +88,29 @@
 
 /** @addtogroup STM3210E_EVAL_NAND_Exported_Functions
   * @{
-  */  
-uint8_t BSP_NAND_Init(void);
-uint8_t BSP_NAND_ReadData(NAND_AddressTypeDef BlockAddress, uint8_t *pData, uint32_t uwDataSize);
-uint8_t BSP_NAND_WriteData(NAND_AddressTypeDef BlockAddress, uint8_t *pData, uint32_t uwDataSize);
-uint8_t BSP_NAND_Erase_Block(NAND_AddressTypeDef BlockAddress);
-uint8_t BSP_NAND_Erase_Chip(void);
-uint8_t BSP_NAND_Read_ID(NAND_IDTypeDef *pNAND_ID);
+  */
+uint8_t BSP_NAND_Init( void );
+uint8_t BSP_NAND_ReadData( NAND_AddressTypeDef BlockAddress, uint8_t *pData, uint32_t uwDataSize );
+uint8_t BSP_NAND_WriteData( NAND_AddressTypeDef BlockAddress, uint8_t *pData, uint32_t uwDataSize );
+uint8_t BSP_NAND_Erase_Block( NAND_AddressTypeDef BlockAddress );
+uint8_t BSP_NAND_Erase_Chip( void );
+uint8_t BSP_NAND_Read_ID( NAND_IDTypeDef *pNAND_ID );
 
 /**
   * @}
   */
-  
-/**
-  * @}
-  */ 
-     
-/**
-  * @}
-  */ 
 
 /**
   * @}
-  */ 
+  */
+
+/**
+  * @}
+  */
+
+/**
+  * @}
+  */
 
 #ifdef __cplusplus
 }

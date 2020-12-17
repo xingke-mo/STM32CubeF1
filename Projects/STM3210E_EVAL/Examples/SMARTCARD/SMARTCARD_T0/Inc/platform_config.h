@@ -1,6 +1,6 @@
 /**
   ******************************************************************************
-  * @file    SMARTCARD_T0/Inc/platform_config.h 
+  * @file    SMARTCARD_T0/Inc/platform_config.h
   * @author  MCD Application Team
   * @brief   Evaluation board specific configuration file.
   ******************************************************************************
@@ -33,11 +33,11 @@
 #define SC_USART_IRQn                      USART3_IRQn
 #define SC_USART_IRQHandler                USART3_IRQHandler
 
-#define SC_USART_TX_PIN                    GPIO_PIN_10                
-#define SC_USART_TX_GPIO_PORT              GPIOB                       
+#define SC_USART_TX_PIN                    GPIO_PIN_10
+#define SC_USART_TX_GPIO_PORT              GPIOB
 #define SC_USART_TX_CLK_ENABLE()           __HAL_RCC_GPIOB_CLK_ENABLE()
 
-#define SC_USART_CK_PIN                    GPIO_PIN_12                
+#define SC_USART_CK_PIN                    GPIO_PIN_12
 #define SC_USART_CK_GPIO_PORT              GPIOB
 #define SC_USART_CK_CLK_ENABLE()           __HAL_RCC_GPIOB_CLK_ENABLE()
 
@@ -59,7 +59,7 @@
 #define SC_OFF_GPIO_PORT                   GPIOC
 #define SC_OFF_CLK_ENABLE()                __HAL_RCC_GPIOC_CLK_ENABLE()
 
-#define SC_OFF_EXTI_IRQn                   EXTI9_5_IRQn 
+#define SC_OFF_EXTI_IRQn                   EXTI9_5_IRQn
 #define SC_OFF_EXTI_IRQHandler             EXTI9_5_IRQHandler
 
 /* Exported macro ------------------------------------------------------------*/

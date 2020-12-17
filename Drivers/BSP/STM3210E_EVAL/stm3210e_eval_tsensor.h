@@ -4,7 +4,7 @@
   * @author  MCD Application Team
   * @version V7.0.0
   * @date    14-April-2017
-  * @brief   This file contains all the functions prototypes for the 
+  * @brief   This file contains all the functions prototypes for the
   *          stm3210e_tsensor.c firmware driver.
   ******************************************************************************
   * @attention
@@ -41,46 +41,46 @@
 #define __STM3210E_EVAL_TSENSOR_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm3210e_eval.h"
-#include "../Components/stlm75/stlm75.h"   
+#include "../Components/stlm75/stlm75.h"
 
 /** @addtogroup BSP
   * @{
   */
-  
+
 /** @addtogroup STM3210E_EVAL
   * @{
-  */ 
-  
+  */
+
 /** @addtogroup STM3210E_EVAL_TSENSOR
   * @{
-  */  
+  */
 
 /** @defgroup STM3210E_EVAL_TSENSOR_Exported_Types STM3210E EVAL TSENSOR Exported Types
   * @{
   */
-   
-/** 
-  * @brief  TSENSOR Status  
-  */ 
+
+/**
+  * @brief  TSENSOR Status
+  */
 typedef enum
 {
-  TSENSOR_OK = 0,
-  TSENSOR_ERROR
-}TSENSOR_Status_TypDef;
+    TSENSOR_OK = 0,
+    TSENSOR_ERROR
+} TSENSOR_Status_TypDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup STM3210E_EVAL_TSENSOR_Exported_Constants STM3210E EVAL TSENSOR Exported Constants
   * @{
-  */ 
-/* Temperature Sensor hardware I2C address */ 
+  */
+/* Temperature Sensor hardware I2C address */
 #define TSENSOR_I2C_ADDRESS_A01 0x90
 #define TSENSOR_I2C_ADDRESS_A02 0x92
 
@@ -93,11 +93,11 @@ typedef enum
 
 /** @addtogroup STM3210E_EVAL_I2C_TSENSOR_Exported_Functions
   * @{
-  */ 
-uint32_t BSP_TSENSOR_Init(void);
-uint8_t  BSP_TSENSOR_ReadStatus(void);
-uint16_t BSP_TSENSOR_ReadTemp(void);
- 
+  */
+uint32_t BSP_TSENSOR_Init( void );
+uint8_t  BSP_TSENSOR_ReadStatus( void );
+uint16_t BSP_TSENSOR_ReadTemp( void );
+
 #ifdef __cplusplus
 }
 #endif
@@ -117,6 +117,6 @@ uint16_t BSP_TSENSOR_ReadTemp(void);
 
 /**
   * @}
-  */ 
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

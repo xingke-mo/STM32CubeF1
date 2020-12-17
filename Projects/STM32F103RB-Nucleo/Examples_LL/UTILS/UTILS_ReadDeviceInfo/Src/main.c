@@ -2,7 +2,7 @@
   ******************************************************************************
   * @file    Examples_LL/UTILS/UTILS_ReadDeviceInfo/Src/main.c
   * @author  MCD Application Team
-  * @brief   This example describes how to read UID, Device ID and Revision ID 
+  * @brief   This example describes how to read UID, Device ID and Revision ID
   *          through the STM32F1xx UTILS LL API.
   ******************************************************************************
   * @attention
@@ -41,7 +41,7 @@ uint8_t aShowWaferNumber[30] = {0};
 uint8_t aShowLotNumber[30]   = {0};
 
 /* Private function prototypes -----------------------------------------------*/
-void     GetMCUInfo(void);
+void     GetMCUInfo( void );
 
 /* Private functions ---------------------------------------------------------*/
 
@@ -50,15 +50,15 @@ void     GetMCUInfo(void);
   * @param  None
   * @retval None
   */
-int main(void)
+int main( void )
 {
-  /* Get different information available in the MCU */
-  GetMCUInfo();
-  
-  /* Infinite loop */
-  while (1)
-  {
-  }
+    /* Get different information available in the MCU */
+    GetMCUInfo();
+
+    /* Infinite loop */
+    while( 1 )
+    {
+    }
 }
 
 /**
@@ -66,25 +66,25 @@ int main(void)
   * @param  None
   * @retval None
   */
-void GetMCUInfo(void)
+void GetMCUInfo( void )
 {
-  register uint32_t size_string = 0, read_info = 0, read_info2 = 0;
+    register uint32_t size_string = 0, read_info = 0, read_info2 = 0;
 
-  /* Display Device ID in string format */
-  sprintf((char*)aShowDeviceID,"Device ID = 0x%lX", LL_DBGMCU_GetDeviceID());
-  
-  /* Display Revision ID in string format */
-  sprintf((char*)aShowRevisionID,"Revision ID = 0x%lX", LL_DBGMCU_GetRevisionID());
+    /* Display Device ID in string format */
+    sprintf( ( char * )aShowDeviceID, "Device ID = 0x%lX", LL_DBGMCU_GetDeviceID() );
 
-  /* Display  X and Y coordinates on the wafer expressed in BCD format */
-  sprintf((char*)aShowCoordinate,"X and Y coordinates = 0x%lX", LL_GetUID_Word0());
-  
-  /* Display Waver number and lot number in string format */
-  read_info = LL_GetUID_Word1();
-  read_info2 = LL_GetUID_Word2();
-  sprintf((char*)aShowWaferNumber,"Wafer NB = 0x%X", (uint8_t)read_info);
-  size_string = sprintf((char*)aShowLotNumber,"Lot NB = 0x%lX", read_info2);
-  sprintf((char*)aShowLotNumber+size_string,"%lX", (read_info >> 8));
+    /* Display Revision ID in string format */
+    sprintf( ( char * )aShowRevisionID, "Revision ID = 0x%lX", LL_DBGMCU_GetRevisionID() );
+
+    /* Display  X and Y coordinates on the wafer expressed in BCD format */
+    sprintf( ( char * )aShowCoordinate, "X and Y coordinates = 0x%lX", LL_GetUID_Word0() );
+
+    /* Display Waver number and lot number in string format */
+    read_info = LL_GetUID_Word1();
+    read_info2 = LL_GetUID_Word2();
+    sprintf( ( char * )aShowWaferNumber, "Wafer NB = 0x%X", ( uint8_t )read_info );
+    size_string = sprintf( ( char * )aShowLotNumber, "Lot NB = 0x%lX", read_info2 );
+    sprintf( ( char * )aShowLotNumber + size_string, "%lX", ( read_info >> 8 ) );
 }
 
 /**

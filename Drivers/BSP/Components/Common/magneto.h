@@ -40,7 +40,7 @@
 #define __MAGNETO_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -53,26 +53,26 @@
 /** @addtogroup Components
   * @{
   */
-    
+
 /** @addtogroup MAGNETO
   * @{
   */
 
 /** @defgroup MAGNETO_Exported_Types
   * @{
-  */ 
+  */
 
 /** @defgroup MAGNETO_Config_structure  Magnetometer Configuration structure
   * @{
   */
 typedef struct
 {
-  uint8_t Register1;
-  uint8_t Register2;
-  uint8_t Register3;
-  uint8_t Register4;
-  uint8_t Register5;
-}MAGNETO_InitTypeDef;
+    uint8_t Register1;
+    uint8_t Register2;
+    uint8_t Register3;
+    uint8_t Register4;
+    uint8_t Register5;
+} MAGNETO_InitTypeDef;
 /**
   * @}
   */
@@ -81,21 +81,21 @@ typedef struct
   * @{
   */
 typedef struct
-{  
-  void      (*Init)(MAGNETO_InitTypeDef);
-  void      (*DeInit)(void); 
-  uint8_t   (*ReadID)(void);
-  void      (*Reset)(void);
-  void      (*LowPower)(void);
-  void      (*ConfigIT)(void);
-  void      (*EnableIT)(uint8_t);
-  void      (*DisableIT)(uint8_t);
-  uint8_t   (*ITStatus)(uint16_t);
-  void      (*ClearIT)(void);
-  void      (*FilterConfig)(uint8_t);
-  void      (*FilterCmd)(uint8_t);
-  void      (*GetXYZ)(int16_t *);
-}MAGNETO_DrvTypeDef;
+{
+    void ( *Init )( MAGNETO_InitTypeDef );
+    void ( *DeInit )( void );
+    uint8_t ( *ReadID )( void );
+    void ( *Reset )( void );
+    void ( *LowPower )( void );
+    void ( *ConfigIT )( void );
+    void ( *EnableIT )( uint8_t );
+    void ( *DisableIT )( uint8_t );
+    uint8_t ( *ITStatus )( uint16_t );
+    void ( *ClearIT )( void );
+    void ( *FilterConfig )( uint8_t );
+    void ( *FilterCmd )( uint8_t );
+    void ( *GetXYZ )( int16_t * );
+} MAGNETO_DrvTypeDef;
 /**
   * @}
   */

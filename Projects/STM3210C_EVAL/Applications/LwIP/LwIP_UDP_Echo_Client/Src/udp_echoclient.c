@@ -30,7 +30,7 @@
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
-void udp_receive_callback(void *arg, struct udp_pcb *upcb, struct pbuf *p, const ip_addr_t *addr, u16_t port);
+void udp_receive_callback( void *arg, struct udp_pcb *upcb, struct pbuf *p, const ip_addr_t *addr, u16_t port );
 
 u8_t   data[100];
 __IO uint32_t message_count = 0;
@@ -44,28 +44,28 @@ struct udp_pcb *upcb;
   * @param  None
   * @retval None
   */
-void udp_echoclient_connect(void)
+void udp_echoclient_connect( void )
 {
-  ip_addr_t DestIPaddr;
-  err_t err;
-  
-  /* Create a new UDP control block  */
-  upcb = udp_new();
-  
-  if (upcb!=NULL)
-  {
-    /*assign destination IP address */
-    IP4_ADDR( &DestIPaddr, DEST_IP_ADDR0, DEST_IP_ADDR1, DEST_IP_ADDR2, DEST_IP_ADDR3 );
-    
-    /* configure destination IP address and port */
-    err= udp_connect(upcb, &DestIPaddr, UDP_SERVER_PORT);
-    
-    if (err == ERR_OK)
+    ip_addr_t DestIPaddr;
+    err_t err;
+
+    /* Create a new UDP control block  */
+    upcb = udp_new();
+
+    if( upcb != NULL )
     {
-      /* Set a receive callback for the upcb */
-      udp_recv(upcb, udp_receive_callback, NULL);  
+        /*assign destination IP address */
+        IP4_ADDR( &DestIPaddr, DEST_IP_ADDR0, DEST_IP_ADDR1, DEST_IP_ADDR2, DEST_IP_ADDR3 );
+
+        /* configure destination IP address and port */
+        err = udp_connect( upcb, &DestIPaddr, UDP_SERVER_PORT );
+
+        if( err == ERR_OK )
+        {
+            /* Set a receive callback for the upcb */
+            udp_recv( upcb, udp_receive_callback, NULL );
+        }
     }
-  }
 }
 
 /**
@@ -77,26 +77,26 @@ void udp_echoclient_connect(void)
   * @param port the remote port from which the packet was received
   * @retval None
   */
-void udp_echoclient_send(void)
+void udp_echoclient_send( void )
 {
-  struct pbuf *p;
-  
-  sprintf((char*)data, "sending udp client message %d", (int)message_count);
-  
-  /* allocate pbuf from pool*/
-  p = pbuf_alloc(PBUF_TRANSPORT,strlen((char*)data), PBUF_POOL);
-  
-  if (p != NULL)
-  {
-    /* copy data to pbuf */
-    pbuf_take(p, (char*)data, strlen((char*)data));
-    
-    /* send udp data */
-    udp_send(upcb, p); 
-    
-    /* free pbuf */
-    pbuf_free(p);
-  }
+    struct pbuf *p;
+
+    sprintf( ( char * )data, "sending udp client message %d", ( int )message_count );
+
+    /* allocate pbuf from pool*/
+    p = pbuf_alloc( PBUF_TRANSPORT, strlen( ( char * )data ), PBUF_POOL );
+
+    if( p != NULL )
+    {
+        /* copy data to pbuf */
+        pbuf_take( p, ( char * )data, strlen( ( char * )data ) );
+
+        /* send udp data */
+        udp_send( upcb, p );
+
+        /* free pbuf */
+        pbuf_free( p );
+    }
 }
 
 /**
@@ -108,14 +108,14 @@ void udp_echoclient_send(void)
   * @param port the remote port from which the packet was received
   * @retval None
   */
-void udp_receive_callback(void *arg, struct udp_pcb *upcb, struct pbuf *p, const ip_addr_t *addr, u16_t port)
+void udp_receive_callback( void *arg, struct udp_pcb *upcb, struct pbuf *p, const ip_addr_t *addr, u16_t port )
 {
 
-  /*increment message count */
-  message_count++;
-  
-  /* Free receive pbuf */
-  pbuf_free(p);
+    /*increment message count */
+    message_count++;
+
+    /* Free receive pbuf */
+    pbuf_free( p );
 }
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -1,6 +1,6 @@
 /**
   ******************************************************************************
-  * @file    USB_Device/CustomHID_Standalone/Inc/main.h 
+  * @file    USB_Device/CustomHID_Standalone/Inc/main.h
   * @author  MCD Application Team
   * @brief   Header for main.c module
   ******************************************************************************
