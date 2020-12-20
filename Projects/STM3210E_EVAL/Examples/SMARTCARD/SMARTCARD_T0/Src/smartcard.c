@@ -151,7 +151,8 @@ void SC_Handler( SC_State *SCState, SC_ADPU_Commands *SC_ADPU, SC_ADPU_Response 
         SC_DeInit(); /* Disable Smartcard interface */
         break;
 
-    default: ( *SCState ) = SC_POWER_OFF;
+    default:
+        ( *SCState ) = SC_POWER_OFF;
     }
 }
 

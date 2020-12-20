@@ -37,7 +37,8 @@ DWORD allocate_contiguous_clusters(     /* Returns the first sector in LBA (0:er
     /* Check if the existing cluster chain is contiguous */
     if( len == fp->fsize )
     {
-        ncl = 0; ccl = fp->sclust;
+        ncl = 0;
+        ccl = fp->sclust;
 
         do
         {
@@ -72,7 +73,8 @@ DWORD allocate_contiguous_clusters(     /* Returns the first sector in LBA (0:er
     }
 
     /* Find a free contiguous area */
-    ccl = cl = 2; ncl = 0;
+    ccl = cl = 2;
+    ncl = 0;
 
     do
     {
@@ -93,10 +95,12 @@ DWORD allocate_contiguous_clusters(     /* Returns the first sector in LBA (0:er
                 }
             } while( get_fat( fp->fs, cl ) );
 
-            ccl = cl; ncl = 0;
+            ccl = cl;
+            ncl = 0;
         }
 
-        cl++; ncl++;
+        cl++;
+        ncl++;
     } while( ncl < tcl );
 
     /* Create a contiguous cluster chain */

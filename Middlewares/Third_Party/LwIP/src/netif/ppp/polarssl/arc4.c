@@ -89,8 +89,10 @@ void arc4_crypt( arc4_context *ctx, unsigned char *buf, int buflen )
 
     for( i = 0; i < buflen; i++ )
     {
-        x = ( x + 1 ) & 0xFF; a = m[x];
-        y = ( y + a ) & 0xFF; b = m[y];
+        x = ( x + 1 ) & 0xFF;
+        a = m[x];
+        y = ( y + a ) & 0xFF;
+        b = m[y];
 
         m[x] = ( unsigned char ) b;
         m[y] = ( unsigned char ) a;

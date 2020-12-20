@@ -308,8 +308,12 @@ static void des_setkey( unsigned long SK[32], unsigned char key[8] )
     /*
      * Permuted Choice 1
      */
-    T = ( ( Y >>  4 ) ^ X ) & 0x0F0F0F0F;  X ^= T; Y ^= ( T <<  4 );
-    T = ( ( Y ) ^ X ) & 0x10101010;  X ^= T; Y ^= ( T );
+    T = ( ( Y >>  4 ) ^ X ) & 0x0F0F0F0F;
+    X ^= T;
+    Y ^= ( T <<  4 );
+    T = ( ( Y ) ^ X ) & 0x10101010;
+    X ^= T;
+    Y ^= ( T );
 
     X = ( LHs[( X ) & 0xF] << 3 ) | ( LHs[( X >>  8 ) & 0xF ] << 2 )
         | ( LHs[( X >> 16 ) & 0xF] << 1 ) | ( LHs[( X >> 24 ) & 0xF ] )

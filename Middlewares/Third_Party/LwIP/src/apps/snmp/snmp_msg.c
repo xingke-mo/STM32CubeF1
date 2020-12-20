@@ -1040,7 +1040,8 @@ static err_t snmp_parse_inbound_frame( struct snmp_request *request )
 
     default:
         /* unsupported input PDU for this agent (no parse error) */
-        LWIP_DEBUGF( SNMP_DEBUG, ( "Unknown/Invalid SNMP PDU type received: %d", tlv.type ) ); \
+        LWIP_DEBUGF( SNMP_DEBUG, ( "Unknown/Invalid SNMP PDU type received: %d", tlv.type ) );
+        \
         return ERR_ARG;
         break;
     }

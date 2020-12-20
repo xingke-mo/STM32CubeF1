@@ -575,7 +575,8 @@ void pppoe_disc_input( struct netif *netif, struct pbuf *pb )
         off += sizeof( pt ) + len;
     }
 
-breakbreak:;
+breakbreak:
+    ;
 
     switch( ph->code )
     {

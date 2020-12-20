@@ -219,7 +219,8 @@ void DHCP_Process( struct netif *netif )
         }
         break;
 
-    default: break;
+    default:
+        break;
     }
 }
 

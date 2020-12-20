@@ -259,7 +259,8 @@ vj_compress_tcp( struct vjcompress *comp, struct pbuf **pb )
 
         do
         {
-            lcs = cs; cs = cs->cs_next;
+            lcs = cs;
+            cs = cs->cs_next;
             INCR( vjs_searches );
 
             if( ip4_addr_cmp( &ip->src, &cs->cs_ip.src )

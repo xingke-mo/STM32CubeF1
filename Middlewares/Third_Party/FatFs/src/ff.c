@@ -588,7 +588,8 @@ void mem_cpy( void *dst, const void *src, UINT cnt )
     while( cnt >= sizeof( int ) )
     {
         *( int * )d = *( int * )s;
-        d += sizeof( int ); s += sizeof( int );
+        d += sizeof( int );
+        s += sizeof( int );
         cnt -= sizeof( int );
     }
 
@@ -1001,7 +1002,8 @@ DWORD get_fat(  /* 0xFFFFFFFF:Disk error, 1:Internal error, 2..0x0FFFFFFF:Cluste
         switch( fs->fs_type )
         {
         case FS_FAT12 :
-            bc = ( UINT )clst; bc += bc / 2;
+            bc = ( UINT )clst;
+            bc += bc / 2;
 
             if( move_window( fs, fs->fatbase + ( bc / SS( fs ) ) ) != FR_OK )
             {
@@ -1077,7 +1079,8 @@ FRESULT put_fat(
         switch( fs->fs_type )
         {
         case FS_FAT12 :
-            bc = ( UINT )clst; bc += bc / 2;
+            bc = ( UINT )clst;
+            bc += bc / 2;
             res = move_window( fs, fs->fatbase + ( bc / SS( fs ) ) );
 
             if( res != FR_OK )
@@ -1363,7 +1366,8 @@ DWORD clmt_clust(  /* <2:Error, >=2:Cluster number */
             break;    /* In this fragment? */
         }
 
-        cl -= ncl; tbl++;       /* Next fragment */
+        cl -= ncl;
+        tbl++;       /* Next fragment */
     }
 
     return cl + *tbl;   /* Return the cluster number */
@@ -1689,7 +1693,8 @@ int cmp_lfn(    /* 1:Matched, 0:Not matched */
 
 
     i = ( ( dir[LDIR_Ord] & ~LLEF ) - 1 ) * 13; /* Get offset in the LFN buffer */
-    s = 0; wc = 1;
+    s = 0;
+    wc = 1;
 
     do
     {
@@ -1735,7 +1740,8 @@ int pick_lfn(    /* 1:Succeeded, 0:Buffer overflow */
 
     i = ( ( dir[LDIR_Ord] & 0x3F ) - 1 ) * 13; /* Offset in the LFN buffer */
 
-    s = 0; wc = 1;
+    s = 0;
+    wc = 1;
 
     do
     {
@@ -1955,7 +1961,8 @@ FRESULT dir_find(
     }
 
 #if _USE_LFN
-    ord = sum = 0xFF; dp->lfn_idx = 0xFFFF; /* Reset LFN sequence */
+    ord = sum = 0xFF;
+    dp->lfn_idx = 0xFFFF; /* Reset LFN sequence */
 #endif
 
     do
@@ -1981,7 +1988,8 @@ FRESULT dir_find(
 
         if( c == DDEM || ( ( a & AM_VOL ) && a != AM_LFN ) ) /* An entry without valid data */
         {
-            ord = 0xFF; dp->lfn_idx = 0xFFFF;   /* Reset LFN sequence */
+            ord = 0xFF;
+            dp->lfn_idx = 0xFFFF;   /* Reset LFN sequence */
         }
         else
         {
@@ -1992,7 +2000,8 @@ FRESULT dir_find(
                     if( c & LLEF )      /* Is it start of LFN sequence? */
                     {
                         sum = dir[LDIR_Chksum];
-                        c &= ~LLEF; ord = c;    /* LFN start order */
+                        c &= ~LLEF;
+                        ord = c;    /* LFN start order */
                         dp->lfn_idx = dp->index;    /* Start index of LFN */
                     }
 
@@ -2012,7 +2021,8 @@ FRESULT dir_find(
                     break;    /* SFN matched? */
                 }
 
-                ord = 0xFF; dp->lfn_idx = 0xFFFF;   /* Reset LFN sequence */
+                ord = 0xFF;
+                dp->lfn_idx = 0xFFFF;   /* Reset LFN sequence */
             }
         }
 
@@ -2083,7 +2093,8 @@ FRESULT dir_read(
                 if( c & LLEF )          /* Is it start of LFN sequence? */
                 {
                     sum = dir[LDIR_Chksum];
-                    c &= ~LLEF; ord = c;
+                    c &= ~LLEF;
+                    ord = c;
                     dp->lfn_idx = dp->index;
                 }
 
@@ -2145,7 +2156,8 @@ FRESULT dir_register(  /* FR_OK:Successful, FR_DENIED:No free entry or too many 
     WCHAR *lfn;
 
 
-    fn = dp->fn; lfn = dp->lfn;
+    fn = dp->fn;
+    lfn = dp->lfn;
     mem_cpy( sn, fn, 12 );
 
     if( _FS_RPATH && ( sn[NSFLAG] & NS_DOT ) )  /* Cannot create dot entry */
@@ -2155,7 +2167,8 @@ FRESULT dir_register(  /* FR_OK:Successful, FR_DENIED:No free entry or too many 
 
     if( sn[NSFLAG] & NS_LOSS )          /* When LFN is out of 8.3 format, generate a numbered name */
     {
-        fn[NSFLAG] = 0; dp->lfn = 0;            /* Find only SFN */
+        fn[NSFLAG] = 0;
+        dp->lfn = 0;            /* Find only SFN */
 
         for( n = 1; n < 100; n++ )
         {
@@ -2178,7 +2191,8 @@ FRESULT dir_register(  /* FR_OK:Successful, FR_DENIED:No free entry or too many 
             return res;    /* Abort if the result is other than 'not collided' */
         }
 
-        fn[NSFLAG] = sn[NSFLAG]; dp->lfn = lfn;
+        fn[NSFLAG] = sn[NSFLAG];
+        dp->lfn = lfn;
     }
 
     if( sn[NSFLAG] & NS_LFN )           /* When LFN is to be created, allocate entries for an SFN + LFNs. */
@@ -2394,7 +2408,8 @@ void get_fileinfo(   /* No return code */
 
     if( fno->lfname )
     {
-        i = 0; p = fno->lfname;
+        i = 0;
+        p = fno->lfname;
 
         if( dp->sect && fno->lfsize && dp->lfn_idx != 0xFFFF )  /* Get LFN if available */
         {
@@ -2505,7 +2520,8 @@ int pattern_matching(  /* Return value: 0:mismatched, 1:matched */
 
     do
     {
-        pp = pat; np = nam;         /* Top of pattern and name to match */
+        pp = pat;
+        np = nam;         /* Top of pattern and name to match */
 
         for( ;; )
         {
@@ -2530,7 +2546,8 @@ int pattern_matching(  /* Return value: 0:mismatched, 1:matched */
                     return 1;    /* Test new branch (recurs upto number of wildcard blocks in the pattern) */
                 }
 
-                nc = *np; break;    /* Branch mismatched */
+                nc = *np;
+                break;    /* Branch mismatched */
             }
 
             pc = get_achar( &pp );  /* Get a pattern char */
@@ -2681,7 +2698,8 @@ FRESULT create_name(
         di--;    /* Find extension (di<=si: no extension) */
     }
 
-    b = i = 0; ni = 8;
+    b = i = 0;
+    ni = 8;
 
     for( ;; )
     {
@@ -2694,14 +2712,16 @@ FRESULT create_name(
 
         if( w == ' ' || ( w == '.' && si != di ) )  /* Remove spaces and dots */
         {
-            cf |= NS_LOSS | NS_LFN; continue;
+            cf |= NS_LOSS | NS_LFN;
+            continue;
         }
 
         if( i >= ni || si == di )       /* Extension or end of SFN */
         {
             if( ni == 11 )              /* Long extension */
             {
-                cf |= NS_LOSS | NS_LFN; break;
+                cf |= NS_LOSS | NS_LFN;
+                break;
             }
 
             if( si != di )
@@ -2714,8 +2734,11 @@ FRESULT create_name(
                 break;    /* No extension */
             }
 
-            si = di; i = 8; ni = 11;    /* Enter extension section */
-            b <<= 2; continue;
+            si = di;
+            i = 8;
+            ni = 11;    /* Enter extension section */
+            b <<= 2;
+            continue;
         }
 
         if( w >= 0x80 )                 /* Non ASCII character */
@@ -2738,7 +2761,9 @@ FRESULT create_name(
         {
             if( i >= ni - 1 )
             {
-                cf |= NS_LOSS | NS_LFN; i = ni; continue;
+                cf |= NS_LOSS | NS_LFN;
+                i = ni;
+                continue;
             }
 
             dp->fn[i++] = ( BYTE )( w >> 8 );
@@ -2747,7 +2772,8 @@ FRESULT create_name(
         {
             if( !w || chk_chr( "+,;=[]", w ) )  /* Replace illegal characters for SFN */
             {
-                w = '_'; cf |= NS_LOSS | NS_LFN;/* Lossy conversion */
+                w = '_';
+                cf |= NS_LOSS | NS_LFN;/* Lossy conversion */
             }
             else
             {
@@ -2759,7 +2785,8 @@ FRESULT create_name(
                 {
                     if( IsLower( w ) )  /* ASCII small capital */
                     {
-                        b |= 1; w -= 0x20;
+                        b |= 1;
+                        w -= 0x20;
                     }
                 }
             }
@@ -2811,7 +2838,8 @@ FRESULT create_name(
 
     sfn = dp->fn;
     mem_set( sfn, ' ', 11 );
-    si = i = b = 0; ni = 8;
+    si = i = b = 0;
+    ni = 8;
 #if _FS_RPATH
 
     if( p[si] == '.' )  /* Is this a dot entry? */
@@ -2856,8 +2884,10 @@ FRESULT create_name(
                 return FR_INVALID_NAME;
             }
 
-            i = 8; ni = 11;
-            b <<= 2; continue;
+            i = 8;
+            ni = 11;
+            b <<= 2;
+            continue;
         }
 
         if( c >= 0x80 )                 /* Extended character? */
@@ -2899,7 +2929,8 @@ FRESULT create_name(
             {
                 if( IsLower( c ) )      /* ASCII small capital? */
                 {
-                    b |= 1; c -= 0x20;
+                    b |= 1;
+                    c -= 0x20;
                 }
             }
 
@@ -2962,7 +2993,8 @@ FRESULT follow_path(  /* FR_OK(0): successful, !=0: error code */
 
     if( *path == '/' || *path == '\\' )     /* There is a heading separator */
     {
-        path++; dp->sclust = 0;             /* Strip it and start from the root directory */
+        path++;
+        dp->sclust = 0;             /* Strip it and start from the root directory */
     }
     else                                    /* No heading separator */
     {
@@ -3004,7 +3036,8 @@ FRESULT follow_path(  /* FR_OK(0): successful, !=0: error code */
                 {
                     if( _FS_RPATH && ( ns & NS_DOT ) )  /* If dot entry is not exist, */
                     {
-                        dp->sclust = 0; dp->dir = 0;    /* it is the root directory and stay there */
+                        dp->sclust = 0;
+                        dp->dir = 0;    /* it is the root directory and stay there */
 
                         if( !( ns & NS_LAST ) )
                         {
@@ -3034,7 +3067,8 @@ FRESULT follow_path(  /* FR_OK(0): successful, !=0: error code */
 
             if( !( dir[DIR_Attr] & AM_DIR ) )   /* It is not a sub-directory and cannot follow */
             {
-                res = FR_NO_PATH; break;
+                res = FR_NO_PATH;
+                break;
             }
 
             dp->sclust = ld_clust( dp->fs, dir );
@@ -3088,15 +3122,18 @@ int get_ldnumber(   /* Returns logical drive number (-1:invalid drive) */
 #if _STR_VOLUME_ID
             else   /* No numeric drive number, find string drive id */
             {
-                i = 0; tt++;
+                i = 0;
+                tt++;
 
                 do
                 {
-                    sp = str[i]; tp = *path;
+                    sp = str[i];
+                    tp = *path;
 
                     do      /* Compare a string drive id with path name */
                     {
-                        c = *sp++; tc = *tp++;
+                        c = *sp++;
+                        tc = *tp++;
 
                         if( IsLower( tc ) )
                         {
@@ -3139,7 +3176,8 @@ BYTE check_fs(  /* 0:FAT boor sector, 1:Valid boor sector but not FAT, 2:Not a b
     DWORD sect  /* Sector# (lba) to check if it is an FAT boot record or not */
 )
 {
-    fs->wflag = 0; fs->winsect = 0xFFFFFFFF;    /* Invaidate window */
+    fs->wflag = 0;
+    fs->winsect = 0xFFFFFFFF;    /* Invaidate window */
 
     if( move_window( fs, sect ) != FR_OK )      /* Load boot record */
     {
@@ -4409,7 +4447,8 @@ FRESULT f_getcwd(
 
             if( i < n + 3 )
             {
-                res = FR_NOT_ENOUGH_CORE; break;
+                res = FR_NOT_ENOUGH_CORE;
+                break;
             }
 
             while( n )
@@ -4489,7 +4528,8 @@ FRESULT f_lseek(
         if( ofs == CREATE_LINKMAP )     /* Create CLMT */
         {
             tbl = fp->cltbl;
-            tlen = *tbl++; ulen = 2;    /* Given table size and required table size */
+            tlen = *tbl++;
+            ulen = 2;    /* Given table size and required table size */
             cl = fp->sclust;            /* Top of the chain */
 
             if( cl )
@@ -4497,11 +4537,14 @@ FRESULT f_lseek(
                 do
                 {
                     /* Get a fragment */
-                    tcl = cl; ncl = 0; ulen += 2;   /* Top, length and used items */
+                    tcl = cl;
+                    ncl = 0;
+                    ulen += 2;   /* Top, length and used items */
 
                     do
                     {
-                        pcl = cl; ncl++;
+                        pcl = cl;
+                        ncl++;
                         cl = get_fat( fp->fs, cl );
 
                         if( cl <= 1 )
@@ -4517,7 +4560,8 @@ FRESULT f_lseek(
 
                     if( ulen <= tlen )      /* Store the length and top of the fragment */
                     {
-                        *tbl++ = ncl; *tbl++ = tcl;
+                        *tbl++ = ncl;
+                        *tbl++ = tcl;
                     }
                 } while( cl < fp->fs->n_fatent );   /* Repeat until end of chain */
             }
@@ -4649,7 +4693,8 @@ FRESULT f_lseek(
 
                         if( clst == 0 )                 /* When disk gets full, clip file size */
                         {
-                            ofs = bcs; break;
+                            ofs = bcs;
+                            break;
                         }
                     }
                     else
@@ -5093,7 +5138,8 @@ FRESULT f_getfree(
             {
                 clst = fs->n_fatent;
                 sect = fs->fatbase;
-                i = 0; p = 0;
+                i = 0;
+                p = 0;
 
                 do
                 {
@@ -5117,7 +5163,8 @@ FRESULT f_getfree(
                             n++;
                         }
 
-                        p += 2; i -= 2;
+                        p += 2;
+                        i -= 2;
                     }
                     else
                     {
@@ -5126,7 +5173,8 @@ FRESULT f_getfree(
                             n++;
                         }
 
-                        p += 4; i -= 4;
+                        p += 4;
+                        i -= 4;
                     }
                 } while( --clst );
             }
@@ -5423,7 +5471,8 @@ FRESULT f_mkdir(
                 ST_DWORD( dir + DIR_WrtTime, tm );
                 st_clust( dir, dcl );
                 mem_cpy( dir + SZ_DIRE, dir, SZ_DIRE ); /* Create ".." entry */
-                dir[SZ_DIRE + 1] = '.'; pcl = dj.sclust;
+                dir[SZ_DIRE + 1] = '.';
+                pcl = dj.sclust;
 
                 if( dj.fs->fs_type == FS_FAT32 && pcl == dj.fs->dirbase )
                 {
@@ -6437,7 +6486,8 @@ FRESULT f_mkfs(
 
 #if _USE_TRIM   /* Erase data area if needed */
     {
-        eb[0] = wsect; eb[1] = wsect + ( n_clst - ( ( fmt == FS_FAT32 ) ? 1 : 0 ) ) * au - 1;
+        eb[0] = wsect;
+        eb[1] = wsect + ( n_clst - ( ( fmt == FS_FAT32 ) ? 1 : 0 ) ) * au - 1;
         disk_ioctl( pdrv, CTRL_TRIM, eb );
     }
 #endif
@@ -6507,7 +6557,8 @@ FRESULT f_fdisk(
 
     /* Create partition table */
     mem_set( buf, 0, _MAX_SS );
-    p = buf + MBR_Table; b_cyl = 0;
+    p = buf + MBR_Table;
+    b_cyl = 0;
 
     for( i = 0; i < 4; i++, p += SZ_PTE )
     {
@@ -6524,7 +6575,8 @@ FRESULT f_fdisk(
         if( i == 0 )    /* Exclude first track of cylinder 0 */
         {
             s_hd = 1;
-            s_part += 63; sz_part -= 63;
+            s_part += 63;
+            sz_part -= 63;
         }
         else
         {
@@ -6923,13 +6975,15 @@ int f_printf(
 
         if( c == '0' )              /* Flag: '0' padding */
         {
-            f = 1; c = *fmt++;
+            f = 1;
+            c = *fmt++;
         }
         else
         {
             if( c == '-' )          /* Flag: left justified */
             {
-                f = 2; c = *fmt++;
+                f = 2;
+                c = *fmt++;
             }
         }
 
@@ -6941,7 +6995,8 @@ int f_printf(
 
         if( c == 'l' || c == 'L' )  /* Prefix: Size is long int */
         {
-            f |= 4; c = *fmt++;
+            f |= 4;
+            c = *fmt++;
         }
 
         if( !c )
@@ -6984,23 +7039,29 @@ int f_printf(
             continue;
 
         case 'C' :                  /* Character */
-            putc_bfd( &pb, ( TCHAR )va_arg( arp, int ) ); continue;
+            putc_bfd( &pb, ( TCHAR )va_arg( arp, int ) );
+            continue;
 
         case 'B' :                  /* Binary */
-            r = 2; break;
+            r = 2;
+            break;
 
         case 'O' :                  /* Octal */
-            r = 8; break;
+            r = 8;
+            break;
 
         case 'D' :                  /* Signed decimal */
         case 'U' :                  /* Unsigned decimal */
-            r = 10; break;
+            r = 10;
+            break;
 
         case 'X' :                  /* Hexdecimal */
-            r = 16; break;
+            r = 16;
+            break;
 
         default:                    /* Unknown type (pass-through) */
-            putc_bfd( &pb, c ); continue;
+            putc_bfd( &pb, c );
+            continue;
         }
 
         /* Get an argument and put it in numeral */
@@ -7016,7 +7077,8 @@ int f_printf(
 
         do
         {
-            d = ( TCHAR )( v % r ); v /= r;
+            d = ( TCHAR )( v % r );
+            v /= r;
 
             if( d > 9 )
             {
@@ -7031,7 +7093,8 @@ int f_printf(
             s[i++] = '-';
         }
 
-        j = i; d = ( f & 1 ) ? '0' : ' ';
+        j = i;
+        d = ( f & 1 ) ? '0' : ' ';
 
         while( !( f & 2 ) && j++ < w )
         {

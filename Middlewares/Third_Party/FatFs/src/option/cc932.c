@@ -3793,7 +3793,8 @@ WCHAR ff_convert(  /* Converted code, 0 means conversion error */
         }
         else            /* Unicode to OEMCP */
         {
-            li = 0; hi = sizeof uni2sjis / 4 - 1;
+            li = 0;
+            hi = sizeof uni2sjis / 4 - 1;
 
             for( n = 16; n; n-- )
             {

@@ -396,13 +396,21 @@ int ppp_vslprintf( char *buf, int buflen, const char *fmt, va_list args )
 
                         switch( c )
                         {
-                        case '\t':  OUTCHAR( 't' );   break;
+                        case '\t':
+                            OUTCHAR( 't' );
+                            break;
 
-                        case '\n':  OUTCHAR( 'n' );   break;
+                        case '\n':
+                            OUTCHAR( 'n' );
+                            break;
 
-                        case '\b':  OUTCHAR( 'b' );   break;
+                        case '\b':
+                            OUTCHAR( 'b' );
+                            break;
 
-                        case '\f':  OUTCHAR( 'f' );   break;
+                        case '\f':
+                            OUTCHAR( 'f' );
+                            break;
 
                         default:
                             OUTCHAR( 'x' );
